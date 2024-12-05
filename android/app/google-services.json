@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "457797490593",
+    "project_id": "xboite-d7c80",
+    "storage_bucket": "xboite-d7c80.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:457797490593:android:986e800e326be9004b9de0",
+        "android_client_info": {
+          "package_name": "com.equilibre.blanksplit"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7Ab1IkCU0tpEkclalxx3t2eb76odNuAk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:457797490593:android:79db46f18de4b43d4b9de0",
+        "android_client_info": {
+          "package_name": "com.equilibre.sboite"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA7Ab1IkCU0tpEkclalxx3t2eb76odNuAk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
