@@ -1,5 +1,64 @@
 import 'package:immobilier_apk/scr/config/app/export.dart';
 
+
+class MBottomNavigationBar extends StatelessWidget {
+  const MBottomNavigationBar({
+    required this.ready,
+    required this.pageController,
+    required this.currentPage,
+  });
+
+  final RxBool ready;
+  final PageController pageController;
+  final RxInt currentPage;
+  
+  @override
+  Widget build(BuildContext context) {
+    return Obx(
+      () => Container(
+        height: 70,
+        width: Get.width,
+        decoration: BoxDecoration(
+            color: AppColors.background,
+            border: const Border(
+                top: BorderSide(color: Color.fromARGB(31, 255, 255, 255), width: .6))),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceAround,
+          children: [
+            BottomNavigationButton(
+              function: () {
+                pageController.animateToPage(0,
+                    duration: 333.milliseconds, curve: Curves.decelerate);
+                currentPage.value = 0;
+              },
+              currentPage: currentPage.value,
+              page: 0,
+              label: 'Accueil',
+              selectedIcon: 'home_s.png',
+              unselectedIcon: 'home_us.png',
+            ),
+           
+           
+          
+            BottomNavigationButton(
+              function: () {
+                pageController.animateToPage(1,
+                    duration: 333.milliseconds, curve: Curves.decelerate);
+                currentPage.value = 1;
+              },
+              currentPage: currentPage.value,
+              page: 1,
+              label: 'Compte',
+              selectedIcon: 'account_s.png',
+              unselectedIcon: 'account_us.png',
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
 class BottomNavigationButton extends StatelessWidget {
   const BottomNavigationButton({
     Key? key,

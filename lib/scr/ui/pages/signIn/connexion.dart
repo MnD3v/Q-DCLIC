@@ -3,12 +3,15 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:immobilier_apk/scr/config/app/export.dart';
 import 'package:immobilier_apk/scr/ui/pages/home_page.dart';
+import 'package:immobilier_apk/scr/ui/pages/signIn/inscription.dart';
 import 'package:my_widgets/my_widgets.dart';
 import 'package:my_widgets/widgets/scaffold.dart';
 
 // ignore: must_be_immutable
 class Connexion extends StatelessWidget {
-  Connexion({super.key, });
+  Connexion({
+    super.key,
+  });
   String telephone = '';
 
   String pass = '';
@@ -19,7 +22,6 @@ class Connexion extends StatelessWidget {
 
   var country = "TG";
 
-
   @override
   Widget build(BuildContext context) {
     var phoneScallerFactor = MediaQuery.of(context).textScaleFactor;
@@ -27,13 +29,11 @@ class Connexion extends StatelessWidget {
     return EScaffold(
       appBar: AppBar(
         automaticallyImplyLeading: false,
-        
- backgroundColor: Colors.transparent,
+        backgroundColor: Colors.transparent,
         surfaceTintColor: Colors.transparent,
         title: const TitleText(
           "Connexion",
         ),
-  
       ),
       body: Obx(
         () => IgnorePointer(
@@ -46,7 +46,7 @@ class Connexion extends StatelessWidget {
                     Hero(
                       tag: "launch_icon",
                       child: Image(
-                          image: AssetImage(Assets.icons("logo.png")),
+                          image: AssetImage(Assets.image("logo.png")),
                           height: 70),
                     ),
                     25.h,
@@ -55,14 +55,13 @@ class Connexion extends StatelessWidget {
                     ),
                     18.h,
                     UnderLineTextField(
-                       phoneScallerFactor: phoneScallerFactor,
-                       
-                       label: "Numero de téléphone",
-                       onChanged: (value) {
-                         telephone = value;
-                       },
-                       number: true,
-                     ),
+                      phoneScallerFactor: phoneScallerFactor,
+                      label: "Numero de téléphone",
+                      onChanged: (value) {
+                        telephone = value;
+                      },
+                      number: true,
+                    ),
                     12.h,
                     Obx(
                       () => UnderLineTextField(
@@ -91,9 +90,12 @@ class Connexion extends StatelessWidget {
                     ),
                     24.h,
                     SimpleButton(
+                    radius: 12,
+                      color: Colors.greenAccent,
                         onTap: () async {
                           FocusManager.instance.primaryFocus?.unfocus();
-                          if (!GFunctions.isPhoneNumber(country: country,numero: telephone)) {
+                          if (!GFunctions.isPhoneNumber(
+                              country: country, numero: telephone)) {
                             Toasts.error(context,
                                 description: "Entrez un numero valide");
                             return;
@@ -121,32 +123,37 @@ class Connexion extends StatelessWidget {
                                 Utilisateur.currentUser.value = utilisateur;
 
                                 isLoading.value = false;
-                                
-                                  Get.off(HomePage());
-                                  Toasts.success(context,
+
+                                Get.off(HomePage());
+                                Toasts.success(context,
                                     description:
                                         "Vous vous êtes connecté avec succès");
-                                       Utilisateur.refreshToken();
+                                Utilisateur.refreshToken();
                               } on FirebaseAuthException catch (e) {
                                 if (e.code == "network-request-failed") {
                                   isLoading.value = false;
 
-                                  Custom.showDialog(const WarningWidget(
-                                    message:
-                                        'Echec de connexion.\nVeuillez verifier votre connexion internet',
-                                  ));
+                                  Custom.showDialog(
+                                      barrierColor: Colors.white24,
+                                      dialog: const WarningWidget(
+                                        message:
+                                            'Echec de connexion.\nVeuillez verifier votre connexion internet',
+                                      ));
                                 } else if (e.code == 'invalid-credential') {
                                   isLoading.value = false;
 
-                                  Custom.showDialog(const WarningWidget(
-                                    message: 'Mot de passe incorrect',
-                                  ));
+                                  Custom.showDialog(
+                                      barrierColor: Colors.white24,
+                                      dialog: const WarningWidget(
+                                        message: 'Mot de passe incorrect',
+                                      ));
                                 }
                               }
                             } else {
                               isLoading.value = false;
                               Custom.showDialog(
-                                const WarningWidget(
+                                barrierColor: Colors.white24,
+                                dialog: const WarningWidget(
                                   message:
                                       'Pas de compte associé à ce numero. Veuillez creer un compte',
                                 ),
@@ -154,10 +161,12 @@ class Connexion extends StatelessWidget {
                             }
                           } on Exception {
                             isLoading.value = false;
-                            Custom.showDialog(const WarningWidget(
-                              message:
-                                  "Une erreur s'est produite. veuillez verifier votre connexion internet",
-                            ));
+                            Custom.showDialog(
+                                barrierColor: Colors.white24,
+                                dialog: const WarningWidget(
+                                  message:
+                                      "Une erreur s'est produite. veuillez verifier votre connexion internet",
+                                ));
                           }
                         },
                         width: 160,
@@ -167,24 +176,23 @@ class Connexion extends StatelessWidget {
                                   height: 25,
                                   width: 25,
                                   child: CircularProgressIndicator(
-                                    color: Colors.white,
+                                    color: Colors.black,
                                     strokeWidth: 1.3,
                                   ))
                               : const EText(
-                                  'Me connecter',
-                                  weight: FontWeight.bold,
-                                  color: Colors.white,
+                                  'Se connecter',
+                                  color: Colors.black,
                                 ),
                         )),
-                    TextButton(
-                      onPressed: () {
-                        forgotPassword(context);
-                      },
-                      child: EText('Mot de passe oublié ?',
-                          color: AppColors.textColor,
-                          weight: FontWeight.w600,
-                          size: 20),
-                    ),
+                    // TextButton(
+                    //   onPressed: () {
+                    //     forgotPassword(context);
+                    //   },
+                    //   child: EText('Mot de passe oublié ?',
+                    //       color: AppColors.color500,
+                    //       weight: FontWeight.w600,
+                    //       size: 20),
+                    // ),
                   ])),
         ),
       ),
@@ -192,7 +200,7 @@ class Connexion extends StatelessWidget {
   }
 
   void forgotPassword(context) async {
-    if (GFunctions.isPhoneNumber(country: country,numero: telephone)) {
+    if (GFunctions.isPhoneNumber(country: country, numero: telephone)) {
       try {
         var q =
             await DB.firestore(Collections.utilistateurs).doc(telephone).get();
@@ -212,10 +220,12 @@ class Connexion extends StatelessWidget {
             verificationFailed: (FirebaseAuthException e) {
               isLoading.value = false;
 
-              Custom.showDialog(const WarningWidget(
-                message:
-                    'Erreur lors de la verification du numero, veuillez réessayer plus tard',
-              ));
+              Custom.showDialog(
+                  barrierColor: Colors.white24,
+                  dialog: const WarningWidget(
+                    message:
+                        'Erreur lors de la verification du numero, veuillez réessayer plus tard',
+                  ));
             },
             codeSent: (String verificationId, int? resendToken) async {
               isLoading.value = false;
@@ -228,18 +238,22 @@ class Connexion extends StatelessWidget {
         } else {
           isLoading.value = false;
 
-          Custom.showDialog(const WarningWidget(
-            message:
-                'Pas de compte associé à ce numero. veuillez creer un compte',
-          ));
+          Custom.showDialog(
+              barrierColor: Colors.white24,
+              dialog: const WarningWidget(
+                message:
+                    'Pas de compte associé à ce numero. veuillez creer un compte',
+              ));
         }
       } on Exception {
         isLoading.value = false;
 
-        Custom.showDialog(const WarningWidget(
-          message:
-              "Une erreur s'est produite. veuillez verifier votre connexion internet",
-        ));
+        Custom.showDialog(
+            barrierColor: Colors.white24,
+            dialog: const WarningWidget(
+              message:
+                  "Une erreur s'est produite. veuillez verifier votre connexion internet",
+            ));
       }
     } else {
       Toasts.error(

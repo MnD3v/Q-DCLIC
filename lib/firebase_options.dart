@@ -23,11 +23,20 @@ class DefaultFirebaseOptions {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        return ios;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for ios - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.macOS:
-        return macos;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for macos - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.windows:
-        return windows;
+        throw UnsupportedError(
+          'DefaultFirebaseOptions have not been configured for windows - '
+          'you can reconfigure this by running the FlutterFire CLI again.',
+        );
       case TargetPlatform.linux:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for linux - '
@@ -41,48 +50,22 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyCIyOEN0kvbFLeF3x8Kv6kADmzR-US99L8',
-    appId: '1:457797490593:web:9c937a0af278cbf64b9de0',
-    messagingSenderId: '457797490593',
-    projectId: 'xboite-d7c80',
-    authDomain: 'xboite-d7c80.firebaseapp.com',
-    storageBucket: 'xboite-d7c80.firebasestorage.app',
-    measurementId: 'G-PED2CM44CQ',
+    apiKey: 'AIzaSyC899-4UZIa_YO97J1Lhz9_dNbANwahPhg',
+    appId: '1:373750335106:web:034a23c2a7c3b13103569b',
+    messagingSenderId: '373750335106',
+    projectId: 'togo-immobilier-bf507',
+    authDomain: 'togo-immobilier-bf507.firebaseapp.com',
+    databaseURL: 'https://togo-immobilier-bf507-default-rtdb.firebaseio.com',
+    storageBucket: 'togo-immobilier-bf507.appspot.com',
+    measurementId: 'G-QQCWLLP7GW',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyA7Ab1IkCU0tpEkclalxx3t2eb76odNuAk',
-    appId: '1:457797490593:android:986e800e326be9004b9de0',
-    messagingSenderId: '457797490593',
-    projectId: 'xboite-d7c80',
-    storageBucket: 'xboite-d7c80.firebasestorage.app',
-  );
-
-  static const FirebaseOptions ios = FirebaseOptions(
-    apiKey: 'AIzaSyDS4u5aX5vlthQcy-krx72eL1MHZPx2GPU',
-    appId: '1:457797490593:ios:03689fb6771d98854b9de0',
-    messagingSenderId: '457797490593',
-    projectId: 'xboite-d7c80',
-    storageBucket: 'xboite-d7c80.firebasestorage.app',
-    iosBundleId: 'com.equilibre.sboite',
-  );
-
-  static const FirebaseOptions macos = FirebaseOptions(
-    apiKey: 'AIzaSyDS4u5aX5vlthQcy-krx72eL1MHZPx2GPU',
-    appId: '1:457797490593:ios:68f54c444b28e0ef4b9de0',
-    messagingSenderId: '457797490593',
-    projectId: 'xboite-d7c80',
-    storageBucket: 'xboite-d7c80.firebasestorage.app',
-    iosBundleId: 'com.example.immobilierApk',
-  );
-
-  static const FirebaseOptions windows = FirebaseOptions(
-    apiKey: 'AIzaSyCIyOEN0kvbFLeF3x8Kv6kADmzR-US99L8',
-    appId: '1:457797490593:web:2ca99ac8bbfc0c5b4b9de0',
-    messagingSenderId: '457797490593',
-    projectId: 'xboite-d7c80',
-    authDomain: 'xboite-d7c80.firebaseapp.com',
-    storageBucket: 'xboite-d7c80.firebasestorage.app',
-    measurementId: 'G-2RHGWCFH68',
+    apiKey: 'AIzaSyAkyYqAW7e_i_-KGM4QFpfCs6vNpKppnWw',
+    appId: '1:373750335106:android:e7c56713af4aec0203569b',
+    messagingSenderId: '373750335106',
+    projectId: 'togo-immobilier-bf507',
+    databaseURL: 'https://togo-immobilier-bf507-default-rtdb.firebaseio.com',
+    storageBucket: 'togo-immobilier-bf507.appspot.com',
   );
 }

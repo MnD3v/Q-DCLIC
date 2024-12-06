@@ -133,6 +133,7 @@ class LoadingPage extends StatelessWidget {
       Get.off(UpdatePage());
       return;
     }
+    
 
     var sharp = await SharedPreferences.getInstance();
     var firstOpen = sharp.getBool('firstOpen');
