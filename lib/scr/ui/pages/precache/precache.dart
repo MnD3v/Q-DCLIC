@@ -1,5 +1,6 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 
+import 'package:flutter/foundation.dart';
 import 'package:immobilier_apk/scr/config/app/export.dart';
 import 'package:immobilier_apk/scr/ui/pages/home_page.dart';
 import 'package:immobilier_apk/scr/ui/pages/signIn/connexion.dart';
@@ -145,7 +146,11 @@ class LoadingPage extends StatelessWidget {
       } else {
         await Utilisateur.getUser(user.phoneNumber!.substring(4));
       }
+      
+      if(!kIsWeb){
       await Utilisateur.refreshToken();
+
+      }
       waitAfter(999, () {
         Get.off(
           HomePage(),

@@ -1,1 +1,36 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"togo-immobilier-bf507","appId":"1:373750335106:android:e7c56713af4aec0203569b","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"togo-immobilier-bf507","configurations":{"android":"1:373750335106:android:e7c56713af4aec0203569b","web":"1:373750335106:web:034a23c2a7c3b13103569b"}}}}}}
+{
+  "flutter": {
+    "platforms": {
+      "android": {
+        "default": {
+          "projectId": "togo-immobilier-bf507",
+          "appId": "1:373750335106:android:e7c56713af4aec0203569b",
+          "fileOutput": "android/app/google-services.json"
+        }
+      },
+      "dart": {
+        "lib/firebase_options.dart": {
+          "projectId": "togo-immobilier-bf507",
+          "configurations": {
+            "android": "1:373750335106:android:e7c56713af4aec0203569b",
+            "web": "1:373750335106:web:034a23c2a7c3b13103569b"
+          }
+        }
+      }
+    }
+  },
+  "hosting": {
+    "public": "build/web",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**"
+    ],
+    "rewrites": [
+      {
+        "source": "**",
+        "destination": "/index.html"
+      }
+    ]
+  }
+}

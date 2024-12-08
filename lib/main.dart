@@ -22,7 +22,6 @@ Map<int, Map<String, String>> id_datas = {};
 
 int? currentId;
 
-var messaging = FirebaseMessaging.instance;
 
 var firestoreDb = FirebaseFirestore.instance;
 
@@ -47,6 +46,7 @@ void main() async {
     }
     // verifyPaiements();
   }
+  await requestNotificationPermission();
 
   runApp(GetMaterialApp(
     debugShowCheckedModeBanner: false,
@@ -89,4 +89,27 @@ Future<String?> getPaygateApiKey() async {
 Future<Update> getUpdateVersion() async {
   var q = await DB.firestore(Collections.keys).doc('update').get();
   return Update.fromMap(q.data() ?? update.toMap());
+}
+
+Future<void> requestNotificationPermission() async {
+  FirebaseMessaging messaging = FirebaseMessaging.instance;
+
+  // Demander la permission
+  NotificationSettings settings = await messaging.requestPermission(
+    alert: true,
+    announcement: false,
+    badge: true,
+    carPlay: false,
+    criticalAlert: false,
+    provisional: false,
+    sound: true,
+  );
+
+  if (settings.authorizationStatus == AuthorizationStatus.denied) {
+    print('Permission refusée par l\'utilisateur.');
+  } else if (settings.authorizationStatus == AuthorizationStatus.notDetermined) {
+    print('Permission non encore déterminée.');
+  } else {
+    print('Permission accordée : ${settings.authorizationStatus}');
+  }
 }
