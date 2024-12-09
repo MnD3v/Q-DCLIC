@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:immobilier_apk/scr/config/app/export.dart';
-import 'package:immobilier_apk/scr/ui/pages/home_page.dart';
+import 'package:immobilier_apk/scr/ui/pages/home/home_page.dart';
 import 'package:immobilier_apk/scr/ui/pages/signIn/inscription.dart';
 import 'package:my_widgets/my_widgets.dart';
 import 'package:my_widgets/widgets/scaffold.dart';

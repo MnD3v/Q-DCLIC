@@ -1,5 +1,5 @@
 import 'package:immobilier_apk/scr/config/app/export.dart';
-import 'package:immobilier_apk/scr/ui/pages/compte/view_infos.dart';
+import 'package:immobilier_apk/scr/ui/pages/home/compte/view_infos.dart';
 import 'package:immobilier_apk/scr/ui/pages/signIn/connexion.dart';
 import 'package:url_launcher/url_launcher.dart';
 

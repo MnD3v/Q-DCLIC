@@ -1,6 +1,6 @@
 
 import 'package:immobilier_apk/scr/config/app/export.dart';
-import 'package:immobilier_apk/scr/ui/pages/home_page.dart';
+import 'package:immobilier_apk/scr/ui/pages/home/home_page.dart';
 
 class UpdatePage extends StatelessWidget {
   const UpdatePage({super.key});

@@ -2,7 +2,7 @@
 
 import 'package:flutter/foundation.dart';
 import 'package:immobilier_apk/scr/config/app/export.dart';
-import 'package:immobilier_apk/scr/ui/pages/home_page.dart';
+import 'package:immobilier_apk/scr/ui/pages/home/home_page.dart';
 import 'package:immobilier_apk/scr/ui/pages/signIn/connexion.dart';
 import 'package:immobilier_apk/scr/ui/pages/update/update_page.dart';
 

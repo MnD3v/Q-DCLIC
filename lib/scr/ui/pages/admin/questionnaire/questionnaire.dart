@@ -2,7 +2,8 @@ import 'package:flutter/cupertino.dart';
 import 'package:immobilier_apk/scr/config/app/export.dart';
 import 'package:immobilier_apk/scr/data/models/question.dart';
 import 'package:immobilier_apk/scr/data/models/questionnaire.dart';
-import 'package:immobilier_apk/scr/ui/pages/questionnaire/add_question.dart';
+import 'package:immobilier_apk/scr/data/repository/const.dart';
+import 'package:immobilier_apk/scr/ui/pages/admin/questionnaire/add_question.dart';
 import 'package:immobilier_apk/scr/ui/widgets/question_card.dart';
 
 class CreateQuestionnaire extends StatelessWidget {
@@ -40,8 +41,10 @@ class CreateQuestionnaire extends StatelessWidget {
               Column(
                   children: questions.value.map((element) {
                 var index = questions.indexOf(element);
-                var initalResponses =
-                    questions.map((element) => element.qcm ? [] : "").toList();
+                var initalResponses = questions
+                    .map(
+                        (element) => element.type == QuestionType.qcm ? [] : "")
+                    .toList();
                 return QuestionCard(
                   dejaRepondu: false.obs,
                   element: element,
@@ -50,7 +53,11 @@ class CreateQuestionnaire extends StatelessWidget {
                   qcmResponse: RxList(),
                   qcuResponse: RxString(""),
                   questionnaire: Questionnaire(
-                      title: "title", maked: {}, questions: questions),
+                      id: "",
+                      date: DateTime.now().toString(),
+                      title: "title",
+                      maked: {},
+                      questions: questions),
                 );
               }).toList()),
             ],
@@ -87,7 +94,7 @@ class CreateQuestionnaire extends StatelessWidget {
         padding: const EdgeInsets.all(8.0),
         child: SimpleButton(
           radius: 3,
-          onTap: () {
+          onTap: () async {
             if (titre.isEmpty) {
               Fluttertoast.showToast(
                   msg: "Veuillez saisir le titre du questionnaire");
@@ -98,8 +105,30 @@ class CreateQuestionnaire extends StatelessWidget {
                   msg: "Veuillez ajouter au moin une question");
               return;
             }
+
+            var q = await DB.firestore(Collections.utils).doc("lastID").get();
+            var lastIDKey = q.data()!["lastID"];
+            print(lastIDKey);
+            var id = ids[lastIDKey];
+
             var questionnaire = Questionnaire(
-                title: titre, maked: {}, questions: questions.value);
+                id: id!,
+                date: DateTime.now().toString(),
+                title: titre,
+                maked: {},
+                questions: questions.value);
+
+            DB
+                .firestore(Collections.classes)
+                .doc("Classe 1")
+                .collection(Collections.questionnaires)
+                .doc(id!)
+                .set(questionnaire.toMap());
+            lastIDKey += 1;
+            await DB
+                .firestore(Collections.utils)
+                .doc("lastID")
+                .set({"lastID": lastIDKey});
           },
           child: EText(
             "Enregistrer",

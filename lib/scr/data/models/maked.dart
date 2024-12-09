@@ -5,11 +5,13 @@ import 'package:flutter/foundation.dart';
 
 class Maked {
   String nom;
+  String date;
   String prenom;
   List<dynamic> response;
   double pointsGagne;
   Maked({
     required this.nom,
+    required this.date,
     required this.prenom,
     required this.response,
     required this.pointsGagne,
@@ -17,12 +19,14 @@ class Maked {
 
   Maked copyWith({
     String? nom,
+    String? date,
     String? prenom,
     List<dynamic>? response,
     double? pointsGagne,
   }) {
     return Maked(
       nom: nom ?? this.nom,
+      date: date ?? this.date,
       prenom: prenom ?? this.prenom,
       response: response ?? this.response,
       pointsGagne: pointsGagne ?? this.pointsGagne,
@@ -32,6 +36,7 @@ class Maked {
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
       'nom': nom,
+      'date': date,
       'prenom': prenom,
       'response': jsonEncode(response),
       'pointsGagne': pointsGagne,
@@ -41,8 +46,9 @@ class Maked {
   factory Maked.fromMap(Map<String, dynamic> map) {
     return Maked(
       nom: map['nom'] as String,
+      date: map['date'] as String,
       prenom: map['prenom'] as String,
-      response: List<dynamic>.from((jsonDecode(map['response']) as List<dynamic>)),
+      response: jsonDecode(map['response']),
       pointsGagne: map['pointsGagne'] as double,
     );
   }
@@ -53,7 +59,7 @@ class Maked {
 
   @override
   String toString() {
-    return 'Maked(nom: $nom, prenom: $prenom, response: $response, pointsGagne: $pointsGagne)';
+    return 'Maked(nom: $nom, date: $date, prenom: $prenom, response: $response, pointsGagne: $pointsGagne)';
   }
 
 
@@ -61,8 +67,21 @@ class Maked {
   @override
   int get hashCode {
     return nom.hashCode ^
+      date.hashCode ^
       prenom.hashCode ^
       response.hashCode ^
       pointsGagne.hashCode;
+  }
+
+  @override
+  bool operator ==(covariant Maked other) {
+    if (identical(this, other)) return true;
+  
+    return 
+      other.nom == nom &&
+      other.date == date &&
+      other.prenom == prenom &&
+      listEquals(other.response, response) &&
+      other.pointsGagne == pointsGagne;
   }
 }

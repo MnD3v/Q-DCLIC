@@ -33,14 +33,13 @@ class MBottomNavigationBar extends StatelessWidget {
               },
               currentPage: currentPage.value,
               page: 0,
-              label: 'Accueil',
-              selectedIcon: 'home_s.png',
-              unselectedIcon: 'home_us.png',
+              label: 'Accuiel',
+              selectedIcon: 'questionnaires.png',
+              unselectedIcon: 'questionnaires.png',
             ),
            
            
-          
-            BottomNavigationButton(
+          BottomNavigationButton(
               function: () {
                 pageController.animateToPage(1,
                     duration: 333.milliseconds, curve: Curves.decelerate);
@@ -48,6 +47,18 @@ class MBottomNavigationBar extends StatelessWidget {
               },
               currentPage: currentPage.value,
               page: 1,
+              label: 'Ardoise',
+              selectedIcon: 'ardoise.png',
+              unselectedIcon: 'ardoise.png',
+            ),
+            BottomNavigationButton(
+              function: () {
+                pageController.animateToPage(2,
+                    duration: 333.milliseconds, curve: Curves.decelerate);
+                currentPage.value = 2;
+              },
+              currentPage: currentPage.value,
+              page: 2,
               label: 'Compte',
               selectedIcon: 'account_s.png',
               unselectedIcon: 'account_us.png',
@@ -95,6 +106,7 @@ class BottomNavigationButton extends StatelessWidget {
                   : AppColors.textColor,
               height: 18.0,
             ),
+            3.h,
             EText(label,
                 color: currentPage == page
                     ? AppColors.color500

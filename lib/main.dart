@@ -46,7 +46,7 @@ void main() async {
     }
     // verifyPaiements();
   }
-  await requestNotificationPermission();
+  // await requestNotificationPermission();
 
   runApp(GetMaterialApp(
     debugShowCheckedModeBanner: false,

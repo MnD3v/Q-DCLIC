@@ -1,46 +1,56 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
+
 import 'package:immobilier_apk/scr/config/app/export.dart';
 class Question {
+  String? image;
   String question;
   Map<String, String> choix;
   dynamic reponse;
-  bool qcm;
+  String type;
   Question({
+    this.image,
     required this.question,
     required this.choix,
     required this.reponse,
-    required this.qcm,
+    required this.type,
   });
 
   Question copyWith({
+    String? image,
     String? question,
     Map<String, String>? choix,
     dynamic? reponse,
-    bool? qcm,
+    String? type,
   }) {
     return Question(
+      image: image ?? this.image,
       question: question ?? this.question,
       choix: choix ?? this.choix,
       reponse: reponse ?? this.reponse,
-      qcm: qcm ?? this.qcm,
+      type: type ?? this.type,
     );
   }
 
   Map<String, dynamic> toMap() {
     return <String, dynamic>{
+      'image': image,
       'question': question,
       'choix': choix,
       'reponse': reponse,
-      'qcm': qcm,
+      'type': type,
     };
   }
 
   factory Question.fromMap(Map<String, dynamic> map) {
     return Question(
+      image: map['image'] != null ? map['image'] as String : null,
       question: map['question'] as String,
       choix: Map<String, String>.from((map['choix'])),
       reponse: map['reponse'] as dynamic,
-      qcm: map['qcm'] as bool,
+      type: map['type'] as String,
     );
   }
 
@@ -51,21 +61,27 @@ class Question {
 
   @override
   String toString() {
-    return 'Question(question: $question, choix: $choix, reponse: $reponse, qcm: $qcm)';
+    return 'Question(image: $image, question: $question, choix: $choix, reponse: $reponse, type: $type)';
   }
 
   @override
   bool operator ==(covariant Question other) {
     if (identical(this, other)) return true;
-
-    return other.question == question &&
-        mapEquals(other.choix, choix) &&
-        other.reponse == reponse &&
-        other.qcm == qcm;
+  
+    return 
+      other.image == image &&
+      other.question == question &&
+      mapEquals(other.choix, choix) &&
+      other.reponse == reponse &&
+      other.type == type;
   }
 
   @override
   int get hashCode {
-    return question.hashCode ^ choix.hashCode ^ reponse.hashCode ^ qcm.hashCode;
+    return image.hashCode ^
+      question.hashCode ^
+      choix.hashCode ^
+      reponse.hashCode ^
+      type.hashCode;
   }
 }
