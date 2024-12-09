@@ -186,7 +186,7 @@ packages:
     source: hosted
     version: "0.0.3"
   easy_image_viewer:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: easy_image_viewer
       sha256: fb6cb123c3605552cc91150dcdb50ca977001dcddfb71d20caa0c5edc9a80947

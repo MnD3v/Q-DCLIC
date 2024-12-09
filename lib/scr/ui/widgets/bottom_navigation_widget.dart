@@ -1,5 +1,5 @@
 import 'package:immobilier_apk/scr/config/app/export.dart';
-
+import 'package:immobilier_apk/scr/ui/pages/home/home_page.dart';
 
 class MBottomNavigationBar extends StatelessWidget {
   const MBottomNavigationBar({
@@ -11,7 +11,7 @@ class MBottomNavigationBar extends StatelessWidget {
   final RxBool ready;
   final PageController pageController;
   final RxInt currentPage;
-  
+
   @override
   Widget build(BuildContext context) {
     return Obx(
@@ -21,11 +21,13 @@ class MBottomNavigationBar extends StatelessWidget {
         decoration: BoxDecoration(
             color: AppColors.background,
             border: const Border(
-                top: BorderSide(color: Color.fromARGB(31, 255, 255, 255), width: .6))),
+                top: BorderSide(
+                    color: Color.fromARGB(31, 255, 255, 255), width: .6))),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceAround,
           children: [
             BottomNavigationButton(
+              news: HomePage.newQuestionnaires.value,
               function: () {
                 pageController.animateToPage(0,
                     duration: 333.milliseconds, curve: Curves.decelerate);
@@ -37,9 +39,8 @@ class MBottomNavigationBar extends StatelessWidget {
               selectedIcon: 'questionnaires.png',
               unselectedIcon: 'questionnaires.png',
             ),
-           
-           
-          BottomNavigationButton(
+            BottomNavigationButton(
+              news: HomePage.newQuestionsArdoise.value,
               function: () {
                 pageController.animateToPage(1,
                     duration: 333.milliseconds, curve: Curves.decelerate);
@@ -52,6 +53,7 @@ class MBottomNavigationBar extends StatelessWidget {
               unselectedIcon: 'ardoise.png',
             ),
             BottomNavigationButton(
+              news: 0,
               function: () {
                 pageController.animateToPage(2,
                     duration: 333.milliseconds, curve: Curves.decelerate);
@@ -71,19 +73,21 @@ class MBottomNavigationBar extends StatelessWidget {
 }
 
 class BottomNavigationButton extends StatelessWidget {
-  const BottomNavigationButton({
-    Key? key,
-    required this.function,
-    required this.currentPage,
-    required this.page,
-    required this.label,
-    required this.selectedIcon,
-    required this.unselectedIcon,
-  }) : super(key: key);
+  const BottomNavigationButton(
+      {Key? key,
+      required this.function,
+      required this.currentPage,
+      required this.page,
+      required this.label,
+      required this.selectedIcon,
+      required this.unselectedIcon,
+      required this.news})
+      : super(key: key);
   final VoidCallback function;
   final int currentPage;
   final int page;
   final String label;
+  final news;
   final selectedIcon;
   final unselectedIcon;
   @override
@@ -98,13 +102,35 @@ class BottomNavigationButton extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Image(
-              image: AssetImage(Assets.icons(
-                  currentPage == page ? selectedIcon : unselectedIcon)),
-              color: currentPage == page
-                  ? AppColors.color500
-                  : AppColors.textColor,
-              height: 18.0,
+            Stack(
+              alignment: Alignment.topRight,
+              children: [
+                Padding(
+                  padding:
+                      const EdgeInsets.only(top: 12.0, left: 12, right: 12),
+                  child: Image(
+                    image: AssetImage(Assets.icons(
+                        currentPage == page ? selectedIcon : unselectedIcon)),
+                    color: currentPage == page
+                        ? AppColors.color500
+                        : AppColors.textColor,
+                    height: 18.0,
+                  ),
+                ),
+                news <= 0
+                    ? 0.h
+                    : Container(
+                        height: 20,
+                        width: 20,
+                        alignment: Alignment.center,
+                        decoration: BoxDecoration(
+                            color: Colors.amberAccent, shape: BoxShape.circle),
+                        child: EText(
+                         news.toString(),
+                          color: Colors.black,
+                        ),
+                      )
+              ],
             ),
             3.h,
             EText(label,

@@ -208,7 +208,7 @@ class AddArdoiseQuestion extends StatelessWidget {
                     maked: {},
                     question: title,
                     choix: choix,
-                    reponse: qcuResponse,
+                    reponse: qcuResponse.value,
                     type: QuestionType.qcu);
               } else if (type == QuestionType.qcm) {
                 if (qcmResponse.value.isEmpty) {
@@ -221,7 +221,7 @@ class AddArdoiseQuestion extends StatelessWidget {
                     maked: {},
                     question: title,
                     choix: choix,
-                    reponse: qcmResponse,
+                    reponse: qcmResponse.value,
                     type: QuestionType.qcm);
               } else {
                 if (qctResponse.isEmpty) {
@@ -250,9 +250,11 @@ class AddArdoiseQuestion extends StatelessWidget {
 
               Get.back();
             },
-            child: EText(
-              "Enregistrer",
-              color: Colors.black,
+            child: Obx(()=>
+               _loading.value? ECircularProgressIndicator(height: 20, color: Colors.black,): EText(
+                "Enregistrer",
+                color: Colors.black,
+              ),
             )),
       ),
     );

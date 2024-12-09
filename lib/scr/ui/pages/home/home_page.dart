@@ -1,6 +1,7 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 // import 'package:dotted_line/dotted_line.dart';
 
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:dotted_dashed_line/dotted_dashed_line.dart';
@@ -8,6 +9,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:immobilier_apk/scr/config/app/export.dart';
+import 'package:immobilier_apk/scr/data/models/ardoise_question.dart';
 import 'package:immobilier_apk/scr/data/models/maked.dart';
 import 'package:immobilier_apk/scr/data/models/question.dart';
 import 'package:immobilier_apk/scr/data/models/questionnaire.dart';
@@ -22,6 +24,8 @@ import 'package:immobilier_apk/scr/ui/widgets/bottom_navigation_widget.dart';
 import 'package:immobilier_apk/scr/ui/widgets/question_card.dart';
 
 class HomePage extends StatefulWidget {
+  static var newQuestionnaires = 0.obs;
+  static var newQuestionsArdoise = 0.obs;
   HomePage({super.key});
 
   @override
@@ -39,7 +43,17 @@ class _HomePageState extends State<HomePage> {
 
   PageController pageController = PageController();
 
+  var currentPageIndex = 0.obs;
+
   var loading = false.obs;
+
+  @override
+  void initState() {
+    streamQuestionsAndUpdate();
+    streamQuestionnairesAndUpdate();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return EScaffold(
@@ -50,8 +64,10 @@ class _HomePageState extends State<HomePage> {
           crossAxisAlignment: CrossAxisAlignment.end,
           children: [
             GestureDetector(
+              onDoubleTap: () {
+                Get.dialog(AddArdoiseQuestion());
+              },
               onTap: () {
-
                 Get.to(CreateQuestionnaire());
               },
               child: Image(
@@ -94,18 +110,83 @@ class _HomePageState extends State<HomePage> {
           )
         ],
       ),
-      color: Color(0xFF1b263b),
+      color: Color.fromARGB(255, 24, 49, 77),
       body: PageView(
         controller: pageController,
+        onPageChanged: (index) {
+          currentPageIndex.value = index;
+        },
         children: [ViewAllQuestionnaires(), Ardoise(), Compte()],
       ),
       bottomNavigationBar: MBottomNavigationBar(
-          ready: true.obs, pageController: pageController, currentPage: 0.obs),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Colors.transparent,
-        onPressed: () {
-        Get.dialog(AddArdoiseQuestion());
-      }),
+          ready: true.obs,
+          pageController: pageController,
+          currentPage: currentPageIndex),
+      // floatingActionButton: FloatingActionButton(
+      //   backgroundColor: Colors.transparent,
+      //   onPressed: () {
+      //   Get.dialog(AddArdoiseQuestion());
+      // }),
     );
   }
+}
+
+StreamSubscription streamQuestionsAndUpdate() {
+  // Téléphone de l'utilisateur actuel
+  var telephone = Utilisateur.currentUser.value!.telephone.numero;
+
+  // Souscription au flux de données Firestore
+  return DB
+      .firestore(Collections.classes)
+      .doc("Classe 1")
+      .collection(Collections.ardoise)
+      .orderBy("date", descending: true)
+      .snapshots()
+      .listen((snapshot) {
+    // Liste des questions à mettre à jour
+    List<ArdoiseQuestion> questions = [];
+
+    // Traitement des documents reçus
+    for (var element in snapshot.docs) {
+      questions.add(ArdoiseQuestion.fromMap(element.data()));
+    }
+
+    // Mise à jour de `newQuestionsArdoise` avec le nombre de nouvelles questions
+    HomePage.newQuestionsArdoise.value = questions
+        .where((element) => !element.maked.containsKey(telephone))
+        .length;
+  }, onError: (error) {
+    // Gestion des erreurs éventuelles
+    print('Erreur lors du streaming : $error');
+  });
+}
+
+StreamSubscription streamQuestionnairesAndUpdate() {
+  // Téléphone de l'utilisateur actuel
+  var telephone = Utilisateur.currentUser.value!.telephone.numero;
+
+  // Souscription au flux de données Firestore
+  return DB
+      .firestore(Collections.classes)
+      .doc("Classe 1")
+      .collection(Collections.questionnaires)
+      .orderBy("date", descending: true)
+      .snapshots()
+      .listen((snapshot) {
+    // Liste des questionnaires à mettre à jour
+    List<Questionnaire> questionnaires = [];
+
+    // Traitement des documents reçus
+    for (var element in snapshot.docs) {
+      questionnaires.add(Questionnaire.fromMap(element.data()));
+    }
+
+    // Mise à jour de `newQuestionnaires` avec le nombre de nouveaux questionnaires
+    HomePage.newQuestionnaires.value = questionnaires
+        .where((element) => !element.maked.containsKey(telephone))
+        .length;
+  }, onError: (error) {
+    // Gestion des erreurs éventuelles
+    print('Erreur lors du streaming : $error');
+  });
 }

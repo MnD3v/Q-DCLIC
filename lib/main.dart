@@ -49,9 +49,12 @@ void main() async {
   // await requestNotificationPermission();
 
   runApp(GetMaterialApp(
+    defaultTransition: Transition.rightToLeftWithFade,
+    transitionDuration: 444.milliseconds,
     debugShowCheckedModeBanner: false,
     theme: AppTheme.theme,
     home: LoadingPage(),
+  
   ));
 
 }

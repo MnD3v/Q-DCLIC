@@ -17,13 +17,19 @@ import 'package:immobilier_apk/scr/ui/pages/admin/questionnaire/questionnaire.da
 import 'package:immobilier_apk/scr/ui/widgets/bottom_navigation_widget.dart';
 import 'package:immobilier_apk/scr/ui/widgets/question_card.dart';
 
-class ViewQuestionnaire extends StatelessWidget {
+class ViewQuestionnaire extends StatefulWidget {
   Questionnaire questionnaire;
-  ViewQuestionnaire({super.key, required this.questionnaire});
+  RxBool dejaRepondu;
 
+  ViewQuestionnaire(
+      {super.key, required this.questionnaire, required this.dejaRepondu});
+
+  @override
+  State<ViewQuestionnaire> createState() => _ViewQuestionnaireState();
+}
+
+class _ViewQuestionnaireState extends State<ViewQuestionnaire> {
   var initalResponses = [];
-
-  var dejaRepondu = false.obs;
 
   var totalPoints = Utilisateur.currentUser.value!.points.obs;
 
@@ -31,21 +37,30 @@ class ViewQuestionnaire extends StatelessWidget {
 
   var loading = false.obs;
 
+  var telephone = Utilisateur.currentUser.value!.telephone.numero;
+
+  @override
+  void initState() {
+    waitAfter(10, (){
+    widget.dejaRepondu.value =
+        widget.questionnaire!.maked.keys.contains(telephone);
+    });
+
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    var telephone = Utilisateur.currentUser.value!.telephone.numero;
-    dejaRepondu.value = questionnaire!.maked.keys.contains(telephone);
-
-    if (!questionnaire!.maked.containsKey(telephone)) {
+    if (!widget.questionnaire!.maked.containsKey(telephone)) {
       _initialiseResponses();
     } else {
-      initalResponses = questionnaire!.maked[telephone]!.response;
+      initalResponses = widget.questionnaire!.maked[telephone]!.response;
     }
     return EScaffold(
       appBar: AppBar(
         backgroundColor: Color(0xff0d1b2a),
         surfaceTintColor: Color(0xff0d1b2a),
-        title: EText("Questionnaire"),
+        title: EText("Questionnaire", size: 22,),
         actions: [
           Padding(
             padding: const EdgeInsets.all(8.0),
@@ -53,7 +68,7 @@ class ViewQuestionnaire extends StatelessWidget {
               children: [
                 Image(
                   image: AssetImage(Assets.icons("diamant.png")),
-                  height: 26,
+                  height: 20,
                 ),
                 3.w,
                 Obx(
@@ -61,7 +76,7 @@ class ViewQuestionnaire extends StatelessWidget {
                     totalPoints.value.toStringAsFixed(2),
                     weight: FontWeight.bold,
                     color: Colors.greenAccent,
-                    size: 39,
+                    size: 33,
                     font: "SevenSegment",
                   ),
                 ),
@@ -79,7 +94,7 @@ class ViewQuestionnaire extends StatelessWidget {
           )
         ],
       ),
-      color: Color(0xFF1b263b),
+      color: Color.fromARGB(255, 24, 49, 77),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 9.0),
         child: EColumn(children: [
@@ -88,34 +103,35 @@ class ViewQuestionnaire extends StatelessWidget {
             width: Get.width,
             alignment: Alignment.center,
             decoration: BoxDecoration(
-                color: Colors.white10, borderRadius: BorderRadius.circular(12)),
+              border: Border.all(color: Colors.white24),
+               borderRadius: BorderRadius.circular(12)),
             child: Padding(
               padding: const EdgeInsets.all(8.0),
               child: EText(
-                questionnaire!.title.toUpperCase(),
+                widget.questionnaire!.title.toUpperCase(),
                 align: TextAlign.center,
-                size: 24,
+                size: 22,
                 color: const Color.fromARGB(255, 255, 255, 255),
               ),
             ),
           ),
           12.h,
-          ...questionnaire!.questions.map((element) {
+          ...widget.questionnaire!.questions.map((element) {
             var qcmResponse = RxList<String>([]);
             var qcuResponse = "".obs;
-            var index = questionnaire!.questions.indexOf(element);
+            var index = widget.questionnaire!.questions.indexOf(element);
             return QuestionCard(
                 element: element,
                 index: index,
-                dejaRepondu: dejaRepondu,
+                dejaRepondu: widget.dejaRepondu,
                 qcuResponse: qcuResponse,
-                questionnaire: questionnaire,
+                questionnaire: widget.questionnaire,
                 initalResponses: initalResponses,
                 qcmResponse: qcmResponse);
           }).toList(),
           12.h,
           Obx(
-            () => dejaRepondu.value
+            () => widget.dejaRepondu.value
                 ? 0.h
                 : SimpleButton(
                     radius: 12,
@@ -127,9 +143,10 @@ class ViewQuestionnaire extends StatelessWidget {
                       print(initalResponses);
                       //parcourir les question
                       for (var i = 0;
-                          i < questionnaire!.questions.length;
+                          i < widget.questionnaire!.questions.length;
                           i++) {
-                        var currentQuestion = questionnaire!.questions[i];
+                        var currentQuestion =
+                            widget.questionnaire!.questions[i];
                         //QCM
                         if (currentQuestion.type == QuestionType.qcm) {
                           for (var element in initalResponses[i] as List) {
@@ -162,27 +179,6 @@ class ViewQuestionnaire extends StatelessWidget {
           24.h
         ]),
       ),
-    
-      floatingActionButton: GestureDetector(
-        onTap: () {
-          var _id = "";
-          // showInputDialogForId(_id);
-        },
-        child: Stack(
-          alignment: Alignment.center,
-          children: [
-            Image(
-              image: AssetImage(Assets.icons("view_questions.png")),
-              height: 50,
-              color: Colors.greenAccent,
-            ),
-            Icon(
-              Icons.question_mark_rounded,
-              color: Colors.black,
-            )
-          ],
-        ),
-      ),
     );
   }
 
@@ -190,7 +186,7 @@ class ViewQuestionnaire extends StatelessWidget {
     var telephone = Utilisateur.currentUser.value!.telephone.numero;
     var user = Utilisateur.currentUser.value!;
     //mis a jour de la reponse de l'utilisateur
-    questionnaire!.maked.putIfAbsent(
+    widget.questionnaire!.maked.putIfAbsent(
         telephone,
         () => Maked(
             date: DateTime.now().toString(),
@@ -204,15 +200,15 @@ class ViewQuestionnaire extends StatelessWidget {
         .firestore(Collections.classes)
         .doc("Classe 1")
         .collection(Collections.questionnaires)
-        .doc(questionnaire.id)
-        .set(questionnaire!.toMap());
+        .doc(widget.questionnaire.id)
+        .set(widget.questionnaire!.toMap());
     Utilisateur.currentUser.value!.points += points;
     totalPoints.value = Utilisateur.currentUser.value!.points;
     await Utilisateur.setUser(Utilisateur.currentUser.value!);
     waitAfter(4000, () {
       loading.value = false;
       showDialogForScrore(points);
-      dejaRepondu.value = true;
+      widget.dejaRepondu.value = true;
     });
   }
 
@@ -229,7 +225,7 @@ class ViewQuestionnaire extends StatelessWidget {
                 children: [
                   12.h,
                   EText(
-                    questionnaire!.title.toUpperCase(),
+                    widget.questionnaire!.title.toUpperCase(),
                     align: TextAlign.center,
                     color: Colors.white,
                     size: 24,
@@ -256,7 +252,8 @@ class ViewQuestionnaire extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.only(bottom: 6.0),
                         child: EText(
-                          "/" + questionnaire!.questions.length.toString(),
+                          "/" +
+                              widget.questionnaire!.questions.length.toString(),
                           color: const Color.fromARGB(255, 255, 255, 255),
                           size: 24,
                         ),
@@ -279,44 +276,8 @@ class ViewQuestionnaire extends StatelessWidget {
   }
 
   // void showInputDialogForId(String _id) {
-  //   Custom.showDialog(
-  //       dialog: Dialog(
-  //         backgroundColor: Colors.black,
-  //         surfaceTintColor: Colors.black,
-  //         child: Padding(
-  //           padding: const EdgeInsets.symmetric(vertical: 18.0, horizontal: 12),
-  //           child: EColumn(children: [
-  //             EText("Entrez l'ID du questionnaire"),
-  //             12.h,
-  //             ETextField(
-  //                 placeholder: "Saisissez l'ID",
-  //                 border: true,
-  //                 color: Colors.black,
-  //                 onChanged: (value) {
-  //                   _id = value;
-  //                 },
-  //                 phoneScallerFactor: phoneScallerFactor),
-  //             12.h,
-  //             SimpleOutlineButton(
-  //               radius: 9,
-  //               color: Colors.greenAccent,
-  //               onTap: () {
-  //                 id = _id;
-  //                 Get.back();
-  //               },
-  //               child: EText(
-  //                 "Continuer",
-  //                 color: Colors.greenAccent,
-  //               ),
-  //             )
-  //           ]),
-  //         ),
-  //       ),
-  //       barrierColor: Colors.white24);
-  // }
-
   _initialiseResponses() {
-    initalResponses = questionnaire!.questions
+    initalResponses = widget.questionnaire!.questions
         .map((element) => element.type == QuestionType.qcm ? [] : "")
         .toList();
   }
