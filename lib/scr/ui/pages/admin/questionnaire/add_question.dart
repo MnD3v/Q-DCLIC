@@ -18,7 +18,6 @@ class AddQuestion extends StatelessWidget {
 
   String title = "";
 
-  var loadingImage = false.obs;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -235,6 +234,7 @@ class AddQuestion extends StatelessWidget {
 
   void showAddPropositionDialog() {
     String proposition = "";
+  var loadingImage = false.obs;
     Get.dialog(Dialog(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -279,17 +279,19 @@ class AddQuestion extends StatelessWidget {
                       Get.back();
                     },
                     
-                  );
+                  ).onError((_, __) {
+                loadingImage.value = false;
+              });;
                 },
                 child: Obx(() => Container(
                   height: 95,
                   width: 95,
-                  decoration: BoxDecoration(color: Colors.amber.withOpacity(.5), borderRadius: BorderRadius.circular(9)),
+                  decoration: BoxDecoration(color: Colors.greenAccent, borderRadius: BorderRadius.circular(18)),
                   child: loadingImage.value
                       ? ECircularProgressIndicator(
                           color: Colors.black,
                         )
-                      : Icon(Icons.image_outlined),
+                      : Icon(Icons.image_outlined, color: Colors.black,),
                 )),
               ),
               9.h,

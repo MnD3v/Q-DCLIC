@@ -67,7 +67,7 @@ class Compte extends StatelessWidget {
                                     size: 22,
                                   ),
                                   EText(
-                                      "${Utilisateur.currentUser.value!.telephone.indicatif} ${Utilisateur.currentUser.value!.telephone.numero}")
+                                      Utilisateur.currentUser.value!.telephone_id)
                                 ],
                               )
                             : const EText(

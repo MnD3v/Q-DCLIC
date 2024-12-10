@@ -96,7 +96,7 @@ class Connexion extends StatelessWidget {
                         onTap: () async {
                           FocusManager.instance.primaryFocus?.unfocus();
                           if (!GFunctions.isPhoneNumber(
-                              country: country, numero: telephone)) {
+                           numero: telephone)) {
                             Toasts.error(context,
                                 description: "Entrez un numero valide");
                             return;
@@ -201,7 +201,7 @@ class Connexion extends StatelessWidget {
   }
 
   void forgotPassword(context) async {
-    if (GFunctions.isPhoneNumber(country: country, numero: telephone)) {
+    if (GFunctions.isPhoneNumber(numero: telephone)) {
       try {
         var q =
             await DB.firestore(Collections.utilistateurs).doc(telephone).get();
@@ -214,7 +214,7 @@ class Connexion extends StatelessWidget {
           var auth = FirebaseAuth.instance;
 
           await auth.verifyPhoneNumber(
-            phoneNumber: '+228${utilisateur.telephone}',
+            phoneNumber: utilisateur.telephone_id,
             verificationCompleted: (PhoneAuthCredential credential) async {
               await auth.signInWithCredential(credential);
             },

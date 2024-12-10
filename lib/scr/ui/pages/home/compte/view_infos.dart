@@ -21,7 +21,7 @@ class ViewInfos extends StatelessWidget {
         EText("Informations personnelles", size: 22, weight: FontWeight.bold,),
 
         EText(utilisateur.nom + " " + utilisateur.prenom) ,
-        EText(utilisateur.telephone.indicatif + " " + utilisateur.telephone.numero),
+        EText( utilisateur.telephone_id),
 
      
       ]),

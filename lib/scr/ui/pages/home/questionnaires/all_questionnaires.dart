@@ -25,7 +25,7 @@ class ViewAllQuestionnaires extends StatelessWidget {
             return ECircularProgressIndicator();
           }
 
-          var telephone = Utilisateur.currentUser.value!.telephone.numero;
+          var telephone = Utilisateur.currentUser.value!.telephone_id;
           questionnaires.clear();
           snapshot.data!.docs.forEach((element) {
             questionnaires.add(Questionnaire.fromMap(element.data()));

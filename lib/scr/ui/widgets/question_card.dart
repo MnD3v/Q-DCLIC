@@ -71,7 +71,7 @@ class QuestionCard extends StatelessWidget {
                           children: [
                             EText(questionnaire!
                                 .maked[Utilisateur
-                                    .currentUser.value!.telephone.numero]!
+                                    .currentUser.value!.telephone_id]!
                                 .response[index]),
                             9.h,
                             EText(

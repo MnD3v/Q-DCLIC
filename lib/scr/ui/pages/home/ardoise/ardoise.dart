@@ -29,7 +29,7 @@ class Ardoise extends StatelessWidget {
             return ECircularProgressIndicator();
           }
 
-          var telephone = Utilisateur.currentUser.value!.telephone.numero;
+          var telephone = Utilisateur.currentUser.value!.telephone_id;
           questions.clear();
           snapshot.data!.docs.forEach((element) {
             questions.add(ArdoiseQuestion.fromMap(element.data()));

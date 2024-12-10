@@ -13,7 +13,7 @@ import 'package:immobilier_apk/scr/ui/widgets/question_card.dart';
 class ViewQuestionnaire extends StatefulWidget {
   Questionnaire questionnaire;
   RxBool dejaRepondu;
-
+  
   ViewQuestionnaire(
       {super.key, required this.questionnaire, required this.dejaRepondu});
 
@@ -30,7 +30,7 @@ class _ViewQuestionnaireState extends State<ViewQuestionnaire> {
 
   var loading = false.obs;
 
-  var telephone = Utilisateur.currentUser.value!.telephone.numero;
+  var telephone = Utilisateur.currentUser.value!.telephone_id;
 
   @override
   void initState() {
@@ -131,15 +131,12 @@ class _ViewQuestionnaireState extends State<ViewQuestionnaire> {
                     color: const Color.fromARGB(255, 0, 114, 59),
                     onTap: () async {
                       loading.value = true;
-
                       var points = 0.0;
-                      print(initalResponses);
-                      //parcourir les question
                       for (var i = 0;
-                          i < widget.questionnaire!.questions.length;
+                          i < widget.questionnaire.questions.length;
                           i++) {
                         var currentQuestion =
-                            widget.questionnaire!.questions[i];
+                            widget.questionnaire.questions[i];
                         //QCM
                         if (currentQuestion.type == QuestionType.qcm) {
                           for (var element in initalResponses[i] as List) {
@@ -176,7 +173,7 @@ class _ViewQuestionnaireState extends State<ViewQuestionnaire> {
   }
 
   Future<void> saveInformations(double points) async {
-    var telephone = Utilisateur.currentUser.value!.telephone.numero;
+    var telephone = Utilisateur.currentUser.value!.telephone_id;
     var user = Utilisateur.currentUser.value!;
     //mis a jour de la reponse de l'utilisateur
     widget.questionnaire!.maked.putIfAbsent(

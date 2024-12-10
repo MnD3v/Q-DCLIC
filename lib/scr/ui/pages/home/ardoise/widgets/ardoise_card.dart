@@ -36,7 +36,7 @@ class ArdoiseQuestionCard extends StatelessWidget {
               blurRadius: 15),
         ],
         color: question.maked
-                .containsKey(Utilisateur.currentUser.value!.telephone.numero)
+                .containsKey(Utilisateur.currentUser.value!.telephone_id)
             ? Color.fromARGB(255, 24, 49, 77)
             : const Color(0xff0d1b2a),
         borderRadius: BorderRadius.circular(9),
@@ -83,7 +83,7 @@ class ArdoiseQuestionCard extends StatelessWidget {
                       children: [
                         EText(question
                             .maked[Utilisateur
-                                .currentUser.value!.telephone.numero]!
+                                .currentUser.value!.telephone_id]!
                             .response[0]
                             .toString()),
                         9.h,
@@ -202,7 +202,7 @@ class ArdoiseQuestionCard extends StatelessWidget {
                           color: Colors.greenAccent,
                           onPressed: () async {
                             var telephone =
-                                Utilisateur.currentUser.value!.telephone.numero;
+                                Utilisateur.currentUser.value!.telephone_id;
                             var user = Utilisateur.currentUser.value!;
 
                             sendLoading.value = true;
@@ -210,12 +210,12 @@ class ArdoiseQuestionCard extends StatelessWidget {
                             waitAfter(3000, () async {
                               dejaRepondu.value = true;
 
-                              String response =
+                              var response =
                                   (question.type == QuestionType.qcu
                                       ? qcuResponse.value
                                       : question.type == QuestionType.qcm
                                           ? qcmResponse.value
-                                          : qctResponse.value) as String;
+                                          : qctResponse.value);
                               question.maked.putIfAbsent(
                                   telephone,
                                   () => Maked(

@@ -79,7 +79,7 @@ class Inscription extends StatelessWidget {
                       phoneScallerFactor: phoneScallerFactor,
                       number: true,
                       onChanged: (value) {
-                        utilisateur.telephone.numero = value;
+                        utilisateur.telephone_id = value;
                       },
                     ),
                     10.h,
@@ -175,8 +175,7 @@ class Inscription extends StatelessWidget {
                           if (IsNullString(utilisateur.nom) ||
                               IsNullString(utilisateur.prenom) ||
                               !GFunctions.isPhoneNumber(
-                                  country: utilisateur.telephone.indicatif,
-                                  numero: utilisateur.telephone.numero) ||
+                                  numero: utilisateur.telephone_id) ||
                               utilisateur.password.length < 6 ||
                               utilisateur.password != repeatPass || utilisateur.classe.isNul) {
                             inscriptionProblemesDialog();
@@ -188,7 +187,7 @@ class Inscription extends StatelessWidget {
                                 await FirebaseAuth.instance
                                     .createUserWithEmailAndPassword(
                                   email:
-                                      "${utilisateur.telephone.numero}@gmail.com",
+                                      "${utilisateur.telephone_id}@gmail.com",
                                   password: utilisateur.password,
                                 );
                                 utilisateur.country = country;
@@ -273,8 +272,8 @@ class Inscription extends StatelessWidget {
                   )
                 : 0.h,
             !GFunctions.isPhoneNumber(
-                    country: utilisateur.telephone.indicatif,
-                    numero: utilisateur.telephone.numero)
+               
+                    numero: utilisateur.telephone_id)
                 ? const WarningElement(
                     label: 'Veuillez saisir un numero valide',
                   )

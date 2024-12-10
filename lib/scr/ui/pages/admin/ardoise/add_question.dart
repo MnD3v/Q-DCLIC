@@ -18,8 +18,6 @@ class AddArdoiseQuestion extends StatelessWidget {
 
   String title = "";
 
-  var loadingImage = false.obs;
-
   var _loading = false.obs;
   @override
   Widget build(BuildContext context) {
@@ -177,7 +175,7 @@ class AddArdoiseQuestion extends StatelessWidget {
         child: SimpleButton(
             radius: 3,
             color: Colors.amber,
-            onTap: () async{
+            onTap: () async {
               var user = Utilisateur.currentUser.value!;
               if (title.isEmpty) {
                 Fluttertoast.showToast(
@@ -241,7 +239,7 @@ class AddArdoiseQuestion extends StatelessWidget {
               }
               // questions.add(question);
               _loading.value = true;
-            await  DB
+              await DB
                   .firestore(Collections.classes)
                   .doc(user.classe)
                   .collection(Collections.ardoise)
@@ -251,11 +249,16 @@ class AddArdoiseQuestion extends StatelessWidget {
 
               Get.back();
             },
-            child: Obx(()=>
-               _loading.value? ECircularProgressIndicator(height: 20, color: Colors.black,): EText(
-                "Enregistrer",
-                color: Colors.black,
-              ),
+            child: Obx(
+              () => _loading.value
+                  ? ECircularProgressIndicator(
+                      height: 20,
+                      color: Colors.black,
+                    )
+                  : EText(
+                      "Enregistrer",
+                      color: Colors.black,
+                    ),
             )),
       ),
     );
@@ -263,6 +266,8 @@ class AddArdoiseQuestion extends StatelessWidget {
 
   void showAddPropositionDialog() {
     String proposition = "";
+    var loadingImage = false.obs;
+
     Get.dialog(Dialog(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
@@ -281,8 +286,8 @@ class AddArdoiseQuestion extends StatelessWidget {
             child: EText("Ou"),
           ),
           GestureDetector(
-            onTap: ()async {
-         await     ImagePicker()
+            onTap: () async {
+              await ImagePicker()
                   .pickImage(
                 source: ImageSource.gallery,
               )
@@ -303,21 +308,21 @@ class AddArdoiseQuestion extends StatelessWidget {
 
                   Get.back();
                 },
-              );
-                  loadingImage.value = false;
-
+              ).onError((_, __) {
+                loadingImage.value = false;
+              });
             },
             child: Obx(() => Container(
                   height: 95,
                   width: 95,
                   decoration: BoxDecoration(
-                      color: Colors.amber.withOpacity(.5),
-                      borderRadius: BorderRadius.circular(9)),
+                      color: Colors.greenAccent,
+                      borderRadius: BorderRadius.circular(18)),
                   child: loadingImage.value
                       ? ECircularProgressIndicator(
                           color: Colors.black,
                         )
-                      : Icon(Icons.image_outlined),
+                      : Icon(Icons.image_outlined, color: Colors.black,),
                 )),
           ),
           9.h,

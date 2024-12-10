@@ -135,7 +135,7 @@ StreamSubscription streamQuestionsAndUpdate() {
               var user = Utilisateur.currentUser.value!;
 
   // Téléphone de l'utilisateur actuel
-  var telephone = Utilisateur.currentUser.value!.telephone.numero;
+  var telephone = Utilisateur.currentUser.value!.telephone_id;
 
   // Souscription au flux de données Firestore
   return DB
@@ -167,7 +167,7 @@ StreamSubscription streamQuestionnairesAndUpdate() {
               var user = Utilisateur.currentUser.value!;
 
   // Téléphone de l'utilisateur actuel
-  var telephone = Utilisateur.currentUser.value!.telephone.numero;
+  var telephone = Utilisateur.currentUser.value!.telephone_id;
 
   // Souscription au flux de données Firestore
   return DB
