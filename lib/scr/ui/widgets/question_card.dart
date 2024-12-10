@@ -1,4 +1,5 @@
 import 'package:dotted_dashed_line/dotted_dashed_line.dart';
+import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:immobilier_apk/scr/config/app/export.dart';
 import 'package:immobilier_apk/scr/data/models/question.dart';
 import 'package:immobilier_apk/scr/data/models/questionnaire.dart';
@@ -72,7 +73,7 @@ class QuestionCard extends StatelessWidget {
                                 .maked[Utilisateur
                                     .currentUser.value!.telephone.numero]!
                                 .response[index]),
-                                9.h,
+                            9.h,
                             EText(
                               element.reponse,
                               color: Colors.greenAccent,
@@ -120,7 +121,7 @@ class QuestionCard extends StatelessWidget {
                                             borderRadius:
                                                 BorderRadius.circular(15),
                                             border: Border.all(
-                                              width: 2,
+                                              
                                               color: dejaRepondu.value &&
                                                       element.reponse == e
                                                   ? Colors.greenAccent
@@ -134,12 +135,22 @@ class QuestionCard extends StatelessWidget {
                                         child: ClipRRect(
                                           borderRadius:
                                               BorderRadius.circular(12),
-                                          child: EFadeInImage(
-                                            height: 90,
-                                            width: 120,
-                                            radius: 12,
-                                            image:
-                                                NetworkImage(element.choix[e]!),
+                                          child: GestureDetector(
+                                            onTap: () {
+                                              showImageViewer(
+                                                  context, NetworkImage(
+                                                  element.choix[e]!),
+                                                  onViewerDismissed: () {
+                                                print("dismissed");
+                                              });
+                                            },
+                                            child: EFadeInImage(
+                                              height: 90,
+                                              width: 120,
+                                              radius: 12,
+                                              image: NetworkImage(
+                                                  element.choix[e]!),
+                                            ),
                                           ),
                                         )),
                                   )
@@ -185,7 +196,7 @@ class QuestionCard extends StatelessWidget {
                                           borderRadius:
                                               BorderRadius.circular(15),
                                           border: Border.all(
-                                              width: 2,
+                                              
                                               color: dejaRepondu.value &&
                                                       element.reponse
                                                           .contains(e)
@@ -197,12 +208,23 @@ class QuestionCard extends StatelessWidget {
                                                       : Colors.white)),
                                       child: ClipRRect(
                                         borderRadius: BorderRadius.circular(12),
-                                        child: EFadeInImage(
-                                          height: 90,
-                                          width: 120,
-                                          radius: 12,
-                                          image:
-                                              NetworkImage(element.choix[e]!),
+                                        child: GestureDetector(
+                                          onTap: (){
+                                             showImageViewer(
+
+                                                  context, NetworkImage(
+                                                  element.choix[e]!),
+                                                  onViewerDismissed: () {
+                                                print("dismissed");
+                                              }, doubleTapZoomable: true, backgroundColor: Colors.black, barrierColor: Colors.black, useSafeArea: true);
+                                          },
+                                          child: EFadeInImage(
+                                            height: 90,
+                                            width: 120,
+                                            radius: 12,
+                                            image:
+                                                NetworkImage(element.choix[e]!),
+                                          ),
                                         ),
                                       )),
                                 )

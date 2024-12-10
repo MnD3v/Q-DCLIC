@@ -1,20 +1,13 @@
 // ignore_for_file: public_member_api_docs, sort_constructors_first
 // import 'package:dotted_line/dotted_line.dart';
 
-import 'dart:convert';
 
-import 'package:dotted_dashed_line/dotted_dashed_line.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:immobilier_apk/scr/config/app/export.dart';
 import 'package:immobilier_apk/scr/data/models/maked.dart';
-import 'package:immobilier_apk/scr/data/models/question.dart';
 import 'package:immobilier_apk/scr/data/models/questionnaire.dart';
-import 'package:immobilier_apk/scr/ui/pages/home/compte/compte_view.dart';
 import 'package:immobilier_apk/scr/ui/pages/admin/questionnaire/add_question.dart';
-import 'package:immobilier_apk/scr/ui/pages/admin/questionnaire/questionnaire.dart';
-import 'package:immobilier_apk/scr/ui/widgets/bottom_navigation_widget.dart';
 import 'package:immobilier_apk/scr/ui/widgets/question_card.dart';
 
 class ViewQuestionnaire extends StatefulWidget {
@@ -198,7 +191,7 @@ class _ViewQuestionnaireState extends State<ViewQuestionnaire> {
 
     await DB
         .firestore(Collections.classes)
-        .doc("Classe 1")
+        .doc(user.classe)
         .collection(Collections.questionnaires)
         .doc(widget.questionnaire.id)
         .set(widget.questionnaire!.toMap());
@@ -214,63 +207,66 @@ class _ViewQuestionnaireState extends State<ViewQuestionnaire> {
 
   void showDialogForScrore(double points) {
     return Custom.showDialog(
-        barrierColor: Colors.white24,
+        barrierColor: Colors.black12,
         dialog: Dialog(
-          backgroundColor: const Color.fromARGB(255, 0, 0, 0),
-          surfaceTintColor: Colors.black,
-          child: Padding(
-            padding: const EdgeInsets.all(12.0),
-            child: EColumn(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  12.h,
-                  EText(
-                    widget.questionnaire!.title.toUpperCase(),
-                    align: TextAlign.center,
-                    color: Colors.white,
-                    size: 24,
-                  ),
-                  Image(
-                    image: AssetImage(Assets.icons("diamant.png")),
-                    height: 60,
-                  ),
-                  EText(
-                    "Votre score",
-                    color: Colors.white,
-                    size: 24,
-                  ),
-                  Row(
-                    crossAxisAlignment: CrossAxisAlignment.end,
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      EText(
-                        points.toStringAsFixed(2),
-                        font: Fonts.sevenSegment,
-                        size: 65,
-                        color: const Color.fromARGB(255, 21, 255, 0),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(bottom: 6.0),
-                        child: EText(
-                          "/" +
-                              widget.questionnaire!.questions.length.toString(),
-                          color: const Color.fromARGB(255, 255, 255, 255),
-                          size: 24,
+          backgroundColor:  Colors.transparent,
+          surfaceTintColor:  Colors.transparent,
+          child: BlurryContainer(
+            decoration: BoxDecoration(color: Colors.black.withOpacity(.7), borderRadius: BorderRadius.circular(12)),
+            child: Padding(
+              padding: const EdgeInsets.all(12.0),
+              child: EColumn(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    12.h,
+                    EText(
+                      widget.questionnaire.title.toUpperCase(),
+                      align: TextAlign.center,
+                      color: Colors.white,
+                      size: 22,
+                    ),
+                    Image(
+                      image: AssetImage(Assets.icons("diamant.png")),
+                      height: 55,
+                    ),
+                    EText(
+                      "Votre score",
+                      color: Colors.white,
+                      size: 24,
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        EText(
+                          points.toStringAsFixed(2),
+                          font: Fonts.sevenSegment,
+                          size: 65,
+                          color: const Color.fromARGB(255, 21, 255, 0),
                         ),
-                      )
-                    ],
-                  ),
-                  SimpleOutlineButton(
-                      radius: 9,
-                      color: Colors.white60,
-                      onTap: () {
-                        Get.back();
-                      },
-                      child: EText(
-                        "Fermer",
-                        color: Colors.white54,
-                      ))
-                ]),
+                        Padding(
+                          padding: const EdgeInsets.only(bottom: 6.0),
+                          child: EText(
+                            "/" +
+                                widget.questionnaire!.questions.length.toString(),
+                            color: const Color.fromARGB(255, 255, 255, 255),
+                            size: 24,
+                          ),
+                        )
+                      ],
+                    ),
+                    SimpleOutlineButton(
+                        radius: 9,
+                        color: Colors.white60,
+                        onTap: () {
+                          Get.back();
+                        },
+                        child: EText(
+                          "Fermer",
+                          color: Colors.white54,
+                        ))
+                  ]),
+            ),
           ),
         ));
   }

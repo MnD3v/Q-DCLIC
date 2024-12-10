@@ -8,7 +8,6 @@ import 'package:immobilier_apk/scr/config/app/export.dart';
 import 'package:immobilier_apk/scr/config/theme/app_theme.dart';
 import 'package:immobilier_apk/scr/ui/pages/precache/precache.dart';
 import 'package:immobilier_apk/scr/ui/pages/update/update_page.dart';
-import 'package:my_widgets/real_state/models/message.dart' as message;
 
 String version = "1.0.1+14";
 

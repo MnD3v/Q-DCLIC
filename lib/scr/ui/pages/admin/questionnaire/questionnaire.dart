@@ -95,6 +95,8 @@ class CreateQuestionnaire extends StatelessWidget {
         child: SimpleButton(
           radius: 3,
           onTap: () async {
+              var user = Utilisateur.currentUser.value!;
+
             if (titre.isEmpty) {
               Fluttertoast.showToast(
                   msg: "Veuillez saisir le titre du questionnaire");
@@ -118,9 +120,9 @@ class CreateQuestionnaire extends StatelessWidget {
                 maked: {},
                 questions: questions.value);
 
-            DB
+            await DB
                 .firestore(Collections.classes)
-                .doc("Classe 1")
+                .doc(user.classe)
                 .collection(Collections.questionnaires)
                 .doc(id!)
                 .set(questionnaire.toMap());

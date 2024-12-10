@@ -132,13 +132,15 @@ class _HomePageState extends State<HomePage> {
 }
 
 StreamSubscription streamQuestionsAndUpdate() {
+              var user = Utilisateur.currentUser.value!;
+
   // Téléphone de l'utilisateur actuel
   var telephone = Utilisateur.currentUser.value!.telephone.numero;
 
   // Souscription au flux de données Firestore
   return DB
       .firestore(Collections.classes)
-      .doc("Classe 1")
+      .doc(user.classe)
       .collection(Collections.ardoise)
       .orderBy("date", descending: true)
       .snapshots()
@@ -162,13 +164,15 @@ StreamSubscription streamQuestionsAndUpdate() {
 }
 
 StreamSubscription streamQuestionnairesAndUpdate() {
+              var user = Utilisateur.currentUser.value!;
+
   // Téléphone de l'utilisateur actuel
   var telephone = Utilisateur.currentUser.value!.telephone.numero;
 
   // Souscription au flux de données Firestore
   return DB
       .firestore(Collections.classes)
-      .doc("Classe 1")
+      .doc(user.classe)
       .collection(Collections.questionnaires)
       .orderBy("date", descending: true)
       .snapshots()

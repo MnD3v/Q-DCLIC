@@ -34,6 +34,7 @@ class Connexion extends StatelessWidget {
         title: const TitleText(
           "Connexion",
         ),
+        actions: [TextButton(onPressed: (){Get.to(Inscription(function: (){}));}, child: EText("Inscription"))],
       ),
       body: Obx(
         () => IgnorePointer(
@@ -91,7 +92,7 @@ class Connexion extends StatelessWidget {
                     24.h,
                     SimpleButton(
                     radius: 12,
-                      color: Colors.greenAccent,
+                      color: const Color.fromARGB(255, 0, 114, 59),
                         onTap: () async {
                           FocusManager.instance.primaryFocus?.unfocus();
                           if (!GFunctions.isPhoneNumber(
@@ -181,7 +182,7 @@ class Connexion extends StatelessWidget {
                                   ))
                               : const EText(
                                   'Se connecter',
-                                  color: Colors.black,
+                                  color: Colors.white,
                                 ),
                         )),
                     // TextButton(

@@ -178,6 +178,7 @@ class AddArdoiseQuestion extends StatelessWidget {
             radius: 3,
             color: Colors.amber,
             onTap: () async{
+              var user = Utilisateur.currentUser.value!;
               if (title.isEmpty) {
                 Fluttertoast.showToast(
                     msg: "Veuillez saisir l'intitulé de la question");
@@ -242,7 +243,7 @@ class AddArdoiseQuestion extends StatelessWidget {
               _loading.value = true;
             await  DB
                   .firestore(Collections.classes)
-                  .doc("Classe 1")
+                  .doc(user.classe)
                   .collection(Collections.ardoise)
                   .doc(question.id)
                   .set(question.toMap());
