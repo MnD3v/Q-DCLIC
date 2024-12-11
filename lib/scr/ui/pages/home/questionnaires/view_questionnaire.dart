@@ -2,6 +2,7 @@
 // import 'package:dotted_line/dotted_line.dart';
 
 
+import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:flutter/material.dart';
 
 import 'package:immobilier_apk/scr/config/app/export.dart';
@@ -47,128 +48,117 @@ class _ViewQuestionnaireState extends State<ViewQuestionnaire> {
     if (!widget.questionnaire!.maked.containsKey(telephone)) {
       _initialiseResponses();
     } else {
-      initalResponses = widget.questionnaire!.maked[telephone]!.response;
+      initalResponses = widget.questionnaire.maked[telephone]!.response;
     }
-    return EScaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xff0d1b2a),
-        surfaceTintColor: Color(0xff0d1b2a),
-        title: EText("Questionnaire", size: 22,),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
-              children: [
-                Image(
-                  image: AssetImage(Assets.icons("diamant.png")),
-                  height: 20,
+    return  LayoutBuilder(builder: (context, constraints) {
+      final width = constraints.maxWidth;
+      final crossAxisCount = width / 400;
+        return EScaffold(
+          appBar: AppBar(
+            backgroundColor: Color(0xff0d1b2a),
+            surfaceTintColor: Color(0xff0d1b2a),
+            title: EText("Questionnaire", size: 22,),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Image(
+                      image: AssetImage(Assets.icons("diamant.png")),
+                      height: 20,
+                    ),
+                    3.w,
+                    Obx(
+                      () => EText(
+                        totalPoints.value.toStringAsFixed(2),
+                        weight: FontWeight.bold,
+                        color: Colors.greenAccent,
+                        size: 33,
+                        font: "SevenSegment",
+                      ),
+                    ),
+                    3.w,
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 4.0),
+                      child: EText(
+                        "pts",
+                        color: Colors.greenAccent,
+                        size: 28,
+                      ),
+                    )
+                  ],
                 ),
-                3.w,
-                Obx(
-                  () => EText(
-                    totalPoints.value.toStringAsFixed(2),
-                    weight: FontWeight.bold,
-                    color: Colors.greenAccent,
-                    size: 33,
-                    font: "SevenSegment",
-                  ),
-                ),
-                3.w,
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 4.0),
-                  child: EText(
-                    "pts",
-                    color: Colors.greenAccent,
-                    size: 28,
-                  ),
-                )
-              ],
-            ),
-          )
-        ],
-      ),
-      color: Color.fromARGB(255, 24, 49, 77),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 9.0),
-        child: EColumn(children: [
-          12.h,
-          Container(
-            width: Get.width,
-            alignment: Alignment.center,
-            decoration: BoxDecoration(
-              border: Border.all(color: Colors.white24),
-               borderRadius: BorderRadius.circular(12)),
-            child: Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: EText(
-                widget.questionnaire!.title.toUpperCase(),
-                align: TextAlign.center,
-                size: 22,
-                color: const Color.fromARGB(255, 255, 255, 255),
-              ),
-            ),
+              )
+            ],
           ),
-          12.h,
-          ...widget.questionnaire!.questions.map((element) {
-            var qcmResponse = RxList<String>([]);
-            var qcuResponse = "".obs;
-            var index = widget.questionnaire!.questions.indexOf(element);
-            return QuestionCard(
-                element: element,
-                index: index,
-                dejaRepondu: widget.dejaRepondu,
-                qcuResponse: qcuResponse,
-                questionnaire: widget.questionnaire,
-                initalResponses: initalResponses,
-                qcmResponse: qcmResponse);
-          }).toList(),
-          12.h,
-          Obx(
-            () => widget.dejaRepondu.value
-                ? 0.h
-                : SimpleButton(
-                    radius: 12,
-                    color: const Color.fromARGB(255, 0, 114, 59),
-                    onTap: () async {
-                      loading.value = true;
-                      var points = 0.0;
-                      for (var i = 0;
-                          i < widget.questionnaire.questions.length;
-                          i++) {
-                        var currentQuestion =
-                            widget.questionnaire.questions[i];
-                        //QCM
-                        if (currentQuestion.type == QuestionType.qcm) {
-                          for (var element in initalResponses[i] as List) {
-                            if (currentQuestion.reponse.contains(element)) {
-                              points +=
-                                  1 / (currentQuestion.reponse as List).length;
-                            } else {
-                              points -=
-                                  1 / (currentQuestion.reponse as List).length;
+          body: Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 9.0),
+            child:         DynamicHeightGridView(
+                    itemCount: widget.questionnaire.questions.length,
+                    crossAxisCount: crossAxisCount.toInt(),
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    builder: (ctx, index) {
+                      var element = widget.questionnaire.questions[index];
+                          var qcmResponse = RxList<String>([]);
+                var qcuResponse = "".obs;
+                return QuestionCard(
+                    element: element,
+                    index: index,
+                    dejaRepondu: widget.dejaRepondu,
+                    qcuResponse: qcuResponse,
+                    questionnaire: widget.questionnaire,
+                    initalResponses: initalResponses,
+                    qcmResponse: qcmResponse);
+                    })
+            
+         ),
+          bottomNavigationBar:    Obx(
+                () => widget.dejaRepondu.value
+                    ? 0.h
+                    : SimpleButton(
+                        radius: 12,
+                        color: const Color.fromARGB(255, 0, 114, 59),
+                        onTap: () async {
+                          loading.value = true;
+                          var points = 0.0;
+                          for (var i = 0;
+                              i < widget.questionnaire.questions.length;
+                              i++) {
+                            var currentQuestion =
+                                widget.questionnaire.questions[i];
+                            //QCM
+                            if (currentQuestion.type == QuestionType.qcm) {
+                              for (var element in initalResponses[i] as List) {
+                                if (currentQuestion.reponse.contains(element)) {
+                                  points +=
+                                      1 / (currentQuestion.reponse as List).length;
+                                } else {
+                                  points -=
+                                      1 / (currentQuestion.reponse as List).length;
+                                }
+                              }
+                            }
+                            //QCU
+                            else if (currentQuestion.type == QuestionType.qcu) {
+                              if (currentQuestion.reponse == initalResponses[i]) {
+                                points += 1;
+                              }
                             }
                           }
-                        }
-                        //QCU
-                        else if (currentQuestion.type == QuestionType.qcu) {
-                          if (currentQuestion.reponse == initalResponses[i]) {
-                            points += 1;
-                          }
-                        }
-                      }
-
-                      await saveInformations(points);
-                    },
-                    child: Obx(() => loading.value
-                        ? ECircularProgressIndicator(
-                            height: 30.0,
-                          )
-                        : EText("Soumettre")),
-                  ),
-          ),
-          24.h
-        ]),
-      ),
+        
+                          await saveInformations(points);
+                        },
+                        child: Obx(() => loading.value
+                            ? ECircularProgressIndicator(
+                                height: 30.0,
+                              )
+                            : EText("Soumettre")),
+                      ),
+              ),
+            
+        );
+      }
     );
   }
 

@@ -56,77 +56,81 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return EScaffold(
-      appBar: AppBar(
-        backgroundColor: Color(0xff0d1b2a),
-        surfaceTintColor: Color(0xff0d1b2a),
-        title: Row(
-          crossAxisAlignment: CrossAxisAlignment.end,
-          children: [
-            GestureDetector(
-              onDoubleTap: () {
-                Get.dialog(AddArdoiseQuestion());
-              },
-              onTap: () {
-                Get.to(CreateQuestionnaire());
-              },
-              child: Image(
-                image: AssetImage(Assets.image("logo.png")),
-                height: 35,
-              ),
-            ),
-          ],
-        ),
-        actions: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: Row(
+    return LayoutBuilder(builder: (context, constraints) {
+      final width = constraints.maxWidth > 700.0 ? 700.0 : constraints.maxWidth;
+
+        return EScaffold(
+          appBar: AppBar(
+            backgroundColor: Color(0xff0d1b2a),
+            surfaceTintColor: Color(0xff0d1b2a),
+            title: Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                Image(
-                  image: AssetImage(Assets.icons("diamant.png")),
-                  height: 20,
-                ),
-                3.w,
-                Obx(
-                  () => EText(
-                    totalPoints.value.toStringAsFixed(2),
-                    weight: FontWeight.bold,
-                    color: Colors.greenAccent,
-                    size: 33,
-                    font: "SevenSegment",
+                GestureDetector(
+                  onDoubleTap: () {
+                    Get.dialog(AddArdoiseQuestion());
+                  },
+                  onTap: () {
+                    Get.to(CreateQuestionnaire());
+                  },
+                  child: Image(
+                    image: AssetImage(Assets.image("logo.png")),
+                    height: 35,
                   ),
                 ),
-                3.w,
-                Padding(
-                  padding: const EdgeInsets.only(bottom: 4.0),
-                  child: EText(
-                    "pts",
-                    color: Colors.greenAccent,
-                    size: 28,
-                  ),
-                )
               ],
             ),
-          )
-        ],
-      ),
-      color: Color.fromARGB(255, 24, 49, 77),
-      body: PageView(
-        controller: pageController,
-        onPageChanged: (index) {
-          currentPageIndex.value = index;
-        },
-        children: [ViewAllQuestionnaires(), Ardoise(), Compte()],
-      ),
-      bottomNavigationBar: MBottomNavigationBar(
-          ready: true.obs,
-          pageController: pageController,
-          currentPage: currentPageIndex),
-      // floatingActionButton: FloatingActionButton(
-      //   backgroundColor: Colors.transparent,
-      //   onPressed: () {
-      //   Get.dialog(AddArdoiseQuestion());
-      // }),
+            actions: [
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  children: [
+                    Image(
+                      image: AssetImage(Assets.icons("diamant.png")),
+                      height: 20,
+                    ),
+                    3.w,
+                    Obx(
+                      () => EText(
+                        totalPoints.value.toStringAsFixed(2),
+                        weight: FontWeight.bold,
+                        color: Colors.greenAccent,
+                        size: 33,
+                        font: "SevenSegment",
+                      ),
+                    ),
+                    3.w,
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 4.0),
+                      child: EText(
+                        "pts",
+                        color: Colors.greenAccent,
+                        size: 28,
+                      ),
+                    )
+                  ],
+                ),
+              )
+            ],
+          ),
+          body: PageView(
+            controller: pageController,
+            onPageChanged: (index) {
+              currentPageIndex.value = index;
+            },
+            children: [ViewAllQuestionnaires(), Ardoise(), Compte()],
+          ),
+          bottomNavigationBar: MBottomNavigationBar(
+              ready: true.obs,
+              pageController: pageController,
+              currentPage: currentPageIndex),
+          // floatingActionButton: FloatingActionButton(
+          //   backgroundColor: Colors.transparent,
+          //   onPressed: () {
+          //   Get.dialog(AddArdoiseQuestion());
+          // }),
+        );
+      }
     );
   }
 }

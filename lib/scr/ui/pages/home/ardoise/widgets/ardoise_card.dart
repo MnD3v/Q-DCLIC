@@ -23,23 +23,16 @@ class ArdoiseQuestionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return AnimatedContainer(
       duration: 333.milliseconds,
+      padding: EdgeInsets.all(12),
       width: Get.width,
       decoration: BoxDecoration(
-        // color: Color.fromARGB(0, 30, 95, 145),
-        // gradient: LinearGradient(colors: [Colors.transparent, const Color.fromARGB(255, 15, 53, 88)]),
         border: Border.all(width: .6, color: Colors.white24),
-        boxShadow: [
-          BoxShadow(
-              color: Colors.white12,
-              offset: Offset(3, 3),
-              blurStyle: BlurStyle.inner,
-              blurRadius: 15),
-        ],
+     
         color: question.maked
                 .containsKey(Utilisateur.currentUser.value!.telephone_id)
-            ? Color.fromARGB(255, 24, 49, 77)
+            ? Colors.transparent
             : const Color(0xff0d1b2a),
-        borderRadius: BorderRadius.circular(9),
+        borderRadius: BorderRadius.circular(24),
       ),
       margin: EdgeInsets.symmetric(vertical: 6),
       child: EColumn(children: [

@@ -1,4 +1,5 @@
 import 'package:dotted_dashed_line/dotted_dashed_line.dart';
+import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:immobilier_apk/scr/config/app/export.dart';
 import 'package:immobilier_apk/scr/data/models/ardoise_question.dart';
@@ -34,27 +35,37 @@ class Ardoise extends StatelessWidget {
           snapshot.data!.docs.forEach((element) {
             questions.add(ArdoiseQuestion.fromMap(element.data()));
           });
-          return Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 9.0),
-            child: EColumn(
-                children: questions.map((element) {
-              var qcmResponse = RxList<String>([]);
-              var qcuResponse = "".obs;
-              var qctResponse = "".obs;
-
-              var index = questions.indexOf(element);
-
-              var dejaRepondu = false.obs;
-
-              dejaRepondu.value = element!.maked.keys.contains(telephone);
-
-              return ArdoiseQuestionCard(
-                  dejaRepondu: dejaRepondu,
-                  qctResponse: qctResponse,
-                  qcuResponse: qcuResponse,
-                  qcmResponse: qcmResponse,
-                  question: element);
-            }).toList()),
+          return LayoutBuilder(builder: (context, constraints) {
+      final width = constraints.maxWidth;
+      final crossAxisCount = width / 400;
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 9.0),
+                child:         DynamicHeightGridView(
+                    itemCount: questions.length,
+                    crossAxisCount: crossAxisCount.toInt(),
+                    crossAxisSpacing: 10,
+                    mainAxisSpacing: 10,
+                    builder: (ctx, index) {
+                      var element = questions[index];
+                         var qcmResponse = RxList<String>([]);
+                  var qcuResponse = "".obs;
+                  var qctResponse = "".obs;
+              
+        
+              
+                  var dejaRepondu = false.obs;
+              
+                  dejaRepondu.value = element!.maked.keys.contains(telephone);
+              
+                  return ArdoiseQuestionCard(
+                      dejaRepondu: dejaRepondu,
+                      qctResponse: qctResponse,
+                      qcuResponse: qcuResponse,
+                      qcmResponse: qcmResponse,
+                      question: element);
+                    }) 
+              );
+            }
           );
         });
   }

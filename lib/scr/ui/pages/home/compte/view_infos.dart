@@ -7,24 +7,37 @@ class ViewInfos extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var utilisateur = Utilisateur.currentUser.value!;
-    return EScaffold(
-      appBar: AppBar(
-       backgroundColor: Colors.transparent,
-        surfaceTintColor: Colors.transparent,
-        title: 
-        EText("Informations", size: 24, weight: FontWeight.bold,),
-      ),
-      body: 
-    Padding(
-      padding: const EdgeInsets.all(8.0),
-      child: EColumn(children: [
-        EText("Informations personnelles", size: 22, weight: FontWeight.bold,),
+    return  LayoutBuilder(builder: (context, constraints) {
+      final width = constraints.maxWidth > 700.0 ? 700.0 : constraints.maxWidth;
 
-        EText(utilisateur.nom + " " + utilisateur.prenom) ,
-        EText( utilisateur.telephone_id),
-
-     
-      ]),
-    ));
+        return 
+        EScaffold(
+          body: Center(
+            child: SizedBox(
+              width: width,
+              child: EScaffold(
+                appBar: AppBar(
+                 backgroundColor: Colors.transparent,
+                  surfaceTintColor: Colors.transparent,
+                  title: 
+                  EText("Informations", size: 24, weight: FontWeight.bold,),
+                ),
+                body: 
+              Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: EColumn(children: [
+                  EText("Informations personnelles", size: 22, weight: FontWeight.bold,),
+              
+                  EText(utilisateur.nom + " " + utilisateur.prenom) ,
+                  EText( utilisateur.telephone_id),
+              
+               
+                ]),
+              )),
+            ),
+          ),
+        );
+      }
+    );
   }
 }

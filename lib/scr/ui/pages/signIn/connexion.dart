@@ -26,177 +26,189 @@ class Connexion extends StatelessWidget {
   Widget build(BuildContext context) {
     var phoneScallerFactor = MediaQuery.of(context).textScaleFactor;
 
-    return EScaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.transparent,
-        surfaceTintColor: Colors.transparent,
-        title: const TitleText(
-          "Connexion",
-        ),
-        actions: [TextButton(onPressed: (){Get.to(Inscription(function: (){}));}, child: EText("Inscription"))],
-      ),
-      body: Obx(
-        () => IgnorePointer(
-          ignoring: isLoading.value,
-          child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: EColumn(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    Hero(
-                      tag: "launch_icon",
-                      child: Image(
-                          image: AssetImage(Assets.image("logo.png")),
-                          height: 70),
-                    ),
-                    25.h,
-                    const BigTitleText(
-                      'Connectez-vous',
-                    ),
-                    18.h,
-                    UnderLineTextField(
-                      phoneScallerFactor: phoneScallerFactor,
-                      label: "Numero de téléphone",
-                      onChanged: (value) {
-                        telephone = value;
-                      },
-                      number: true,
-                    ),
-                    12.h,
-                    Obx(
-                      () => UnderLineTextField(
-                        phoneScallerFactor: phoneScallerFactor,
-                        initialValue: pass,
-                        onChanged: (value) {
-                          pass = value;
-                        },
-                        pass: passvisible.value ? false : true,
-                        label: "Mot de passe",
-                        suffix: GestureDetector(
-                          onTap: () {
-                            passvisible.value = !passvisible.value;
-                          },
-                          child: Padding(
-                            padding:
-                                const EdgeInsets.symmetric(horizontal: 9.0),
-                            child: Icon(
-                                passvisible.value
-                                    ? CupertinoIcons.eye_slash_fill
-                                    : CupertinoIcons.eye_fill,
-                                color: AppColors.textColor),
-                          ),
-                        ),
-                      ),
-                    ),
-                    24.h,
-                    SimpleButton(
-                    radius: 12,
-                      color: const Color.fromARGB(255, 0, 114, 59),
-                        onTap: () async {
-                          FocusManager.instance.primaryFocus?.unfocus();
-                          if (!GFunctions.isPhoneNumber(
-                           numero: telephone)) {
-                            Toasts.error(context,
-                                description: "Entrez un numero valide");
-                            return;
-                          }
-                          if (pass.length < 6) {
-                            Toasts.error(context,
-                                description:
-                                    "Le mot de passe doit contenir aumoins 6 caracteres");
-                            return;
-                          }
+    return LayoutBuilder(builder: (context, constraints) {
+      final width = constraints.maxWidth > 700.0 ? 700.0 : constraints.maxWidth;
 
-                          isLoading.value = true;
-                          try {
-                            var q = await DB
-                                .firestore(Collections.utilistateurs)
-                                .doc(telephone)
-                                .get();
-                            if (q.exists) {
-                              var utilisateur = Utilisateur.fromMap(q.data()!);
-                              try {
-                                await FirebaseAuth.instance
-                                    .signInWithEmailAndPassword(
-                                        email: "$telephone@gmail.com",
-                                        password: pass);
-                                Utilisateur.currentUser.value = utilisateur;
-
-                                isLoading.value = false;
-
-                                Get.off(HomePage());
-                                Toasts.success(context,
-                                    description:
-                                        "Vous vous êtes connecté avec succès");
-                                Utilisateur.refreshToken();
-                              } on FirebaseAuthException catch (e) {
-                                if (e.code == "network-request-failed") {
-                                  isLoading.value = false;
-
-                                  Custom.showDialog(
-                                      barrierColor: Colors.white24,
-                                      dialog: const WarningWidget(
-                                        message:
-                                            'Echec de connexion.\nVeuillez verifier votre connexion internet',
-                                      ));
-                                } else if (e.code == 'invalid-credential') {
-                                  isLoading.value = false;
-
-                                  Custom.showDialog(
-                                      barrierColor: Colors.white24,
-                                      dialog: const WarningWidget(
-                                        message: 'Mot de passe incorrect',
-                                      ));
-                                }
-                              }
-                            } else {
-                              isLoading.value = false;
-                              Custom.showDialog(
-                                barrierColor: Colors.white24,
-                                dialog: const WarningWidget(
-                                  message:
-                                      'Pas de compte associé à ce numero. Veuillez creer un compte',
+        return EScaffold(
+          body: Center(
+            child: SizedBox(
+              width: width,
+              child: EScaffold(
+                appBar: AppBar(
+                  automaticallyImplyLeading: false,
+                  backgroundColor: Colors.transparent,
+                  surfaceTintColor: Colors.transparent,
+                  title: const TitleText(
+                    "Connexion",
+                  ),
+                  actions: [TextButton(onPressed: (){Get.to(Inscription(function: (){}));}, child: EText("Inscription"))],
+                ),
+                body: Obx(
+                  () => IgnorePointer(
+                    ignoring: isLoading.value,
+                    child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: EColumn(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Hero(
+                                tag: "launch_icon",
+                                child: Image(
+                                    image: AssetImage(Assets.image("logo.png")),
+                                    height: 70),
+                              ),
+                              25.h,
+                              const BigTitleText(
+                                'Connectez-vous',
+                              ),
+                              18.h,
+                              UnderLineTextField(
+                                phoneScallerFactor: phoneScallerFactor,
+                                label: "Numero de téléphone",
+                                onChanged: (value) {
+                                  telephone = value;
+                                },
+                                number: true,
+                              ),
+                              12.h,
+                              Obx(
+                                () => UnderLineTextField(
+                                  phoneScallerFactor: phoneScallerFactor,
+                                  initialValue: pass,
+                                  onChanged: (value) {
+                                    pass = value;
+                                  },
+                                  pass: passvisible.value ? false : true,
+                                  label: "Mot de passe",
+                                  suffix: GestureDetector(
+                                    onTap: () {
+                                      passvisible.value = !passvisible.value;
+                                    },
+                                    child: Padding(
+                                      padding:
+                                          const EdgeInsets.symmetric(horizontal: 9.0),
+                                      child: Icon(
+                                          passvisible.value
+                                              ? CupertinoIcons.eye_slash_fill
+                                              : CupertinoIcons.eye_fill,
+                                          color: AppColors.textColor),
+                                    ),
+                                  ),
                                 ),
-                              );
-                            }
-                          } on Exception {
-                            isLoading.value = false;
-                            Custom.showDialog(
-                                barrierColor: Colors.white24,
-                                dialog: const WarningWidget(
-                                  message:
-                                      "Une erreur s'est produite. veuillez verifier votre connexion internet",
-                                ));
-                          }
-                        },
-                        width: 160,
-                        child: Obx(
-                          () => isLoading.value
-                              ? const SizedBox(
-                                  height: 25,
-                                  width: 25,
-                                  child: CircularProgressIndicator(
-                                    color: Colors.black,
-                                    strokeWidth: 1.3,
-                                  ))
-                              : const EText(
-                                  'Se connecter',
-                                  color: Colors.white,
-                                ),
-                        )),
-                    // TextButton(
-                    //   onPressed: () {
-                    //     forgotPassword(context);
-                    //   },
-                    //   child: EText('Mot de passe oublié ?',
-                    //       color: AppColors.color500,
-                    //       weight: FontWeight.w600,
-                    //       size: 20),
-                    // ),
-                  ])),
-        ),
-      ),
+                              ),
+                              24.h,
+                              SimpleButton(
+                              radius: 12,
+                                color: const Color.fromARGB(255, 0, 114, 59),
+                                  onTap: () async {
+                                    FocusManager.instance.primaryFocus?.unfocus();
+                                    if (!GFunctions.isPhoneNumber(
+                                     numero: telephone)) {
+                                      Toasts.error(context,
+                                          description: "Entrez un numero valide");
+                                      return;
+                                    }
+                                    if (pass.length < 6) {
+                                      Toasts.error(context,
+                                          description:
+                                              "Le mot de passe doit contenir aumoins 6 caracteres");
+                                      return;
+                                    }
+                          
+                                    isLoading.value = true;
+                                    try {
+                                      var q = await DB
+                                          .firestore(Collections.utilistateurs)
+                                          .doc(telephone)
+                                          .get();
+                                      if (q.exists) {
+                                        var utilisateur = Utilisateur.fromMap(q.data()!);
+                                        try {
+                                          await FirebaseAuth.instance
+                                              .signInWithEmailAndPassword(
+                                                  email: "$telephone@gmail.com",
+                                                  password: pass);
+                                          Utilisateur.currentUser.value = utilisateur;
+                          
+                                          isLoading.value = false;
+                          
+                                          Get.off(HomePage());
+                                          Toasts.success(context,
+                                              description:
+                                                  "Vous vous êtes connecté avec succès");
+                                          Utilisateur.refreshToken();
+                                        } on FirebaseAuthException catch (e) {
+                                          if (e.code == "network-request-failed") {
+                                            isLoading.value = false;
+                          
+                                            Custom.showDialog(
+                                                barrierColor: Colors.white24,
+                                                dialog: const WarningWidget(
+                                                  message:
+                                                      'Echec de connexion.\nVeuillez verifier votre connexion internet',
+                                                ));
+                                          } else if (e.code == 'invalid-credential') {
+                                            isLoading.value = false;
+                          
+                                            Custom.showDialog(
+                                                barrierColor: Colors.white24,
+                                                dialog: const WarningWidget(
+                                                  message: 'Mot de passe incorrect',
+                                                ));
+                                          }
+                                        }
+                                      } else {
+                                        isLoading.value = false;
+                                        Custom.showDialog(
+                                          barrierColor: Colors.white24,
+                                          dialog: const WarningWidget(
+                                            message:
+                                                'Pas de compte associé à ce numero. Veuillez creer un compte',
+                                          ),
+                                        );
+                                      }
+                                    } on Exception {
+                                      isLoading.value = false;
+                                      Custom.showDialog(
+                                          barrierColor: Colors.white24,
+                                          dialog: const WarningWidget(
+                                            message:
+                                                "Une erreur s'est produite. veuillez verifier votre connexion internet",
+                                          ));
+                                    }
+                                  },
+                                  width: 160,
+                                  child: Obx(
+                                    () => isLoading.value
+                                        ? const SizedBox(
+                                            height: 25,
+                                            width: 25,
+                                            child: CircularProgressIndicator(
+                                              color: Colors.black,
+                                              strokeWidth: 1.3,
+                                            ))
+                                        : const EText(
+                                            'Se connecter',
+                                            color: Colors.white,
+                                          ),
+                                  )),
+                              // TextButton(
+                              //   onPressed: () {
+                              //     forgotPassword(context);
+                              //   },
+                              //   child: EText('Mot de passe oublié ?',
+                              //       color: AppColors.color500,
+                              //       weight: FontWeight.w600,
+                              //       size: 20),
+                              // ),
+                            ])),
+                  ),
+                ),
+              ),
+            ),
+          ),
+        );
+      }
     );
   }
 
