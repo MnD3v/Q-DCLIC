@@ -41,7 +41,7 @@ class ViewAllQuestionnaires extends StatelessWidget {
               final crossAxisCount = width / 400;
               return DynamicHeightGridView(
                   itemCount: questionnaires.length,
-                  crossAxisCount: crossAxisCount.toInt(),
+                  crossAxisCount: crossAxisCount.toInt() <= 0 ? 1 : crossAxisCount.toInt(),
                   crossAxisSpacing: 10,
                   mainAxisSpacing: 10,
                   builder: (ctx, index) {

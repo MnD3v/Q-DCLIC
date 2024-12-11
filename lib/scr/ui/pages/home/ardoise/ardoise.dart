@@ -42,7 +42,7 @@ class Ardoise extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 9.0),
                 child:         DynamicHeightGridView(
                     itemCount: questions.length,
-                    crossAxisCount: crossAxisCount.toInt(),
+                    crossAxisCount: crossAxisCount.toInt() <= 0 ? 1 : crossAxisCount.toInt(),
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10,
                     builder: (ctx, index) {

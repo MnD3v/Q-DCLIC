@@ -95,7 +95,7 @@ class _ViewQuestionnaireState extends State<ViewQuestionnaire> {
             padding: const EdgeInsets.symmetric(horizontal: 9.0),
             child:         DynamicHeightGridView(
                     itemCount: widget.questionnaire.questions.length,
-                    crossAxisCount: crossAxisCount.toInt(),
+                 crossAxisCount: crossAxisCount.toInt() <= 0 ? 1 : crossAxisCount.toInt(),
                     crossAxisSpacing: 10,
                     mainAxisSpacing: 10,
                     builder: (ctx, index) {
