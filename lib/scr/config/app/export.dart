@@ -12,7 +12,8 @@ export 'package:my_widgets/data/other/collections.dart';
 export 'package:immobilier_apk/scr/config/utils/assets.dart';
 export 'package:firebase_auth/firebase_auth.dart';
 export 'package:flutter/widgets.dart';
-export 'package:immobilier_apk/scr/config/utils/assets.dart';
+export 'package:my_widgets/my_widgets.dart';
+
 export 'package:immobilier_apk/scr/config/app/export.dart';
 export 'package:shared_preferences/shared_preferences.dart';
 export 'package:my_widgets/widgets/column.dart';

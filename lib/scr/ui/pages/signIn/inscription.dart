@@ -91,7 +91,7 @@ class Inscription extends StatelessWidget {
                         onChanged: (value) {
                           utilisateur.password = value;
                         },
-                        suffix: GestureDetector(
+                        suffix: InkWell(
                           onTap: () {
                             passvisible_1.value = !passvisible_1.value;
                           },
@@ -116,7 +116,7 @@ class Inscription extends StatelessWidget {
                         onChanged: (value) {
                           repeatPass = value;
                         },
-                        suffix: GestureDetector(
+                        suffix: InkWell(
                           onTap: () {
                             passvisible_2.value = !passvisible_2.value;
                           },

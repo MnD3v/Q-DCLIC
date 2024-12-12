@@ -2,26 +2,18 @@
 // import 'package:dotted_line/dotted_line.dart';
 
 import 'dart:async';
-import 'dart:convert';
 
-import 'package:dotted_dashed_line/dotted_dashed_line.dart';
-import 'package:flutter/foundation.dart';
-import 'package:flutter/material.dart';
 
 import 'package:immobilier_apk/scr/config/app/export.dart';
-import 'package:immobilier_apk/scr/data/models/ardoise_question.dart';
-import 'package:immobilier_apk/scr/data/models/maked.dart';
-import 'package:immobilier_apk/scr/data/models/question.dart';
-import 'package:immobilier_apk/scr/data/models/questionnaire.dart';
-import 'package:immobilier_apk/scr/ui/pages/admin/ardoise/add_question.dart';
+
+
 import 'package:immobilier_apk/scr/ui/pages/home/ardoise/ardoise.dart';
 import 'package:immobilier_apk/scr/ui/pages/home/compte/compte_view.dart';
 import 'package:immobilier_apk/scr/ui/pages/home/questionnaires/all_questionnaires.dart';
-import 'package:immobilier_apk/scr/ui/pages/admin/questionnaire/add_question.dart';
-import 'package:immobilier_apk/scr/ui/pages/admin/questionnaire/questionnaire.dart';
-import 'package:immobilier_apk/scr/ui/pages/home/questionnaires/view_questionnaire.dart';
+
+
 import 'package:immobilier_apk/scr/ui/widgets/bottom_navigation_widget.dart';
-import 'package:immobilier_apk/scr/ui/widgets/question_card.dart';
+
 
 class HomePage extends StatefulWidget {
   static var newQuestionnaires = 0.obs;
@@ -61,18 +53,13 @@ class _HomePageState extends State<HomePage> {
 
         return EScaffold(
           appBar: AppBar(
-            backgroundColor: Color(0xff0d1b2a),
-            surfaceTintColor: Color(0xff0d1b2a),
+            backgroundColor: AppColors.background900,
+            surfaceTintColor: AppColors.background900,
             title: Row(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                GestureDetector(
-                  onDoubleTap: () {
-                    Get.dialog(AddArdoiseQuestion());
-                  },
-                  onTap: () {
-                    Get.to(CreateQuestionnaire());
-                  },
+                InkWell(
+            
                   child: Image(
                     image: AssetImage(Assets.image("logo.png")),
                     height: 35,

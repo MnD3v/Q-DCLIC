@@ -40,7 +40,6 @@ class AppTheme {
 
   static TextTheme get textTheme {
     return TextTheme(
-        titleSmall: TextStyle(color: AppColors.blue),
         bodySmall: TextStyle(color: AppColors.textColor));
   }
 }

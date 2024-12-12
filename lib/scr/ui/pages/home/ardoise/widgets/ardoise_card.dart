@@ -1,7 +1,8 @@
+import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:immobilier_apk/scr/config/app/export.dart';
-import 'package:immobilier_apk/scr/data/models/ardoise_question.dart';
-import 'package:immobilier_apk/scr/data/models/maked.dart';
-import 'package:immobilier_apk/scr/ui/pages/admin/ardoise/add_question.dart';
+
+import 'package:immobilier_apk/scr/ui/pages/home/questionnaires/view_questionnaire.dart';
+import 'package:my_widgets/my_widgets.dart';
 
 class ArdoiseQuestionCard extends StatelessWidget {
   ArdoiseQuestionCard(
@@ -19,6 +20,8 @@ class ArdoiseQuestionCard extends StatelessWidget {
   final RxList<String> qcmResponse;
 
   var sendLoading = false.obs;
+
+  var user = Utilisateur.currentUser.value!;
   @override
   Widget build(BuildContext context) {
     return AnimatedContainer(
@@ -26,12 +29,20 @@ class ArdoiseQuestionCard extends StatelessWidget {
       padding: EdgeInsets.all(12),
       width: Get.width,
       decoration: BoxDecoration(
-        border: Border.all(width: .6, color: Colors.white24),
-     
+        border: Border.all(
+            width: .6,
+            color: question.maked
+                    .containsKey(Utilisateur.currentUser.value!.telephone_id)
+                ? Colors.white54
+                : Colors.amber),
         color: question.maked
                 .containsKey(Utilisateur.currentUser.value!.telephone_id)
             ? Colors.transparent
-            : const Color(0xff0d1b2a),
+            : AppColors.background,
+        gradient: LinearGradient(colors: [
+          AppColors.background900,
+          AppColors.background,
+        ], begin: Alignment.topLeft, end: Alignment.bottomRight),
         borderRadius: BorderRadius.circular(24),
       ),
       margin: EdgeInsets.symmetric(vertical: 6),
@@ -68,33 +79,34 @@ class ArdoiseQuestionCard extends StatelessWidget {
         //   dashColor: Colors.white54,
         // ),
         question.type == QuestionType.qct
-            ? dejaRepondu.value
-                ? Padding(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 12.0, vertical: 18),
-                    child: EColumn(
-                      children: [
-                        EText(question
-                            .maked[Utilisateur
-                                .currentUser.value!.telephone_id]!
-                            .response[0]
-                            .toString()),
-                        9.h,
-                        EText(
-                          question.reponse,
-                          color: Colors.greenAccent,
-                        )
-                      ],
-                    ),
-                  )
-                : ETextField(
-                    maxLines: 6,
-                    minLines: 3,
-                    placeholder: "Saisissez votre reponse",
-                    onChanged: (value) {
-                      qctResponse.value = value;
-                    },
-                    phoneScallerFactor: phoneScallerFactor)
+            ? Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 18),
+                child: dejaRepondu.value
+                    ? EColumn(
+                        children: [
+                          EText(question
+                              .maked[
+                                  Utilisateur.currentUser.value!.telephone_id]!
+                              .response[0]
+                              .toString()),
+                          9.h,
+                          EText(
+                            question.reponse,
+                            color: Colors.greenAccent,
+                          )
+                        ],
+                      )
+                    : ETextField(
+                        maxLines: 6,
+                        minLines: 3,
+                        radius: 12,
+                        placeholder: "Saisissez votre reponse",
+                        onChanged: (value) {
+                          qctResponse.value = value;
+                        },
+                        phoneScallerFactor: phoneScallerFactor),
+              )
             : Obx(
                 () => EColumn(
                     children: question.choix.keys.map((e) {
@@ -113,14 +125,51 @@ class ArdoiseQuestionCard extends StatelessWidget {
                               qcuResponse.value = value as String;
                             },
                             title: isFirebaseStorageLink(question.choix[e]!)
-                                ? Container(
-                                    width: Get.width,
+                                ? Align(
                                     alignment: Alignment.centerLeft,
-                                    height: 90,
-                                    child: EFadeInImage(
-                                      radius: 12,
-                                      image: NetworkImage(question.choix[e]!),
-                                    ))
+                                    child: Container(
+                                        height: 90,
+                                        width: 120,
+                                        padding: EdgeInsets.all(3),
+                                        decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(15),
+                                            border: Border.all(
+                                              color: dejaRepondu.value &&
+                                                      question.reponse == e
+                                                  ? Colors.greenAccent
+                                                  : dejaRepondu.value &&
+                                                          question
+                                                              .maked[user
+                                                                  .telephone_id]!
+                                                              .response
+                                                              .contains(e)
+                                                      ? Colors.red
+                                                      : Colors.white,
+                                            )),
+                                        child: ClipRRect(
+                                          borderRadius:
+                                              BorderRadius.circular(12),
+                                          child: InkWell(
+                                            onTap: () {
+                                              showImageViewer(
+                                                  context,
+                                                  NetworkImage(
+                                                      question.choix[e]!),
+                                                  onViewerDismissed: () {
+                                                print("dismissed");
+                                              });
+                                            },
+                                            child: EFadeInImage(
+                                              height: 90,
+                                              width: 120,
+                                              radius: 12,
+                                              image: NetworkImage(
+                                                  question.choix[e]!),
+                                            ),
+                                          ),
+                                        )),
+                                  )
                                 : EText(
                                     question.choix[e],
                                     color: dejaRepondu.value &&
@@ -150,14 +199,55 @@ class ArdoiseQuestionCard extends StatelessWidget {
                                 : qcmResponse.add(e);
                           },
                           title: isFirebaseStorageLink(question.choix[e]!)
-                              ? Container(
-                                  width: Get.width,
+                              ? Align(
                                   alignment: Alignment.centerLeft,
-                                  height: 90,
-                                  child: EFadeInImage(
-                                    radius: 12,
-                                    image: NetworkImage(question.choix[e]!),
-                                  ))
+                                  child: Container(
+                                      height: 90,
+                                      width: 120,
+                                      padding: EdgeInsets.all(3),
+                                      decoration: BoxDecoration(
+                                          borderRadius:
+                                              BorderRadius.circular(15),
+                                          border: Border.all(
+                                              color: dejaRepondu.value &&
+                                                      question.reponse
+                                                          .contains(e)
+                                                  ? Colors.greenAccent
+                                                  : dejaRepondu.value &&
+                                                          dejaRepondu.value &&
+                                                          question
+                                                              .maked[user
+                                                                  .telephone_id]!
+                                                              .response
+                                                              .contains(e)
+                                                      ? Colors.red
+                                                      : Colors.white)),
+                                      child: ClipRRect(
+                                        borderRadius: BorderRadius.circular(12),
+                                        child: InkWell(
+                                          onTap: () {
+                                            showImageViewer(
+                                                context,
+                                                NetworkImage(
+                                                    question.choix[e]!),
+                                                onViewerDismissed: () {
+                                              print("dismissed");
+                                            },
+                                                doubleTapZoomable: true,
+                                                backgroundColor: Colors.black,
+                                                barrierColor: Colors.black,
+                                                useSafeArea: true);
+                                          },
+                                          child: EFadeInImage(
+                                            height: 90,
+                                            width: 120,
+                                            radius: 12,
+                                            image: NetworkImage(
+                                                question.choix[e]!),
+                                          ),
+                                        ),
+                                      )),
+                                )
                               : EText(
                                   question.choix[e],
                                   color: dejaRepondu.value &&
@@ -203,12 +293,11 @@ class ArdoiseQuestionCard extends StatelessWidget {
                             waitAfter(3000, () async {
                               dejaRepondu.value = true;
 
-                              var response =
-                                  (question.type == QuestionType.qcu
-                                      ? qcuResponse.value
-                                      : question.type == QuestionType.qcm
-                                          ? qcmResponse.value
-                                          : qctResponse.value);
+                              var response = (question.type == QuestionType.qcu
+                                  ? qcuResponse.value
+                                  : question.type == QuestionType.qcm
+                                      ? qcmResponse.value
+                                      : qctResponse.value);
                               question.maked.putIfAbsent(
                                   telephone,
                                   () => Maked(
@@ -233,4 +322,11 @@ class ArdoiseQuestionCard extends StatelessWidget {
       ]),
     );
   }
+}
+
+bool isFirebaseStorageLink(String url) {
+  final RegExp firebaseStorageRegex = RegExp(
+    r'^https:\/\/firebasestorage\.googleapis\.com\/v0\/b\/[a-zA-Z0-9.-]+\.appspot\.com\/o\/.+\?alt=media&token=[a-zA-Z0-9-]+$',
+  );
+  return firebaseStorageRegex.hasMatch(url);
 }

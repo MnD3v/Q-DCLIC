@@ -1,20 +1,14 @@
-import 'package:dotted_dashed_line/dotted_dashed_line.dart';
 import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
-import 'package:flutter/material.dart';
 import 'package:immobilier_apk/scr/config/app/export.dart';
-import 'package:immobilier_apk/scr/data/models/ardoise_question.dart';
-import 'package:immobilier_apk/scr/data/models/maked.dart';
-import 'package:immobilier_apk/scr/data/models/question.dart';
-import 'package:immobilier_apk/scr/ui/pages/admin/questionnaire/add_question.dart';
+
 import 'package:immobilier_apk/scr/ui/pages/home/ardoise/widgets/ardoise_card.dart';
-import 'package:immobilier_apk/scr/ui/pages/home/home_page.dart';
-import 'package:immobilier_apk/scr/ui/widgets/question_card.dart';
+import 'package:lottie/lottie.dart';
 
 class Ardoise extends StatelessWidget {
   Ardoise({super.key});
 
   var questions = <ArdoiseQuestion>[];
-              var user = Utilisateur.currentUser.value!;
+  var user = Utilisateur.currentUser.value!;
 
   @override
   Widget build(BuildContext context) {
@@ -32,42 +26,47 @@ class Ardoise extends StatelessWidget {
 
           var telephone = Utilisateur.currentUser.value!.telephone_id;
           questions.clear();
-          snapshot.data!.docs.forEach((element) {
+          for (var element in snapshot.data!.docs) {
             questions.add(ArdoiseQuestion.fromMap(element.data()));
-          });
+          }
           return LayoutBuilder(builder: (context, constraints) {
-      final width = constraints.maxWidth;
-      final crossAxisCount = width / 400;
-              return Padding(
+            final width = constraints.maxWidth;
+            final crossAxisCount = width / 400;
+            return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 9.0),
-                child:         DynamicHeightGridView(
-                    itemCount: questions.length,
-                    crossAxisCount: crossAxisCount.toInt() <= 0 ? 1 : crossAxisCount.toInt(),
-                    crossAxisSpacing: 10,
-                    mainAxisSpacing: 10,
-                    builder: (ctx, index) {
-                      var element = questions[index];
-                         var qcmResponse = RxList<String>([]);
-                  var qcuResponse = "".obs;
-                  var qctResponse = "".obs;
-              
-        
-              
-                  var dejaRepondu = false.obs;
-              
-                  dejaRepondu.value = element!.maked.keys.contains(telephone);
-              
-                  return ArdoiseQuestionCard(
-                      dejaRepondu: dejaRepondu,
-                      qctResponse: qctResponse,
-                      qcuResponse: qcuResponse,
-                      qcmResponse: qcmResponse,
-                      question: element);
-                    }) 
-              );
-            }
-          );
+                child: questions.isEmpty
+                    ? Lottie.asset(Assets.image("empty.json"), height: 400)
+                    : AnimatedSwitcher(
+                        duration: 666.milliseconds,
+                        child: DynamicHeightGridView(
+                            key: Key(questions.length.toString()),
+                            physics: BouncingScrollPhysics(),
+                            itemCount: questions.length,
+                            crossAxisCount: crossAxisCount.toInt() <= 0
+                                ? 1
+                                : crossAxisCount.toInt(),
+                            crossAxisSpacing: 10,
+                            mainAxisSpacing: 10,
+                            builder: (ctx, index) {
+                              var element = questions[index];
+                              var qcmResponse = RxList<String>([]);
+                              var qcuResponse = "".obs;
+                              var qctResponse = "".obs;
+
+                              var dejaRepondu = false.obs;
+
+                              dejaRepondu.value =
+                                  element!.maked.keys.contains(telephone);
+
+                              return ArdoiseQuestionCard(
+                                  dejaRepondu: dejaRepondu,
+                                  qctResponse: qctResponse,
+                                  qcuResponse: qcuResponse,
+                                  qcmResponse: qcmResponse,
+                                  question: element);
+                            }),
+                      ));
+          });
         });
   }
 }
-

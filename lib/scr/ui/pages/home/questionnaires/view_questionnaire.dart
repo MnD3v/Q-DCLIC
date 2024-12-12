@@ -6,10 +6,8 @@ import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:flutter/material.dart';
 
 import 'package:immobilier_apk/scr/config/app/export.dart';
-import 'package:immobilier_apk/scr/data/models/maked.dart';
-import 'package:immobilier_apk/scr/data/models/questionnaire.dart';
-import 'package:immobilier_apk/scr/ui/pages/admin/questionnaire/add_question.dart';
-import 'package:immobilier_apk/scr/ui/widgets/question_card.dart';
+
+import 'package:immobilier_apk/scr/ui/pages/home/questionnaires/widgets/question_card.dart';
 
 class ViewQuestionnaire extends StatefulWidget {
   Questionnaire questionnaire;
@@ -55,8 +53,8 @@ class _ViewQuestionnaireState extends State<ViewQuestionnaire> {
       final crossAxisCount = width / 400;
         return EScaffold(
           appBar: AppBar(
-            backgroundColor: Color(0xff0d1b2a),
-            surfaceTintColor: Color(0xff0d1b2a),
+            backgroundColor: AppColors.background,
+            surfaceTintColor: AppColors.background,
             title: EText("Questionnaire", size: 22,),
             actions: [
               Padding(
@@ -93,7 +91,8 @@ class _ViewQuestionnaireState extends State<ViewQuestionnaire> {
           ),
           body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 9.0),
-            child:         DynamicHeightGridView(
+            child:            DynamicHeightGridView(
+                  physics: BouncingScrollPhysics(),
                     itemCount: widget.questionnaire.questions.length,
                  crossAxisCount: crossAxisCount.toInt() <= 0 ? 1 : crossAxisCount.toInt(),
                     crossAxisSpacing: 10,
@@ -113,49 +112,52 @@ class _ViewQuestionnaireState extends State<ViewQuestionnaire> {
                     })
             
          ),
-          bottomNavigationBar:    Obx(
-                () => widget.dejaRepondu.value
-                    ? 0.h
-                    : SimpleButton(
-                        radius: 12,
-                        color: const Color.fromARGB(255, 0, 114, 59),
-                        onTap: () async {
-                          loading.value = true;
-                          var points = 0.0;
-                          for (var i = 0;
-                              i < widget.questionnaire.questions.length;
-                              i++) {
-                            var currentQuestion =
-                                widget.questionnaire.questions[i];
-                            //QCM
-                            if (currentQuestion.type == QuestionType.qcm) {
-                              for (var element in initalResponses[i] as List) {
-                                if (currentQuestion.reponse.contains(element)) {
-                                  points +=
-                                      1 / (currentQuestion.reponse as List).length;
-                                } else {
-                                  points -=
-                                      1 / (currentQuestion.reponse as List).length;
+          bottomNavigationBar:    Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Obx(
+                  () => widget.dejaRepondu.value
+                      ? 0.h
+                      : SimpleButton(
+                          radius: 12,
+                          color: const Color.fromARGB(255, 0, 114, 59),
+                          onTap: () async {
+                            loading.value = true;
+                            var points = 0.0;
+                            for (var i = 0;
+                                i < widget.questionnaire.questions.length;
+                                i++) {
+                              var currentQuestion =
+                                  widget.questionnaire.questions[i];
+                              //QCM
+                              if (currentQuestion.type == QuestionType.qcm) {
+                                for (var element in initalResponses[i] as List) {
+                                  if (currentQuestion.reponse.contains(element)) {
+                                    points +=
+                                        1 / (currentQuestion.reponse as List).length;
+                                  } else {
+                                    points -=
+                                        1 / (currentQuestion.reponse as List).length;
+                                  }
+                                }
+                              }
+                              //QCU
+                              else if (currentQuestion.type == QuestionType.qcu) {
+                                if (currentQuestion.reponse == initalResponses[i]) {
+                                  points += 1;
                                 }
                               }
                             }
-                            //QCU
-                            else if (currentQuestion.type == QuestionType.qcu) {
-                              if (currentQuestion.reponse == initalResponses[i]) {
-                                points += 1;
-                              }
-                            }
-                          }
-        
-                          await saveInformations(points);
-                        },
-                        child: Obx(() => loading.value
-                            ? ECircularProgressIndicator(
-                                height: 30.0,
-                              )
-                            : EText("Soumettre")),
-                      ),
-              ),
+                    
+                            await saveInformations(points);
+                          },
+                          child: Obx(() => loading.value
+                              ? ECircularProgressIndicator(
+                                  height: 30.0,
+                                )
+                              : EText("Soumettre")),
+                        ),
+                ),
+          ),
             
         );
       }
@@ -265,3 +267,5 @@ class _ViewQuestionnaireState extends State<ViewQuestionnaire> {
         .toList();
   }
 }
+
+

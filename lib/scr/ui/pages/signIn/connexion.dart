@@ -80,7 +80,7 @@ class Connexion extends StatelessWidget {
                                   },
                                   pass: passvisible.value ? false : true,
                                   label: "Mot de passe",
-                                  suffix: GestureDetector(
+                                  suffix: InkWell(
                                     onTap: () {
                                       passvisible.value = !passvisible.value;
                                     },

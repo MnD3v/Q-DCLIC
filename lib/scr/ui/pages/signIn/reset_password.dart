@@ -37,7 +37,7 @@
 //               // number: true,
 //               label: "Entrez un mot de passe",
 //               pass: passvisible_1.value,
-//               suffix: GestureDetector(
+//               suffix: InkWell(
 //                 onTap: () {
 //                   passvisible_1.value = !passvisible_1.value;
 //                 },
@@ -63,7 +63,7 @@
 //               // number: true,
 //               label: "Repetez votre mot de passe",
 //               pass: passvisible_2.value,
-//               suffix: GestureDetector(
+//               suffix: InkWell(
 //                 onTap: () {
 //                   passvisible_2.value = !passvisible_2.value;
 //                 },
