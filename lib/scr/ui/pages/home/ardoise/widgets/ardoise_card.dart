@@ -89,7 +89,7 @@ class ArdoiseQuestionCard extends StatelessWidget {
                               .maked[
                                   Utilisateur.currentUser.value!.telephone_id]!
                               .response[0]
-                              .toString()),
+                              .toString(), color: Colors.amber,),
                           9.h,
                           EText(
                             question.reponse,

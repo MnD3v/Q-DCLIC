@@ -9,6 +9,7 @@ import 'package:immobilier_apk/scr/config/app/export.dart';
 
 import 'package:immobilier_apk/scr/ui/pages/home/ardoise/ardoise.dart';
 import 'package:immobilier_apk/scr/ui/pages/home/compte/compte_view.dart';
+import 'package:immobilier_apk/scr/ui/pages/home/compte/evolution.dart';
 import 'package:immobilier_apk/scr/ui/pages/home/questionnaires/all_questionnaires.dart';
 
 
@@ -16,6 +17,8 @@ import 'package:immobilier_apk/scr/ui/widgets/bottom_navigation_widget.dart';
 
 
 class HomePage extends StatefulWidget {
+  static var totalPoints = Utilisateur.currentUser.value!.points.obs;
+
   static var newQuestionnaires = 0.obs;
   static var newQuestionsArdoise = 0.obs;
   HomePage({super.key});
@@ -31,7 +34,6 @@ class _HomePageState extends State<HomePage> {
 
   var id = "".obs;
 
-  var totalPoints = Utilisateur.currentUser.value!.points.obs;
 
   PageController pageController = PageController();
 
@@ -70,32 +72,37 @@ class _HomePageState extends State<HomePage> {
             actions: [
               Padding(
                 padding: const EdgeInsets.all(8.0),
-                child: Row(
-                  children: [
-                    Image(
-                      image: AssetImage(Assets.icons("diamant.png")),
-                      height: 20,
-                    ),
-                    3.w,
-                    Obx(
-                      () => EText(
-                        totalPoints.value.toStringAsFixed(2),
-                        weight: FontWeight.bold,
-                        color: Colors.greenAccent,
-                        size: 33,
-                        font: "SevenSegment",
+                child: InkWell(
+                  onTap: (){
+                    Get.to(Evolution());
+                  },
+                  child: Row(
+                    children: [
+                      Image(
+                        image: AssetImage(Assets.icons("diamant.png")),
+                        height: 20,
                       ),
-                    ),
-                    3.w,
-                    Padding(
-                      padding: const EdgeInsets.only(bottom: 4.0),
-                      child: EText(
-                        "pts",
-                        color: Colors.greenAccent,
-                        size: 28,
+                      3.w,
+                      Obx(
+                        () => EText(
+                          HomePage.totalPoints.value.toStringAsFixed(2),
+                          weight: FontWeight.bold,
+                          color: Colors.greenAccent,
+                          size: 33,
+                          font: "SevenSegment",
+                        ),
                       ),
-                    )
-                  ],
+                      3.w,
+                      Padding(
+                        padding: const EdgeInsets.only(bottom: 4.0),
+                        child: EText(
+                          "pts",
+                          color: Colors.greenAccent,
+                          size: 28,
+                        ),
+                      )
+                    ],
+                  ),
                 ),
               )
             ],

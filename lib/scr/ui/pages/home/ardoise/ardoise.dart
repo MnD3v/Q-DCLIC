@@ -35,7 +35,7 @@ class Ardoise extends StatelessWidget {
             return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 9.0),
                 child: questions.isEmpty
-                    ? Lottie.asset(Assets.image("empty.json"), height: 400)
+                    ? Lottie.asset(Assets.image("empty.json"), height: 300)
                     : AnimatedSwitcher(
                         duration: 666.milliseconds,
                         child: DynamicHeightGridView(

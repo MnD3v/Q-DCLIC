@@ -37,7 +37,7 @@ class ViewAllQuestionnaires extends StatelessWidget {
               final width = constraints.maxWidth;
               final crossAxisCount = width / 400;
               return questionnaires.isEmpty
-                  ? Lottie.asset(Assets.image("empty.json"), height: 400)
+                  ? Lottie.asset(Assets.image("empty.json"), height: 300)
                   : AnimatedSwitcher(
                       duration: 666.milliseconds,
                       child: DynamicHeightGridView(
