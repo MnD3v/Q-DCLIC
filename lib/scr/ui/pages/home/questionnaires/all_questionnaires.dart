@@ -2,6 +2,7 @@ import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:immobilier_apk/scr/config/app/export.dart';
 
 import 'package:immobilier_apk/scr/ui/pages/home/questionnaires/view_questionnaire.dart';
+import 'package:immobilier_apk/scr/ui/widgets/empty.dart';
 import 'package:lottie/lottie.dart';
 
 class ViewAllQuestionnaires extends StatelessWidget {
@@ -50,7 +51,9 @@ class ViewAllQuestionnaires extends StatelessWidget {
                 () => questionnaires.value.isNul
                     ? ECircularProgressIndicator()
                     : questionnaires.value!.isEmpty
-                        ? Lottie.asset(Assets.image("empty.json"), height: 300)
+                        ?Empty(
+                              constraints: constraints,
+                            )
                         : AnimatedSwitcher(
                             duration: 666.milliseconds,
                             child: DynamicHeightGridView(

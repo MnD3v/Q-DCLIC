@@ -55,7 +55,8 @@ class _ViewQuestionnaireState extends State<ViewQuestionnaire> {
           surfaceTintColor: AppColors.background,
           title: EText(
             "Questionnaire",
-            size: 22,
+            size: 24,
+            weight: FontWeight.bold,
           ),
         ),
         body: Padding(
@@ -162,69 +163,9 @@ class _ViewQuestionnaireState extends State<ViewQuestionnaire> {
   void showDialogForScrore(double points) {
     return Custom.showDialog(
         barrierColor: Colors.black12,
-        dialog: Dialog(
-          backgroundColor: Colors.transparent,
-          surfaceTintColor: Colors.transparent,
-          child: BlurryContainer(
-            decoration: BoxDecoration(
-                color: Colors.black.withOpacity(.7),
-                borderRadius: BorderRadius.circular(12)),
-            child: Padding(
-              padding: const EdgeInsets.all(12.0),
-              child: EColumn(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    12.h,
-                    EText(
-                      widget.questionnaire.title.toUpperCase(),
-                      align: TextAlign.center,
-                      color: Colors.white,
-                      size: 22,
-                    ),
-                    Image(
-                      image: AssetImage(Assets.icons("diamant.png")),
-                      height: 55,
-                    ),
-                    EText(
-                      "Votre score",
-                      color: Colors.white,
-                      size: 24,
-                    ),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.end,
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        EText(
-                          points.toStringAsFixed(2),
-                          font: Fonts.sevenSegment,
-                          size: 65,
-                          color: const Color.fromARGB(255, 21, 255, 0),
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 6.0),
-                          child: EText(
-                            "/" +
-                                widget.questionnaire!.questions.length
-                                    .toString(),
-                            color: const Color.fromARGB(255, 255, 255, 255),
-                            size: 24,
-                          ),
-                        )
-                      ],
-                    ),
-                    SimpleOutlineButton(
-                        radius: 9,
-                        color: Colors.white60,
-                        onTap: () {
-                          Get.back();
-                        },
-                        child: EText(
-                          "Fermer",
-                          color: Colors.white54,
-                        ))
-                  ]),
-            ),
-          ),
+        dialog: Score(
+          questionnaire: widget.questionnaire,
+          points: points,
         ));
   }
 
@@ -233,5 +174,89 @@ class _ViewQuestionnaireState extends State<ViewQuestionnaire> {
     initalResponses = widget.questionnaire!.questions
         .map((element) => element.type == QuestionType.qcm ? [] : "")
         .toList();
+  }
+}
+
+class Score extends StatelessWidget {
+  const Score({
+    super.key,
+    required this.questionnaire,
+    required this.points,
+  });
+
+  final Questionnaire questionnaire;
+  final double points;
+
+  @override
+  Widget build(BuildContext context) {
+    return Dialog(
+      backgroundColor: Colors.transparent,
+      surfaceTintColor: Colors.transparent,
+      child: BlurryContainer(
+        decoration: BoxDecoration(
+            color: Colors.black.withOpacity(.7),
+            borderRadius: BorderRadius.circular(12)),
+        child: Padding(
+          padding: const EdgeInsets.all(12.0),
+          child:
+              EColumn(crossAxisAlignment: CrossAxisAlignment.center, children: [
+            12.h,
+            EText(
+              questionnaire.title.toUpperCase(),
+              align: TextAlign.center,
+              color: Colors.white,
+              size: 22,
+            ),
+            Image(
+              image: AssetImage(Assets.icons("diamant.png")),
+              height: 55,
+            ),
+            EText(
+              "Votre score",
+              color: Colors.white,
+              size: 24,
+            ),
+            Row(
+              crossAxisAlignment: CrossAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                EText(
+                  points.toStringAsFixed(2),
+                  font: Fonts.sevenSegment,
+                  size: 65,
+                  color: const Color.fromARGB(255, 21, 255, 0),
+                ),
+                Padding(
+                  padding: const EdgeInsets.only(bottom: 6.0),
+                  child: EText(
+                    "/${questionnaire.questions.length}",
+                    color: const Color.fromARGB(255, 255, 255, 255),
+                    size: 24,
+                  ),
+                )
+              ],
+            ),
+            9.h,
+            ETextRich(textSpans: [
+              ETextSpan(text: "NB:", color: Colors.amber),
+              ETextSpan(
+                  text: "Les questions ouvertes seront notées manuellement.",
+                  color: Colors.white)
+            ]),
+            9.h,
+            SimpleOutlineButton(
+                radius: 9,
+                color: Colors.white60,
+                onTap: () {
+                  Get.back();
+                },
+                child: EText(
+                  "Fermer",
+                  color: Colors.white54,
+                ))
+          ]),
+        ),
+      ),
+    );
   }
 }

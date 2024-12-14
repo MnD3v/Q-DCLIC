@@ -2,6 +2,7 @@ import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:immobilier_apk/scr/config/app/export.dart';
 
 import 'package:immobilier_apk/scr/ui/pages/home/ardoise/widgets/ardoise_card.dart';
+import 'package:immobilier_apk/scr/ui/widgets/empty.dart';
 import 'package:lottie/lottie.dart';
 
 class Ardoise extends StatelessWidget {
@@ -37,7 +38,9 @@ class Ardoise extends StatelessWidget {
             return Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 9.0),
                 child: questions.isEmpty
-                    ? Lottie.asset(Assets.image("empty.json"), height: 300)
+                    ? Empty(
+                        constraints: constraints,
+                      )
                     : AnimatedSwitcher(
                         duration: 666.milliseconds,
                         child: DynamicHeightGridView(

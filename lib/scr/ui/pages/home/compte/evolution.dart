@@ -2,6 +2,7 @@ import 'package:dynamic_height_grid_view/dynamic_height_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:immobilier_apk/scr/config/app/export.dart';
 import 'package:immobilier_apk/scr/ui/pages/home/questionnaires/widgets/just_view_questinnaire_card.dart';
+import 'package:immobilier_apk/scr/ui/widgets/empty.dart';
 import 'package:immobilier_apk/scr/ui/widgets/fl_charte.dart';
 import 'package:lottie/lottie.dart';
 
@@ -46,8 +47,9 @@ class Evolution extends StatelessWidget {
                            questionnaires.value.isNul
                               ? ECircularProgressIndicator()
                               : questionnaires.value!.isEmpty
-                                  ? Lottie.asset(Assets.image("empty.json"),
-                                      height: 400)
+                                  ? Empty(
+                              constraints: constraints,
+                            )
                                   : SizedBox(
                                     height: max((crossAxisCount~/questionnaires.value!.length), 1) * 400,
                                     child: DynamicHeightGridView(

@@ -1,4 +1,5 @@
 import 'package:immobilier_apk/scr/config/app/export.dart';
+import 'package:immobilier_apk/scr/ui/pages/home/compte/evolution.dart';
 import 'package:immobilier_apk/scr/ui/pages/home/compte/view_infos.dart';
 import 'package:immobilier_apk/scr/ui/pages/signIn/connexion.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -97,9 +98,19 @@ class Compte extends StatelessWidget {
                   
                     
                     const BigTitleText(
-                      "Plus",
+                      "Quiz",
                     ),
                     9.h,
+                         _Element(
+                      onTap: () {
+                     Get.to(Evolution());
+                      },
+                      title: "Mon evolution",
+                    ),
+                    24.h,
+                     const BigTitleText(
+                      "Plus",
+                    ),
                     _Element(
                       onTap: () {
                         launchUrl(Uri.parse(

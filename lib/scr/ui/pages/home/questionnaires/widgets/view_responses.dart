@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:immobilier_apk/scr/config/app/export.dart';
+import 'package:immobilier_apk/scr/ui/widgets/empty.dart';
 
 import 'package:lottie/lottie.dart';
 import 'package:my_widgets/data/other/collections.dart';
@@ -50,7 +51,9 @@ class ViewResponses extends StatelessWidget {
                 return Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: questionnaire!.maked.keys.isEmpty
-                        ? Lottie.asset(Assets.image("empty.json"), height: 300)
+                        ? Empty(
+                              constraints: constraints,
+                            )
                         : DynamicHeightGridView(
                             physics: BouncingScrollPhysics(),
                             itemCount: questionnaire!.maked.keys.length,

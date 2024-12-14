@@ -41,9 +41,9 @@ class _HomePageState extends State<HomePage> {
     streamQuestionsAndUpdate();
     streamQuestionnairesAndUpdate();
     super.initState();
-  } 
+  }
 
-  var user  = Utilisateur.currentUser.value!;
+  var user = Utilisateur.currentUser.value!;
 
   @override
   Widget build(BuildContext context) {
@@ -67,47 +67,49 @@ class _HomePageState extends State<HomePage> {
           ),
           actions: [
             StreamBuilder(
-              stream: DB.firestore(Collections.utilistateurs).doc(user.telephone_id).snapshots(),
-              builder: (context, snapshot) {
-                if(DB.waiting(snapshot)){
-                  return ECircularProgressIndicator();
-                }
-                var user = Utilisateur.fromMap(snapshot.data!.data()!);
-                return Padding(
-                  padding: const EdgeInsets.all(8.0),
-                  child: InkWell(
-                    onTap: () {
-                      Get.to(Evolution());
-                    },
-                    child: Row(
-                      children: [
-                        Image(
-                          image: AssetImage(Assets.icons("diamant.png")),
-                          height: 20,
-                        ),
-                        3.w,
-                        EText(
-                           user.points.toStringAsFixed(2),
-                           weight: FontWeight.bold,
-                           color: Colors.greenAccent,
-                           size: 33,
-                           font: "SevenSegment",
-                         ),
-                        3.w,
-                        Padding(
-                          padding: const EdgeInsets.only(bottom: 4.0),
-                          child: EText(
-                            "pts",
-                            color: Colors.greenAccent,
-                            size: 28,
+                stream: DB
+                    .firestore(Collections.utilistateurs)
+                    .doc(user.telephone_id)
+                    .snapshots(),
+                builder: (context, snapshot) {
+                  if (DB.waiting(snapshot)) {
+                    return ECircularProgressIndicator();
+                  }
+                  var user = Utilisateur.fromMap(snapshot.data!.data()!);
+                  return Padding(
+                    padding: const EdgeInsets.all(8.0),
+                    child: InkWell(
+                      onTap: () {
+                        Get.to(Evolution());
+                      },
+                      child: Row(
+                        children: [
+                          Image(
+                            image: AssetImage(Assets.icons("diamant.png")),
+                            height: 20,
                           ),
-                        )
-                      ],
+                          3.w,
+                          EText(
+                            user.points.toStringAsFixed(2),
+                            weight: FontWeight.bold,
+                            color: Colors.greenAccent,
+                            size: 33,
+                            font: "SevenSegment",
+                          ),
+                          3.w,
+                          Padding(
+                            padding: const EdgeInsets.only(bottom: 4.0),
+                            child: EText(
+                              "pts",
+                              color: Colors.greenAccent,
+                              size: 28,
+                            ),
+                          )
+                        ],
+                      ),
                     ),
-                  ),
-                );
-              }
-            )
+                  );
+                })
           ],
         ),
         body: PageView(
@@ -176,7 +178,7 @@ StreamSubscription streamQuestionnairesAndUpdate() {
       .firestore(Collections.classes)
       .doc(user.classe)
       .collection(Collections.questionnaires)
-       .doc(user.classe)
+      .doc(user.classe)
       .collection(Collections.production)
       .orderBy("date", descending: true)
       .snapshots()
@@ -187,14 +189,13 @@ StreamSubscription streamQuestionnairesAndUpdate() {
     // Traitement des documents reçus
     waitAfter(0, () async {
       for (var element in snapshot.docs) {
-        questionnaires.add(await Questionnaire.fromMap(element.data()));
+        questionnaires.add(await Questionnaire.fromMap(element.data(), ));
       }
+      // Mise à jour de `newQuestionnaires` avec le nombre de nouveaux questionnaires
+      HomePage.newQuestionnaires.value = questionnaires
+          .where((element) => !element.maked.containsKey(telephone))
+          .length;
     });
-
-    // Mise à jour de `newQuestionnaires` avec le nombre de nouveaux questionnaires
-    HomePage.newQuestionnaires.value = questionnaires
-        .where((element) => !element.maked.containsKey(telephone))
-        .length;
   }, onError: (error) {
     // Gestion des erreurs éventuelles
     print('Erreur lors du streaming : $error');
