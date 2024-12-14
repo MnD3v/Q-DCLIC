@@ -47,7 +47,7 @@ class LoadingPage extends StatelessWidget {
                   child: loadEnd.value || !showLogo.value
                       ? 0.h
                       : ECircularProgressIndicator(
-                          color: Colors.amberAccent,
+                          color: Colors.pinkAccent,
                           key: Key('cir'),
                           label: null,
                         )),

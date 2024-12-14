@@ -22,7 +22,7 @@ class Evolution extends StatelessWidget {
       return EScaffold(
           appBar: AppBar(
             title: EText(
-              "Mon compte",
+              "Mon Evolution",
               size: 24,
               weight: FontWeight.bold,
             ),
@@ -43,7 +43,38 @@ class Evolution extends StatelessWidget {
                           points: points,
                         ),
                       ),
-                      EText("Questionnaires"),
+                      12.h,
+                         Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: EColumn(
+                                      children: [
+                                        ETextRich(textSpans: [
+                                          ETextSpan(
+                                              text: "Axe X: ",
+                                              color: Colors.pinkAccent,
+                                              weight: FontWeight.bold,
+                                              size: 22),
+                                          ETextSpan(
+                                            text: "Le numero du questionnaire",
+                                            weight: FontWeight.bold,
+                                          )
+                                        ]),
+                                        ETextRich(textSpans: [
+                                          ETextSpan(
+                                              text: "Axe X: ",
+                                              color: Colors.pinkAccent,
+                                              weight: FontWeight.bold,
+                                              size: 22),
+                                          ETextSpan(
+                                            text: "Le Pourcentage de réussite",
+                                            weight: FontWeight.bold,
+                                          )
+                                        ]),
+                                        24.h,
+                                        EText("Questionnaires", size: 24, weight: FontWeight.bold,)
+                                      ],
+                                    ),
+                                  ),
                       Obx(
                         () => questionnaires.value.isNul
                             ? ECircularProgressIndicator()
@@ -56,7 +87,7 @@ class Evolution extends StatelessWidget {
                                             (crossAxisCount ~/
                                                 questionnaires.value!.length),
                                             1) *
-                                        400,
+                                        460,
                                     child: DynamicHeightGridView(
                                         physics: BouncingScrollPhysics(),
                                         key: Key(questionnaires.value!.length
@@ -66,8 +97,14 @@ class Evolution extends StatelessWidget {
                                         crossAxisSpacing: 10,
                                         mainAxisSpacing: 10,
                                         builder: (ctx, index) {
+                                           //pour que le dernier entré soit le premier affiché
                                           var questionnaire =
-                                              questionnaires.value![index];
+                                              questionnaires.value![
+                                                  questionnaires.value!.length -
+                                                      index -
+                                                      1];
+                                                          //pour que le dernier entré soit le premier affiché
+
 
                                           var pointsGagne = questionnaire.maked
                                                   .containsKey(
@@ -127,7 +164,6 @@ class Evolution extends StatelessWidget {
         .orderBy(
           "date",
         )
-        .limit(10)
         .get();
     var tempQuestionnaires = <Questionnaire>[];
 

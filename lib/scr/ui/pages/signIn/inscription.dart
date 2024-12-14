@@ -175,7 +175,8 @@ class Inscription extends StatelessWidget {
                               SimpleButton(
                                   width: 160,
                                   radius: 12,
-                            color:       const Color.fromARGB(255, 0, 114, 59),
+                                                             color: Colors.pinkAccent,
+
                                   onTap: () async {
                                     FocusManager.instance.primaryFocus?.unfocus();
                                     if (IsNullString(utilisateur.nom) ||

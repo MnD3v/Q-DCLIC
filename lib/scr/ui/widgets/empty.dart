@@ -17,10 +17,7 @@ class Empty extends StatelessWidget {
           width: constraints.maxWidth * .6,
         ),
         12.h,
-        EText(
-          "Rien trouvé",
-          size: 24,
-        )
+     
       ],
     ));
   }

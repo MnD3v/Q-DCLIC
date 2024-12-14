@@ -249,7 +249,7 @@ class Score extends StatelessWidget {
             ),
             9.h,
             ETextRich(textSpans: [
-              ETextSpan(text: "NB:", color: Colors.amber),
+              ETextSpan(text: "NB: ", color: Colors.amber),
               ETextSpan(
                   text: "Les questions ouvertes seront notées manuellement.",
                   color: Colors.white)

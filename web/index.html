@@ -1,24 +1,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-  <!--
-    If you are serving your web app in a path other than the root, change the
-    href value below to reflect the base path you are serving from.
-
-    The path provided below has to start and end with a slash "/" in order for
-    it to work correctly.
-
-    For more details:
-    * https://developer.mozilla.org/en-US/docs/Web/HTML/Element/base
-
-    This is a placeholder for base href that will be replaced by the value of
-    the `--base-href` argument provided to `flutter build`.
-  -->
   <base href="$FLUTTER_BASE_HREF">
 
   <meta charset="UTF-8">
   <meta content="IE=Edge" http-equiv="X-UA-Compatible">
-  <meta name="description" content="A new Flutter project.">
+  <meta name="description" content="Quiz app for D-CLIC project !">
 
   <!-- iOS meta tags & icons -->
   <meta name="apple-mobile-web-app-capable" content="yes">
@@ -37,14 +24,80 @@
     var serviceWorkerVersion = null;
   </script>
 
-
   <!-- This script adds the flutter initialization JS code -->
   <script src="flutter.js" defer></script>
+
+  <style>
+    /* Style général */
+    html, body {
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background-color: rgb(29, 0, 75); /* Fond violet foncé */
+      font-family: Arial, sans-serif;
+    }
+
+    /* Conteneur principal */
+    .container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+    }
+
+    .indicator{
+      width: 120px;
+      height: auto;
+    }
+
+    /* Loader */
+    .loader {
+      width: 70px;
+      aspect-ratio: 1;
+      background:
+        radial-gradient(farthest-side, #ffa516 90%, transparent) center/16px 16px,
+        radial-gradient(farthest-side, green 90%, transparent) bottom/12px 12px;
+      background-repeat: no-repeat;
+      animation: l17 1s infinite linear;
+      position: relative;
+    }
+
+    .loader::before {    
+      content: "";
+      position: absolute;
+      width: 8px;
+      aspect-ratio: 1;
+      inset: auto 0 16px;
+      margin: auto;
+      background: #ccc;
+      border-radius: 50%;
+      transform-origin: 50% calc(100% + 10px);
+      animation: inherit;
+      animation-duration: 0.5s;
+    }
+
+    @keyframes l17 { 
+      100% { transform: rotate(1turn); }
+    }
+  </style>
 </head>
 <body>
+  <!-- Splash screen -->
+  <div id="loading_indicator" class="container">
+    <!-- Loader -->
+    <img class="indicator"
+    style="margin: 24px;"
+     src="./assets/images/logo.png" alt="Splash Logo">
+    <div class="loader"></div>
+  </div>
+
+  <!-- Script Flutter -->
   <script>
     window.addEventListener('load', function(ev) {
-      // Download main.dart.js
+      // Démarrer Flutter une fois chargé
       _flutter.loader.loadEntrypoint({
         serviceWorker: {
           serviceWorkerVersion: serviceWorkerVersion,
@@ -52,6 +105,8 @@
         onEntrypointLoaded: function(engineInitializer) {
           engineInitializer.initializeEngine().then(function(appRunner) {
             appRunner.runApp();
+            // Supprime le splash une fois Flutter démarré
+            document.getElementById('loading_indicator').style.display = 'none';
           });
         }
       });

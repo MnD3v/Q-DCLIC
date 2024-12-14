@@ -49,6 +49,7 @@ void main() async {
 
   runApp(GetMaterialApp(
     title: "Q-DCLIC",
+    
 
     defaultTransition: Transition.rightToLeftWithFade,
     transitionDuration: 444.milliseconds,
