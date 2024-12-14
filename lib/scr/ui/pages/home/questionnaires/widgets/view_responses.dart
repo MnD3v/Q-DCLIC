@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:immobilier_apk/scr/config/app/export.dart';
 
-
 import 'package:lottie/lottie.dart';
 import 'package:my_widgets/data/other/collections.dart';
 import 'package:my_widgets/my_widgets.dart';
@@ -45,13 +44,15 @@ class ViewResponses extends StatelessWidget {
                   return ECircularProgressIndicator();
                 }
 
-                questionnaire = Questionnaire.fromMap(snapshot.data!.data()!);
+                Questionnaire.fromMap(snapshot.data!.data()!).then((value) {
+                  questionnaire = value;
+                });
                 return Padding(
                     padding: const EdgeInsets.all(12.0),
                     child: questionnaire!.maked.keys.isEmpty
                         ? Lottie.asset(Assets.image("empty.json"), height: 300)
-                        :    DynamicHeightGridView(
-                  physics: BouncingScrollPhysics(),
+                        : DynamicHeightGridView(
+                            physics: BouncingScrollPhysics(),
                             itemCount: questionnaire!.maked.keys.length,
                             crossAxisCount: crossAxisCount.toInt() <= 0
                                 ? 1
@@ -66,6 +67,7 @@ class ViewResponses extends StatelessWidget {
                                 onTap: () {
                                   // Get.to(
                                   //     ViewUserQuestionnaire(
+
                                   //         userID: key,
                                   //         questionnaire: questionnaire!,
                                   //         dejaRepondu: true.obs),

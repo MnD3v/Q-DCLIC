@@ -95,8 +95,8 @@ class AllQuizes extends StatelessWidget {
         .limit(40)
         .get();
     questionnaires.clear();
-    q.docs.forEach((element) {
-      questionnaires.add(Questionnaire.fromMap(element.data()));
-    });
+    for (var element in q.docs) {
+      questionnaires.add( await Questionnaire.fromMap(element.data()));
+    }
   }
 }

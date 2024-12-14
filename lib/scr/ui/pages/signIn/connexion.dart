@@ -131,6 +131,8 @@ class Connexion extends StatelessWidget {
                                       var utilisateur =
                                           Utilisateur.fromMap(q.data()!);
                                       if (utilisateur.formateur == true) {
+                                        isLoading.value = false;
+                                        
                                         Custom.showDialog(
                                             dialog: WarningWidget(
                                                 message:

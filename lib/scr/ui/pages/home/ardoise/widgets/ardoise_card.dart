@@ -78,177 +78,183 @@ class ArdoiseQuestionCard extends StatelessWidget {
         //   axis: Axis.horizontal,
         //   dashColor: Colors.white54,
         // ),
-        question.type == QuestionType.qct
-            ? Padding(
-                padding:
-                    const EdgeInsets.symmetric(horizontal: 12.0, vertical: 18),
-                child: dejaRepondu.value
-                    ? EColumn(
-                        children: [
-                          EText(question
-                              .maked[
-                                  Utilisateur.currentUser.value!.telephone_id]!
-                              .response[0]
-                              .toString(), color: Colors.amber,),
-                          9.h,
-                          EText(
-                            question.reponse,
-                            color: Colors.greenAccent,
-                          )
-                        ],
-                      )
-                    : ETextField(
-                        maxLines: 6,
-                        minLines: 3,
-                        radius: 12,
-                        placeholder: "Saisissez votre reponse",
-                        onChanged: (value) {
-                          qctResponse.value = value;
-                        },
-                        phoneScallerFactor: phoneScallerFactor),
-              )
-            : Obx(
-                () => EColumn(
-                    children: question.choix.keys.map((e) {
-                  return !(question.type == QuestionType.qcm)
-                      ? IgnorePointer(
-                          ignoring: dejaRepondu.value,
-                          child: RadioListTile(
-                            fillColor: MaterialStateColor.resolveWith(
-                                (states) => qcuResponse.value == e
-                                    ? Colors.amber
-                                    : Colors.grey),
-                            contentPadding: EdgeInsets.symmetric(vertical: 0),
-                            value: e,
-                            groupValue: qcuResponse.value,
-                            onChanged: (value) {
-                              qcuResponse.value = value as String;
-                            },
-                            title: isFirebaseStorageLink(question.choix[e]!)
-                                ? Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Container(
-                                        height: 90,
-                                        width: 120,
-                                        padding: EdgeInsets.all(3),
-                                        decoration: BoxDecoration(
-                                            borderRadius:
-                                                BorderRadius.circular(15),
-                                            border: Border.all(
-                                              color: dejaRepondu.value &&
-                                                      question.reponse == e
-                                                  ? Colors.greenAccent
-                                                  : dejaRepondu.value &&
-                                                          question
-                                                              .maked[user
-                                                                  .telephone_id]!
-                                                              .response
-                                                              .contains(e)
-                                                      ? Colors.red
-                                                      : Colors.white,
-                                            )),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(12),
-                                          child: InkWell(
-                                            onTap: () {
-                                              showImageViewer(
-                                                  context,
-                                                  NetworkImage(
-                                                      question.choix[e]!),
-                                                  onViewerDismissed: () {
-                                                print("dismissed");
-                                              });
-                                            },
-                                            child: EFadeInImage(
-                                              height: 90,
-                                              width: 120,
-                                              radius: 12,
-                                              image: NetworkImage(
-                                                  question.choix[e]!),
-                                            ),
-                                          ),
-                                        )),
-                                  )
-                                : EText(
-                                    question.choix[e],
-                                    color: dejaRepondu.value &&
-                                            question.reponse == e
-                                        ? Colors.greenAccent
-                                        : dejaRepondu.value &&
-                                                qcuResponse.value == e
-                                            ? Colors.red
-                                            : Colors.white,
-                                  ),
-                          ),
+        Obx(()=>
+           question.type == QuestionType.qct
+              ? Padding(
+                  padding:
+                      const EdgeInsets.symmetric(horizontal: 12.0, vertical: 18),
+                  child: dejaRepondu.value
+                      ? EColumn(
+                          children: [
+                            EText(
+                              question
+                                  .maked[Utilisateur
+                                      .currentUser.value!.telephone_id]!
+                                  .response[0]
+                                  .toString(),
+                              color: Colors.amber,
+                            ),
+                            9.h,
+                            EText(
+                              question.reponse,
+                              color: Colors.greenAccent,
+                            )
+                          ],
                         )
-                      : CheckboxListTile(
-                          enabled: !dejaRepondu.value,
-                          fillColor: MaterialStateColor.resolveWith((states) =>
-                              qcmResponse.contains(e)
-                                  ? Colors.amber
-                                  : Colors.transparent),
-                          activeColor: Colors.amber,
-                          side: BorderSide(width: 2, color: Colors.grey),
-                          controlAffinity: ListTileControlAffinity.leading,
-                          contentPadding: EdgeInsets.symmetric(vertical: 0),
-                          value: qcmResponse.contains(e),
+                      : ETextField(
+                          maxLines: 6,
+                          minLines: 3,
+                          radius: 12,
+                          placeholder: "Saisissez votre reponse",
                           onChanged: (value) {
-                            qcmResponse.contains(e)
-                                ? qcmResponse.remove(e)
-                                : qcmResponse.add(e);
+                            qctResponse.value = value;
                           },
-                          title: isFirebaseStorageLink(question.choix[e]!)
-                              ? Align(
-                                  alignment: Alignment.centerLeft,
-                                  child: Container(
-                                      height: 90,
-                                      width: 120,
-                                      padding: EdgeInsets.all(3),
-                                      decoration: BoxDecoration(
-                                          borderRadius:
-                                              BorderRadius.circular(15),
-                                          border: Border.all(
-                                              color: dejaRepondu.value &&
-                                                      question.reponse
-                                                          .contains(e)
-                                                  ? Colors.greenAccent
-                                                  : dejaRepondu.value &&
-                                                          dejaRepondu.value &&
-                                                          question
-                                                              .maked[user
-                                                                  .telephone_id]!
-                                                              .response
-                                                              .contains(e)
-                                                      ? Colors.red
-                                                      : Colors.white)),
-                                      child: ClipRRect(
-                                        borderRadius: BorderRadius.circular(12),
-                                        child: InkWell(
-                                          onTap: () {
-                                            showImageViewer(
-                                                context,
-                                                NetworkImage(
-                                                    question.choix[e]!),
-                                                onViewerDismissed: () {
-                                              print("dismissed");
-                                            },
-                                                doubleTapZoomable: true,
-                                                backgroundColor: Colors.black,
-                                                barrierColor: Colors.black,
-                                                useSafeArea: true);
+                          phoneScallerFactor: phoneScallerFactor),
+                )
+              : EColumn(
+                  children: question.choix.keys.map((e) {
+                return !(question.type == QuestionType.qcm)
+                    ? IgnorePointer(
+                         ignoring: dejaRepondu.value,
+                         child: RadioListTile(
+                           fillColor: MaterialStateColor.resolveWith(
+                               (states) => qcuResponse.value == e
+                                   ? Colors.amber
+                                   : Colors.grey),
+                           contentPadding: EdgeInsets.symmetric(vertical: 0),
+                           value: e,
+                           groupValue: qcuResponse.value,
+                           onChanged: (value) {
+                             qcuResponse.value = value as String;
+                           },
+                           title: isFirebaseStorageLink(question.choix[e]!)
+                               ? Align(
+                                   alignment: Alignment.centerLeft,
+                                   child: Container(
+                                       height: 90,
+                                       width: 120,
+                                       padding: EdgeInsets.all(3),
+                                       decoration: BoxDecoration(
+                                           borderRadius:
+                                               BorderRadius.circular(15),
+                                           border: Border.all(
+                                             color: dejaRepondu.value &&
+                                                     question.reponse == e
+                                                 ? Colors.greenAccent
+                                                 : dejaRepondu.value &&
+                                                         question
+                                                             .maked[user
+                                                                 .telephone_id]!
+                                                             .response
+                                                             .contains(e)
+                                                     ? Colors.red
+                                                     : Colors.white,
+                                           )),
+                                       child: ClipRRect(
+                                         borderRadius:
+                                             BorderRadius.circular(12),
+                                         child: InkWell(
+                                           onTap: () {
+                                             showImageViewer(
+                                                 context,
+                                                 NetworkImage(
+                                                     question.choix[e]!),
+                                                 onViewerDismissed: () {
+                                               print("dismissed");
+                                             });
+                                           },
+                                           child: EFadeInImage(
+                                             height: 90,
+                                             width: 120,
+                                             radius: 12,
+                                             image: NetworkImage(
+                                                 question.choix[e]!),
+                                           ),
+                                         ),
+                                       )),
+                                 )
+                               : Obx(()=>
+                                  EText(
+                                     question.choix[e],
+                                     color: dejaRepondu.value &&
+                                             question.reponse == e
+                                         ? Colors.greenAccent
+                                         : dejaRepondu.value &&
+                                                 qcuResponse.value == e
+                                             ? Colors.red
+                                             : Colors.white,
+                                   ),
+                               ),
+                         ),
+                       )
+                    : CheckboxListTile(
+                        enabled: !dejaRepondu.value,
+                        fillColor: MaterialStateColor.resolveWith((states) =>
+                            qcmResponse.contains(e)
+                                ? Colors.amber
+                                : Colors.transparent),
+                        activeColor: Colors.amber,
+                        side: BorderSide(width: 2, color: Colors.grey),
+                        controlAffinity: ListTileControlAffinity.leading,
+                        contentPadding: EdgeInsets.symmetric(vertical: 0),
+                        value: qcmResponse.contains(e),
+                        onChanged: (value) {
+                          qcmResponse.contains(e)
+                              ? qcmResponse.remove(e)
+                              : qcmResponse.add(e);
+                        },
+                        title: isFirebaseStorageLink(question.choix[e]!)
+                            ? Align(
+                                alignment: Alignment.centerLeft,
+                                child: Container(
+                                    height: 90,
+                                    width: 120,
+                                    padding: EdgeInsets.all(3),
+                                    decoration: BoxDecoration(
+                                        borderRadius:
+                                            BorderRadius.circular(15),
+                                        border: Border.all(
+                                            color: dejaRepondu.value &&
+                                                    question.reponse
+                                                        .contains(e)
+                                                ? Colors.greenAccent
+                                                : dejaRepondu.value &&
+                                                        dejaRepondu.value &&
+                                                        question
+                                                            .maked[user
+                                                                .telephone_id]!
+                                                            .response
+                                                            .contains(e)
+                                                    ? Colors.red
+                                                    : Colors.white)),
+                                    child: ClipRRect(
+                                      borderRadius: BorderRadius.circular(12),
+                                      child: InkWell(
+                                        onTap: () {
+                                          showImageViewer(
+                                              context,
+                                              NetworkImage(
+                                                  question.choix[e]!),
+                                              onViewerDismissed: () {
+                                            print("dismissed");
                                           },
-                                          child: EFadeInImage(
-                                            height: 90,
-                                            width: 120,
-                                            radius: 12,
-                                            image: NetworkImage(
-                                                question.choix[e]!),
-                                          ),
+                                              doubleTapZoomable: true,
+                                              backgroundColor: Colors.black,
+                                              barrierColor: Colors.black,
+                                              useSafeArea: true);
+                                        },
+                                        child: EFadeInImage(
+                                          height: 90,
+                                          width: 120,
+                                          radius: 12,
+                                          image: NetworkImage(
+                                              question.choix[e]!),
                                         ),
-                                      )),
-                                )
-                              : EText(
+                                      ),
+                                    )),
+                              )
+                            : Obx(()=>
+                               EText(
                                   question.choix[e],
                                   color: dejaRepondu.value &&
                                           question.reponse.contains(e)
@@ -258,10 +264,12 @@ class ArdoiseQuestionCard extends StatelessWidget {
                                           ? Colors.red
                                           : Colors.white,
                                 ),
-                        );
-                }).toList()),
-              ),
+                            ),
+                      );
+              }).toList()),
+        ),
         Obx(
+
           () => Align(
             alignment: Alignment.centerRight,
             child: AnimatedSwitcher(
@@ -306,12 +314,7 @@ class ArdoiseQuestionCard extends StatelessWidget {
                                       prenom: user.prenom,
                                       response: [response],
                                       pointsGagne: 0));
-                              await DB
-                                  .firestore(Collections.classes)
-                                  .doc(user.classe)
-                                  .collection(Collections.ardoise)
-                                  .doc(question.id)
-                                  .set(question.toMap());
+                                  question.save(brouillon: false);
                               sendLoading.value = false;
                             });
                           },

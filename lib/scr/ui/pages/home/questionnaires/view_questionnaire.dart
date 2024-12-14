@@ -23,8 +23,6 @@ class ViewQuestionnaire extends StatefulWidget {
 class _ViewQuestionnaireState extends State<ViewQuestionnaire> {
   var initalResponses = [];
 
-  
-
   PageController pageController = PageController();
 
   var loading = false.obs;
@@ -59,38 +57,6 @@ class _ViewQuestionnaireState extends State<ViewQuestionnaire> {
             "Questionnaire",
             size: 22,
           ),
-          actions: [
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                children: [
-                  Image(
-                    image: AssetImage(Assets.icons("diamant.png")),
-                    height: 20,
-                  ),
-                  3.w,
-                  Obx(
-                    () => EText(
-                      HomePage.totalPoints.value.toStringAsFixed(2),
-                      weight: FontWeight.bold,
-                      color: Colors.greenAccent,
-                      size: 33,
-                      font: "SevenSegment",
-                    ),
-                  ),
-                  3.w,
-                  Padding(
-                    padding: const EdgeInsets.only(bottom: 4.0),
-                    child: EText(
-                      "pts",
-                      color: Colors.greenAccent,
-                      size: 28,
-                    ),
-                  )
-                ],
-              ),
-            )
-          ],
         ),
         body: Padding(
             padding: const EdgeInsets.symmetric(horizontal: 9.0),
@@ -149,8 +115,6 @@ class _ViewQuestionnaireState extends State<ViewQuestionnaire> {
                         }
                       }
 
-                     
-
                       await saveInformations(points);
                     },
                     child: Obx(() => loading.value
@@ -169,7 +133,7 @@ class _ViewQuestionnaireState extends State<ViewQuestionnaire> {
     var telephone = Utilisateur.currentUser.value!.telephone_id;
     var user = Utilisateur.currentUser.value!;
     //mis a jour de la reponse de l'utilisateur
-    widget.questionnaire!.maked.putIfAbsent(
+    widget.questionnaire.maked.putIfAbsent(
         telephone,
         () => Maked(
             date: DateTime.now().toString(),
@@ -179,12 +143,12 @@ class _ViewQuestionnaireState extends State<ViewQuestionnaire> {
             pointsGagne: points));
     //mis a jour de la reponse de l'utilisateur
 
-    await DB
-        .firestore(Collections.classes)
-        .doc(user.classe)
-        .collection(Collections.questionnaires)
-        .doc(widget.questionnaire.id)
-        .set(widget.questionnaire!.toMap());
+    //histoire de declancher le stream de recuperation de questionnaire
+    widget.questionnaire.date =
+        '${widget.questionnaire.date.split(".")[0]}.${Random().nextInt(900)}';
+    //histoire de declancher le stream de recuperation de questionnaire
+
+    widget.questionnaire.save(brouillon: false);
     Utilisateur.currentUser.value!.points += points;
     HomePage.totalPoints.value = Utilisateur.currentUser.value!.points;
     await Utilisateur.setUser(Utilisateur.currentUser.value!);

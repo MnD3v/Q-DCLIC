@@ -24,6 +24,23 @@ class QuestionCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var idUser = Utilisateur.currentUser.value!.telephone_id;
+    var qctResponse = "".obs;
+    if (dejaRepondu.value) {
+    
+
+      if (element.type == QuestionType.qcm) {
+        qcmResponse.value =
+            (questionnaire!.maked[idUser]!.response[index] as List)
+                .map((element) => element.toString())
+                .toList();
+      } else if (element.type == QuestionType.qcu) {
+        qcuResponse.value = questionnaire!.maked[idUser]!.response[index];
+      } else {
+        qctResponse.value = questionnaire!.maked[idUser]!.response[index];
+      }
+    }
+
     return LayoutBuilder(builder: (context, constraints) {
       final width = constraints.maxWidth;
       return Container(
@@ -70,10 +87,7 @@ class QuestionCard extends StatelessWidget {
                               horizontal: 12.0, vertical: 18),
                           child: EColumn(
                             children: [
-                              EText(questionnaire!
-                                  .maked[Utilisateur
-                                      .currentUser.value!.telephone_id]!
-                                  .response[index]),
+                              EText(supprimerTirets(qctResponse.value)),
                               9.h,
                               EText(
                                 element.reponse,
@@ -88,7 +102,8 @@ class QuestionCard extends StatelessWidget {
                           radius: 18,
                           placeholder: "Saisissez votre reponse",
                           onChanged: (value) {
-                            initalResponses[index] = "$value-*-*-";
+                            initalResponses[index] = "$value--none";
+                            qctResponse.value = value;
                           },
                           phoneScallerFactor: phoneScallerFactor),
                 )
@@ -253,4 +268,11 @@ class QuestionCard extends StatelessWidget {
       );
     });
   }
+}
+
+String supprimerTirets(String qctResponse) {
+  return qctResponse
+      .replaceAll("--none", "")
+      .replaceAll("--false", "")
+      .replaceAll("--true", "");
 }

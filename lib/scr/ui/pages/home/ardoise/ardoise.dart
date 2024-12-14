@@ -17,6 +17,8 @@ class Ardoise extends StatelessWidget {
             .firestore(Collections.classes)
             .doc(user.classe)
             .collection(Collections.ardoise)
+            .doc(user.classe)
+            .collection(Collections.production)
             .orderBy("date", descending: true)
             .snapshots(),
         builder: (context, snapshot) {
