@@ -27,8 +27,6 @@ class QuestionCard extends StatelessWidget {
     var idUser = Utilisateur.currentUser.value!.telephone_id;
     var qctResponse = "".obs;
     if (dejaRepondu.value) {
-    
-
       if (element.type == QuestionType.qcm) {
         qcmResponse.value =
             (questionnaire!.maked[idUser]!.response[index] as List)
@@ -87,7 +85,14 @@ class QuestionCard extends StatelessWidget {
                               horizontal: 12.0, vertical: 18),
                           child: EColumn(
                             children: [
-                              EText(supprimerTirets(qctResponse.value)),
+                              EText(
+                                supprimerTirets(qctResponse.value),
+                                color: qctResponse.contains("--false")
+                                    ? Colors.red
+                                    : qctResponse.contains("--true")
+                                        ? Colors.green
+                                        : Colors.white,
+                              ),
                               9.h,
                               EText(
                                 element.reponse,

@@ -15,47 +15,52 @@ class Evolution extends StatelessWidget {
   var questionnaires = Rx<List<Questionnaire>?>(null);
   @override
   Widget build(BuildContext context) {
-    return  LayoutBuilder(builder: (context, constraints) {
+    return LayoutBuilder(builder: (context, constraints) {
       final width = constraints.maxWidth;
-      final crossAxisCount = (width / 400).toInt() <= 0 ? 1:(width / 400).toInt();
-        return EScaffold(
-            appBar: AppBar(
-              title: EText(
-                "Mon compte",
-                size: 24,
-                weight: FontWeight.bold,
-              ),
+      final crossAxisCount =
+          (width / 400).toInt() <= 0 ? 1 : (width / 400).toInt();
+      return EScaffold(
+          appBar: AppBar(
+            title: EText(
+              "Mon compte",
+              size: 24,
+              weight: FontWeight.bold,
             ),
-            body: FutureBuilder(
-                future: getData(),
-                builder: (context, snapshot) {
-                  if (DB.waiting(snapshot)) {
-                    return ECircularProgressIndicator();
-                  }
-                  return Padding(
-                    padding: const EdgeInsets.all(8.0),
-                    child: EColumn(
-                      children: [
-                        ConstrainedBox(
-                          constraints: BoxConstraints(maxWidth: 700),
-                          child: LineChartSample2(
-                            points: points,
-                          ),
+          ),
+          body: FutureBuilder(
+              future: getData(),
+              builder: (context, snapshot) {
+                if (DB.waiting(snapshot)) {
+                  return ECircularProgressIndicator();
+                }
+                return Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: EColumn(
+                    children: [
+                      ConstrainedBox(
+                        constraints: BoxConstraints(maxWidth: 700),
+                        child: LineChartSample2(
+                          points: points,
                         ),
-                        EText("Questionnaires"),
-                        Obx(()=>
-                           questionnaires.value.isNul
-                              ? ECircularProgressIndicator()
-                              : questionnaires.value!.isEmpty
-                                  ? Empty(
-                              constraints: constraints,
-                            )
-                                  : SizedBox(
-                                    height: max((crossAxisCount~/questionnaires.value!.length), 1) * 400,
+                      ),
+                      EText("Questionnaires"),
+                      Obx(
+                        () => questionnaires.value.isNul
+                            ? ECircularProgressIndicator()
+                            : questionnaires.value!.isEmpty
+                                ? Empty(
+                                    constraints: constraints,
+                                  )
+                                : SizedBox(
+                                    height: max(
+                                            (crossAxisCount ~/
+                                                questionnaires.value!.length),
+                                            1) *
+                                        400,
                                     child: DynamicHeightGridView(
                                         physics: BouncingScrollPhysics(),
-                                        key: Key(
-                                            questionnaires.value!.length.toString()),
+                                        key: Key(questionnaires.value!.length
+                                            .toString()),
                                         itemCount: questionnaires.value!.length,
                                         crossAxisCount: crossAxisCount,
                                         crossAxisSpacing: 10,
@@ -63,11 +68,13 @@ class Evolution extends StatelessWidget {
                                         builder: (ctx, index) {
                                           var questionnaire =
                                               questionnaires.value![index];
-                                    
+
                                           var pointsGagne = questionnaire.maked
-                                                  .containsKey(user.telephone_id)
+                                                  .containsKey(
+                                                      user.telephone_id)
                                               ? questionnaire
-                                                  .maked[user.telephone_id]!.pointsGagne
+                                                  .maked[user.telephone_id]!
+                                                  .pointsGagne
                                               : 0.0;
                                           return Stack(
                                             alignment: Alignment.bottomLeft,
@@ -80,11 +87,13 @@ class Evolution extends StatelessWidget {
                                                   questionnaire: questionnaire,
                                                   width: width),
                                               Padding(
-                                                padding: const EdgeInsets.all(32.0),
+                                                padding:
+                                                    const EdgeInsets.all(32.0),
                                                 child: Row(
                                                   children: [
                                                     EText(
-                                                      pointsGagne.toStringAsFixed(2),
+                                                      pointsGagne
+                                                          .toStringAsFixed(2),
                                                       font: Fonts.sevenSegment,
                                                       size: 34,
                                                       color: Colors.greenAccent,
@@ -100,13 +109,12 @@ class Evolution extends StatelessWidget {
                                           );
                                         }),
                                   ),
-                        ),
-                      ],
-                    ),
-                  );
-                }));
-      }
-    );
+                      ),
+                    ],
+                  ),
+                );
+              }));
+    });
   }
 
   getData() async {
@@ -127,7 +135,7 @@ class Evolution extends StatelessWidget {
       tempQuestionnaires.add(await Questionnaire.fromMap(element.data()));
     }
     questionnaires.value = tempQuestionnaires;
-    print((1~/questionnaires.value!.length));
+    print((1 ~/ questionnaires.value!.length));
     print(questionnaires.value!.length);
     points = [];
     for (var element in tempQuestionnaires) {

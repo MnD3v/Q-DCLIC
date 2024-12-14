@@ -90,6 +90,17 @@ class _ViewQuestionnaireState extends State<ViewQuestionnaire> {
                     radius: 12,
                     color: const Color.fromARGB(255, 0, 114, 59),
                     onTap: () async {
+               
+                      for (var i = 0; i < initalResponses.length; i++) {
+                        if (initalResponses[i].isEmpty) {
+                          Custom.showDialog(
+                              dialog: WarningWidget(
+                                  message:
+                                      "Veuillez repondre a toutes les questions.\n Exple: La question ${i+1} n'est pas repondue"));
+                          return;
+                        }
+                      }
+
                       loading.value = true;
                       var points = 0.0;
                       for (var i = 0;
