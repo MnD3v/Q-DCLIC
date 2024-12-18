@@ -14,7 +14,7 @@ class LineChartSample2 extends StatefulWidget {
 
 class _LineChartSample2State extends State<LineChartSample2> {
   List<Color> gradientColors = [
-    AppColors.color500,
+    Colors.amber,
     AppColors.coffee,
   ];
 
@@ -131,7 +131,7 @@ class _LineChartSample2State extends State<LineChartSample2> {
         verticalInterval: 1,
         getDrawingHorizontalLine: (value) {
           return FlLine(
-            color: AppColors.color500,
+            color: Colors.amber,
             strokeWidth: 1,
           );
         },

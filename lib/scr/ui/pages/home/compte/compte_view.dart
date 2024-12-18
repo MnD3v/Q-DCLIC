@@ -60,7 +60,7 @@ class Compte extends StatelessWidget {
                               children: [
                                 Image(
                                   image: AssetImage(Assets.icons("account_2.png")),
-                                  color: Colors.amber,
+                                  color: Colors.pinkAccent,
                                 ),
                                 9.w,
                                 Obx(

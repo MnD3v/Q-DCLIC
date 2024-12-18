@@ -61,7 +61,7 @@ class Evolution extends StatelessWidget {
                                         ]),
                                         ETextRich(textSpans: [
                                           ETextSpan(
-                                              text: "Axe X: ",
+                                              text: "Axe Y: ",
                                               color: Colors.pinkAccent,
                                               weight: FontWeight.bold,
                                               size: 22),
@@ -86,8 +86,8 @@ class Evolution extends StatelessWidget {
                                     height: max(
                                             (crossAxisCount ~/
                                                 questionnaires.value!.length),
-                                            1) *
-                                        460,
+                                            1) * questionnaires.value!.length *
+                                        165,
                                     child: DynamicHeightGridView(
                                         physics: BouncingScrollPhysics(),
                                         key: Key(questionnaires.value!.length

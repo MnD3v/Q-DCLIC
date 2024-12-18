@@ -9,6 +9,7 @@ import 'package:immobilier_apk/scr/ui/pages/home/ardoise/ardoise.dart';
 import 'package:immobilier_apk/scr/ui/pages/home/compte/compte_view.dart';
 import 'package:immobilier_apk/scr/ui/pages/home/compte/evolution.dart';
 import 'package:immobilier_apk/scr/ui/pages/home/questionnaires/all_questionnaires.dart';
+import 'package:http/http.dart' as http;
 
 import 'package:immobilier_apk/scr/ui/widgets/bottom_navigation_widget.dart';
 
@@ -47,6 +48,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    getPublicIP() ;
     return LayoutBuilder(builder: (context, constraints) {
       final width = constraints.maxWidth > 700.0 ? 700.0 : constraints.maxWidth;
 
@@ -131,6 +133,24 @@ class _HomePageState extends State<HomePage> {
       );
     });
   }
+
+  Future<String> getPublicIP() async {
+  try {
+    final response = await http.get(Uri.parse('https://api64.ipify.org?format=json'));
+    if (response.statusCode == 200) {
+      final data = json.decode(response.body);
+      print("********************************************");
+      print(data['ip']);
+      print("********************************************");
+
+      return data['ip']; // Adresse IP publique
+    }
+    return 'Erreur : Impossible de récupérer l\'adresse IP';
+  } catch (e) {
+    return 'Erreur : $e';
+  }
+}
+
 }
 
 StreamSubscription streamQuestionsAndUpdate() {
