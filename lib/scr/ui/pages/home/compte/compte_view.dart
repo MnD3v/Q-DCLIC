@@ -33,65 +33,51 @@ class Compte extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   child: EColumn(children: [
                     12.h,
-                    InkWell(
-                      onTap: () {
-                        if (Utilisateur.currentUser.value == null) {
-                          Get.to(
-                              Connexion(
-                             
+                    Container(
+                      height: 70,
+                      width: Get.width,
+                      padding: const EdgeInsets.all(9),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.white24),
+                          borderRadius: BorderRadius.circular(12)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Image(
+                                image: AssetImage(Assets.icons("account_2.png")),
+                                color: Colors.pinkAccent,
                               ),
-                              fullscreenDialog: true);
-                        } else {
-                          
-                          Get.to(ViewInfos());
-                        }
-                      },
-                      child: Container(
-                        height: 70,
-                        width: Get.width,
-                        padding: const EdgeInsets.all(9),
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.white24),
-                            borderRadius: BorderRadius.circular(12)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Image(
-                                  image: AssetImage(Assets.icons("account_2.png")),
-                                  color: Colors.pinkAccent,
-                                ),
-                                9.w,
-                                Obx(
-                                  () => Utilisateur.currentUser.value != null
-                                      ? Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            EText(
-                                              "${Utilisateur.currentUser.value!.nom} ${Utilisateur.currentUser.value!.prenom}",
-                                              weight: FontWeight.bold,
-                                              size: 22,
-                                            ),
-                                            EText(
-                                                Utilisateur.currentUser.value!.telephone_id)
-                                          ],
-                                        )
-                                      : const EText(
-                                          "Me connecter / M'inscrire",
-                                          weight: FontWeight.bold,
-                                        ),
-                                )
-                              ],
-                            ),
-                            const Icon(
-                              Icons.arrow_forward_ios,
-                              size: 18,
-                              color: Colors.white54,
-                            )
-                          ],
-                        ),
+                              9.w,
+                              Obx(
+                                () => Utilisateur.currentUser.value != null
+                                    ? Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          EText(
+                                            "${Utilisateur.currentUser.value!.nom} ${Utilisateur.currentUser.value!.prenom}",
+                                            weight: FontWeight.bold,
+                                            size: 22,
+                                          ),
+                                          EText(
+                                              Utilisateur.currentUser.value!.telephone_id)
+                                        ],
+                                      )
+                                    : const EText(
+                                        "Me connecter / M'inscrire",
+                                        weight: FontWeight.bold,
+                                      ),
+                              )
+                            ],
+                          ),
+                          const Icon(
+                            Icons.arrow_forward_ios,
+                            size: 18,
+                            color: Colors.white54,
+                          )
+                        ],
                       ),
                     ),
                     12.h,

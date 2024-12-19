@@ -40,6 +40,7 @@ class QuestionCard extends StatelessWidget {
     }
 
     return LayoutBuilder(builder: (context, constraints) {
+
       final width = constraints.maxWidth;
       return Container(
         width: width,

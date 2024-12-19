@@ -6,18 +6,18 @@ class AppTheme {
   static ThemeData get theme => ThemeData(
   iconTheme: IconThemeData(color: Colors.white),
         fontFamily: Fonts.poppins,
-        primaryColor: Colors.amberAccent,
+        primaryColor: Colors.pinkAccent,
         textTheme: textTheme,
         appBarTheme: appBarTheme,
         dialogTheme: dialogTheme,
         colorScheme: ColorScheme.fromSwatch(
-          primarySwatch: createMaterialColor(Colors.amberAccent),
+          primarySwatch: createMaterialColor(Colors.pinkAccent),
         ).copyWith(
-          secondary: Colors.amberAccent, // Couleur secondaire
+          secondary: Colors.pinkAccent, // Couleur secondaire
         ),
         scaffoldBackgroundColor: AppColors.background,
         dividerColor: Colors.black12,
-        primarySwatch: createMaterialColor(Colors.amberAccent),
+        primarySwatch: createMaterialColor(Colors.pinkAccent),
       );
 
   static DialogTheme get dialogTheme {

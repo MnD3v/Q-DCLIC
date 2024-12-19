@@ -81,7 +81,6 @@ class ArdoiseQuestionCard extends StatelessWidget {
                   size: 22,
                 ),
               ),
-              
             ],
           ),
         ),
@@ -304,6 +303,17 @@ class ArdoiseQuestionCard extends StatelessWidget {
                       : IconButton(
                           color: Colors.greenAccent,
                           onPressed: () async {
+                            if (question.type == QuestionType.qct) {
+                              if (qctResponse.value
+                                  .replaceAll(" ", "")
+                                  .replaceAll("\n", "")
+                                  .isEmpty) {
+                                Toasts.error(context,
+                                    description:
+                                        'Veuillez saisir la réponse à la question');
+                                return;
+                              }
+                            }
                             var telephone =
                                 Utilisateur.currentUser.value!.telephone_id;
                             var user = Utilisateur.currentUser.value!;
