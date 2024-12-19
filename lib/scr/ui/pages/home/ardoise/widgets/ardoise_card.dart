@@ -176,7 +176,7 @@ class ArdoiseQuestionCard extends StatelessWidget {
                                               });
                                             },
                                             child: EFadeInImage(
-                                              height: 90,
+                                              height: 120,
                                               width: 120,
                                               radius: 12,
                                               image: NetworkImage(
@@ -256,7 +256,7 @@ class ArdoiseQuestionCard extends StatelessWidget {
                                                 useSafeArea: true);
                                           },
                                           child: EFadeInImage(
-                                            height: 90,
+                                            height: 120,
                                             width: 120,
                                             radius: 12,
                                             image: NetworkImage(

@@ -168,9 +168,8 @@ class QuestionCard extends StatelessWidget {
                                                 });
                                               },
                                               child: EFadeInImage(
-                                                height: 90,
+                                                height: 120,
                                                 width: 120,
-                                                radius: 12,
                                                 image: NetworkImage(
                                                     element.choix[e]!),
                                               ),
@@ -247,9 +246,8 @@ class QuestionCard extends StatelessWidget {
                                                   useSafeArea: true);
                                             },
                                             child: EFadeInImage(
-                                              height: 90,
+                                              height: 120,
                                               width: 120,
-                                              radius: 12,
                                               image: NetworkImage(
                                                   element.choix[e]!),
                                             ),

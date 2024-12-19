@@ -151,6 +151,9 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 ));
                                 presenceVerifcationLoading.value = false;
+                              waitAfter(555, () {
+            presenceAnimation.value = !presenceAnimation.value;
+          });
                               },
                               child: Container(
                                 height: 35,

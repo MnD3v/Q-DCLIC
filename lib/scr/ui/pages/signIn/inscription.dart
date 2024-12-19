@@ -32,228 +32,231 @@ class Inscription extends StatelessWidget {
 
     return LayoutBuilder(builder: (context, constraints) {
       final width = constraints.maxWidth > 700.0 ? 700.0 : constraints.maxWidth;
-        return EScaffold(
-          body: Center(
-            child: SizedBox(
-              width: width,
-              child: EScaffold(
-                appBar: AppBar(
-                  surfaceTintColor: Colors.transparent,
-                  backgroundColor: Colors.transparent,
-                  title: const TitleText(
-                    "Inscription",
-                  ),
+      return EScaffold(
+        body: Center(
+          child: SizedBox(
+            width: width,
+            child: EScaffold(
+              appBar: AppBar(
+                surfaceTintColor: Colors.transparent,
+                backgroundColor: Colors.transparent,
+                title: const TitleText(
+                  "Inscription",
                 ),
-                body: Obx(
-                  () => IgnorePointer(
-                    ignoring: isLoading.value,
-                    child: Padding(
-                        padding: const EdgeInsets.all(12.0),
-                        child: EColumn(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              16.h,
-                              Hero(
-                                tag: "launch_icon",
-                                child: Image(
-                                    image: AssetImage(Assets.icons("account_2.png")),
-                                    height: 70, color: Colors.amber,),
+              ),
+              body: Obx(
+                () => IgnorePointer(
+                  ignoring: isLoading.value,
+                  child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: EColumn(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            16.h,
+                            Hero(
+                              tag: "launch_icon",
+                              child: Image(
+                                image:
+                                    AssetImage(Assets.icons("account_2.png")),
+                                height: 70,
+                                color: Colors.pinkAccent,
                               ),
-                              24.h,
-                              const BigTitleText(
-                                "M'inscrire",
-                              ),
-                              34.h,
-                              UnderLineTextField(
-                                label: "Votre nom",
+                            ),
+                            24.h,
+                            const BigTitleText(
+                              "M'inscrire",
+                            ),
+                            34.h,
+                            UnderLineTextField(
+                              label: "Votre nom",
+                              phoneScallerFactor: phoneScallerFactor,
+                              onChanged: (value) {
+                                utilisateur.nom = value;
+                              },
+                            ),
+                            10.h,
+                            UnderLineTextField(
+                              label: "Votre prénom",
+                              phoneScallerFactor: phoneScallerFactor,
+                              onChanged: (value) {
+                                utilisateur.prenom = value;
+                              },
+                            ),
+                            10.h,
+                            UnderLineTextField(
+                              label: "Votre numéro de télephone",
+                              phoneScallerFactor: phoneScallerFactor,
+                              number: true,
+                              onChanged: (value) {
+                                utilisateur.telephone_id = value;
+                              },
+                            ),
+                            10.h,
+                            Obx(
+                              () => UnderLineTextField(
+                                label: "Votre mot de passe",
                                 phoneScallerFactor: phoneScallerFactor,
+                                pass: passvisible_1.value,
                                 onChanged: (value) {
-                                  utilisateur.nom = value;
+                                  utilisateur.password = value;
                                 },
-                              ),
-                              10.h,
-                              UnderLineTextField(
-                                label: "Votre prénom",
-                                phoneScallerFactor: phoneScallerFactor,
-                                onChanged: (value) {
-                                  utilisateur.prenom = value;
-                                },
-                              ),
-                              10.h,
-                              UnderLineTextField(
-                                label: "Votre numéro de télephone",
-                                phoneScallerFactor: phoneScallerFactor,
-                                number: true,
-                                onChanged: (value) {
-                                  utilisateur.telephone_id = value;
-                                },
-                              ),
-                              10.h,
-                              Obx(
-                                () => UnderLineTextField(
-                                  label: "Votre mot de passe",
-                                  phoneScallerFactor: phoneScallerFactor,
-                                  pass: passvisible_1.value,
-                                  onChanged: (value) {
-                                    utilisateur.password = value;
+                                suffix: InkWell(
+                                  onTap: () {
+                                    passvisible_1.value = !passvisible_1.value;
                                   },
-                                  suffix: InkWell(
-                                    onTap: () {
-                                      passvisible_1.value = !passvisible_1.value;
-                                    },
-                                    child: Padding(
-                                      padding:
-                                          const EdgeInsets.symmetric(horizontal: 8.0),
-                                      child: Icon(
-                                          !passvisible_1.value
-                                              ? CupertinoIcons.eye_slash_fill
-                                              : CupertinoIcons.eye_fill,
-                                          color: AppColors.textColor),
-                                    ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8.0),
+                                    child: Icon(
+                                        !passvisible_1.value
+                                            ? CupertinoIcons.eye_slash_fill
+                                            : CupertinoIcons.eye_fill,
+                                        color: AppColors.textColor),
                                   ),
                                 ),
                               ),
-                              10.h,
-                              Obx(
-                                () => UnderLineTextField(
-                                  label: "Répeter votre mot de passe",
-                                  phoneScallerFactor: phoneScallerFactor,
-                                  pass: passvisible_2.value,
-                                  onChanged: (value) {
-                                    repeatPass = value;
+                            ),
+                            10.h,
+                            Obx(
+                              () => UnderLineTextField(
+                                label: "Répeter votre mot de passe",
+                                phoneScallerFactor: phoneScallerFactor,
+                                pass: passvisible_2.value,
+                                onChanged: (value) {
+                                  repeatPass = value;
+                                },
+                                suffix: InkWell(
+                                  onTap: () {
+                                    passvisible_2.value = !passvisible_2.value;
                                   },
-                                  suffix: InkWell(
-                                    onTap: () {
-                                      passvisible_2.value = !passvisible_2.value;
-                                    },
-                                    child: Padding(
-                                      padding:
-                                          const EdgeInsets.symmetric(horizontal: 8.0),
-                                      child: Icon(
-                                          !passvisible_2.value
-                                              ? CupertinoIcons.eye_slash_fill
-                                              : CupertinoIcons.eye_fill,
-                                          color: AppColors.textColor),
-                                    ),
+                                  child: Padding(
+                                    padding: const EdgeInsets.symmetric(
+                                        horizontal: 8.0),
+                                    child: Icon(
+                                        !passvisible_2.value
+                                            ? CupertinoIcons.eye_slash_fill
+                                            : CupertinoIcons.eye_fill,
+                                        color: AppColors.textColor),
                                   ),
                                 ),
                               ),
-                              6.h,
-                              DropdownButtonFormField(
-                                dropdownColor: AppColors.background,
-                                value: null,
-                                items: [
-                                  "Classe 1",
-                                  "Classe 2",
-                                  "Classe 3",
-                                  "Classe 4",
-                                  "Classe 5",
-                                  "Classe 6",
-                                  "Classe 7",
-                                  "Classe 8",
-                                  "Classe 9",
-                                  "Classe 10"
-                                ]
-                                    .map((element) => DropdownMenuItem(
-                                          child: EText(element),
-                                          value: element,
-                                        ))
-                                    .toList(),
-                                onChanged: (value) {
-                                  utilisateur.classe = value;
-                                },
-                                decoration: InputDecoration(
-                                    label: EText("Votre classe"),
-                                    focusedBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.white12)),
-                                    enabledBorder: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.white12)),
-                                    border: UnderlineInputBorder(
-                                        borderSide: BorderSide(color: Colors.white12))),
-                              ),
-                              25.h,
-                              SimpleButton(
-                                  width: 160,
-                                  radius: 12,
-                                                             color: Colors.pinkAccent,
+                            ),
+                            6.h,
+                            DropdownButtonFormField(
+                              dropdownColor: AppColors.background,
+                              value: null,
+                              items: [
+                                "Dapaong Communication",
+                                "Dapaong Developpement",
+                                "Kara Communication",
+                                "Kara Developpement",
+                                "Aneho Communication",
+                                "Aneho Developpement",
+                                "Lome Communication",
+                                "Lome Developpement",
+                              ]
+                                  .map((element) => DropdownMenuItem(
+                                        child: EText(element),
+                                        value: element,
+                                      ))
+                                  .toList(),
+                              onChanged: (value) {
+                                utilisateur.classe = value;
+                              },
+                              decoration: InputDecoration(
+                                  label: EText("Votre classe"),
+                                  focusedBorder: UnderlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.white12)),
+                                  enabledBorder: UnderlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.white12)),
+                                  border: UnderlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.white12))),
+                            ),
+                            25.h,
+                            SimpleButton(
+                                width: 160,
+                                radius: 12,
+                                color: Colors.pinkAccent,
+                                onTap: () async {
+                                  FocusManager.instance.primaryFocus?.unfocus();
+                                  if (IsNullString(utilisateur.nom) ||
+                                      IsNullString(utilisateur.prenom) ||
+                                      !GFunctions.isPhoneNumber(
+                                          numero: utilisateur.telephone_id) ||
+                                      utilisateur.password.length < 6 ||
+                                      utilisateur.password != repeatPass ||
+                                      utilisateur.classe.isNul) {
+                                    inscriptionProblemesDialog();
+                                  } else {
+                                    try {
+                                      isLoading.value = true;
 
-                                  onTap: () async {
-                                    FocusManager.instance.primaryFocus?.unfocus();
-                                    if (IsNullString(utilisateur.nom) ||
-                                        IsNullString(utilisateur.prenom) ||
-                                        !GFunctions.isPhoneNumber(
-                                            numero: utilisateur.telephone_id) ||
-                                        utilisateur.password.length < 6 ||
-                                        utilisateur.password != repeatPass || utilisateur.classe.isNul) {
-                                      inscriptionProblemesDialog();
-                                    } else {
                                       try {
-                                        isLoading.value = true;
-              
-                                        try {
-                                          await FirebaseAuth.instance
-                                              .createUserWithEmailAndPassword(
-                                            email:
-                                                "${utilisateur.telephone_id}@gmail.com",
-                                            password: utilisateur.password,
-                                          );
-                                          utilisateur.country = country;
-                                          await Utilisateur.setUser(utilisateur);
-              
-                                          isLoading.value = false;
-              
-                                          Get.back();
-                                          Toasts.success(context,
-                                              description:
-                                                  "Vous vous êtes connecté avec succès");
-                                          Utilisateur.refreshToken();
-                                          waitAfter(1000, () {
-                                            function();
-                                          });
-                                        } on FirebaseAuthException catch (e) {
-                                          if (e.code == 'email-already-in-use') {
-                                            Custom.showDialog(
-                                              dialog: const WarningWidget(
-                                                message:
-                                                    "Numero déjà utilisé. Veuillez vous connecter !",
-                                              ),
-                                            );
-                                            isLoading.value = false;
-                                          }
-                                        }
-                                      } on Exception {
-                                        Custom.showDialog(
-                                            dialog: WarningWidget(
-                                          message:
-                                              "Une erreur s'est produite. veuillez verifier votre connexion internet",
-                                        ));
+                                        await FirebaseAuth.instance
+                                            .createUserWithEmailAndPassword(
+                                          email:
+                                              "${utilisateur.telephone_id}@gmail.com",
+                                          password: utilisateur.password,
+                                        );
+                                        utilisateur.country = country;
+                                        await Utilisateur.setUser(utilisateur);
+
                                         isLoading.value = false;
+
+                                        Get.back();
+                                        Toasts.success(context,
+                                            description:
+                                                "Vous vous êtes connecté avec succès");
+                                        Utilisateur.refreshToken();
+                                        waitAfter(1000, () {
+                                          function();
+                                        });
+                                      } on FirebaseAuthException catch (e) {
+                                        if (e.code == 'email-already-in-use') {
+                                          Custom.showDialog(
+                                            dialog: const WarningWidget(
+                                              message:
+                                                  "Numero déjà utilisé. Veuillez vous connecter !",
+                                            ),
+                                          );
+                                          isLoading.value = false;
+                                        }
                                       }
+                                    } on Exception {
+                                      Custom.showDialog(
+                                          dialog: WarningWidget(
+                                        message:
+                                            "Une erreur s'est produite. veuillez verifier votre connexion internet",
+                                      ));
+                                      isLoading.value = false;
                                     }
-                                  },
-                                  child: Obx(
-                                    () => isLoading.value
-                                        ? const SizedBox(
-                                            height: 25,
-                                            width: 25,
-                                            child: CircularProgressIndicator(
-                                              color: Colors.white,
-                                              strokeWidth: 1.3,
-                                            ))
-                                        : const EText(
-                                            "Continuer",
+                                  }
+                                },
+                                child: Obx(
+                                  () => isLoading.value
+                                      ? const SizedBox(
+                                          height: 25,
+                                          width: 25,
+                                          child: CircularProgressIndicator(
                                             color: Colors.white,
-                                          ),
-                                  ))
-                            ])),
-                  ),
+                                            strokeWidth: 1.3,
+                                          ))
+                                      : const EText(
+                                          "Continuer",
+                                          color: Colors.white,
+                                        ),
+                                ))
+                          ])),
                 ),
               ),
             ),
           ),
-        );
-      }
-    );
+        ),
+      );
+    });
   }
 
   inscriptionProblemesDialog() {
@@ -283,9 +286,7 @@ class Inscription extends StatelessWidget {
                     label: 'Veuillez saisir votre prénom',
                   )
                 : 0.h,
-            !GFunctions.isPhoneNumber(
-               
-                    numero: utilisateur.telephone_id)
+            !GFunctions.isPhoneNumber(numero: utilisateur.telephone_id)
                 ? const WarningElement(
                     label: 'Veuillez saisir un numero valide',
                   )
@@ -301,7 +302,7 @@ class Inscription extends StatelessWidget {
                     label: 'Les mots de passe doivent être identiques',
                   )
                 : 0.h,
-                    utilisateur.classe == null
+            utilisateur.classe == null
                 ? const WarningElement(
                     label: 'Veuillez selectionnez la classe',
                   )
