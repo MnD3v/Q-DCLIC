@@ -1,6 +1,7 @@
 import 'package:dotted_dashed_line/dotted_dashed_line.dart';
 import 'package:easy_image_viewer/easy_image_viewer.dart';
 import 'package:immobilier_apk/scr/config/app/export.dart';
+import 'package:immobilier_apk/scr/data/repository/const.dart';
 
 import 'package:immobilier_apk/scr/ui/pages/home/ardoise/widgets/ardoise_card.dart';
 
@@ -40,13 +41,18 @@ class QuestionCard extends StatelessWidget {
     }
 
     return LayoutBuilder(builder: (context, constraints) {
-
+ 
       final width = constraints.maxWidth;
       return Container(
         width: width,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(18),
-            border: Border.all(width: .5, color: Colors.white54)),
+            color: const Color.fromARGB(255, 2, 17, 58),
+            borderRadius: BorderRadius.circular(12),
+            border: Border(
+                top: BorderSide(
+              width: 6,
+              color: colorMap[element.question.length%50]??Colors.pinkAccent
+            ))),
         margin: EdgeInsets.symmetric(vertical: 6),
         child: EColumn(children: [
           Container(
@@ -69,6 +75,21 @@ class QuestionCard extends StatelessWidget {
                     size: 22,
                   ),
                 ),
+                element.image.isNotNul
+                    ? Padding(
+                        padding: const EdgeInsets.symmetric(vertical: 9.0),
+                        child: InkWell(
+                          onTap: () {
+                            showImageViewer(
+                                context, NetworkImage(element.image!));
+                          },
+                          child: EFadeInImage(
+                              height: 120,
+                              width: 120,
+                              image: NetworkImage(element.image!)),
+                        ),
+                      )
+                    : 0.h
               ],
             ),
           ),
@@ -103,6 +124,7 @@ class QuestionCard extends StatelessWidget {
                           ),
                         )
                       : ETextField(
+                        border: false,
                           maxLines: 6,
                           minLines: 3,
                           radius: 18,
@@ -280,3 +302,13 @@ String supprimerTirets(String qctResponse) {
       .replaceAll("--false", "")
       .replaceAll("--true", "");
 }
+
+// Color generateRandomColor() {
+//   final Random random = Random();
+//   return Color.fromARGB(
+//     255, // Opacité fixe (complètement opaque)
+//     random.nextInt(256), // Rouge (0 à 255)
+//     random.nextInt(256), // Vert (0 à 255)
+//     random.nextInt(256), // Bleu (0 à 255)
+//   );
+// }

@@ -88,7 +88,7 @@ class _ViewQuestionnaireState extends State<ViewQuestionnaire> {
                 ? 0.h
                 : SimpleButton(
                     radius: 12,
-                    color: const Color.fromARGB(255, 0, 114, 59),
+                    color: Colors.pinkAccent,
                     onTap: () async {
                
                       for (var i = 0; i < initalResponses.length; i++) {
@@ -132,6 +132,7 @@ class _ViewQuestionnaireState extends State<ViewQuestionnaire> {
                     child: Obx(() => loading.value
                         ? ECircularProgressIndicator(
                             height: 30.0,
+                            color: Colors.white,
                           )
                         : EText("Soumettre")),
                   ),

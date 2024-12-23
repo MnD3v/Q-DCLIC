@@ -126,7 +126,7 @@ class LoadingPage extends StatelessWidget {
     }
 
     try {
-      // update = await getUpdateVersion();
+      update = await getUpdateVersion();
     } on Exception {
       // TODO
     }

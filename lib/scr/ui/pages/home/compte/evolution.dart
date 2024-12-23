@@ -37,6 +37,7 @@ class Evolution extends StatelessWidget {
                   padding: const EdgeInsets.all(8.0),
                   child: EColumn(
                     children: [
+                      50.h,
                       ConstrainedBox(
                         constraints: BoxConstraints(maxWidth: 700),
                         child: LineChartSample2(

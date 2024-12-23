@@ -9,9 +9,9 @@ import 'package:immobilier_apk/scr/config/theme/app_theme.dart';
 import 'package:immobilier_apk/scr/ui/pages/precache/precache.dart';
 import 'package:immobilier_apk/scr/ui/pages/update/update_page.dart';
 
-String version = "1.0.1+14";
+String version = "1.0.0+1";
 
-Update update = Update(version: "1.0.1+14", optionel: false);
+Update update = Update(version: "1.0.0+1", optionel: false);
 
 double phoneScallerFactor = 1;
 

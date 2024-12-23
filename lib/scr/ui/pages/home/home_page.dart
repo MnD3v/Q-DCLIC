@@ -87,7 +87,7 @@ class _HomePageState extends State<HomePage> {
                                 var q = await DB
                                     .firestore(Collections.classes)
                                     .doc(user.classe)
-                                    .collection(Collections.presence)
+                                    .collection(Collections.verification)
                                     .doc("Verification")
                                     .get();
 
@@ -95,11 +95,17 @@ class _HomePageState extends State<HomePage> {
                                 int heures = q["heures"];
                                 var publicIp = q["ip"];
                                 var code = q["code"];
+                                bool useIP = q["useIP"]??false;
                                 var myIp = await getPublicIP();
-                                if (myIp != publicIp) {
+                                if ( myIp != publicIp || !useIP) {
                                   Toasts.error(context,
                                       description:
                                           "Veuillez vous connecter au réseau du centre de formation");
+                                  presenceVerifcationLoading.value = false;
+                                  waitAfter(555, () {
+                                    presenceAnimation.value =
+                                        !presenceAnimation.value;
+                                  });
                                   return;
                                 }
                                 var myCode = "";
@@ -136,9 +142,9 @@ class _HomePageState extends State<HomePage> {
                                           await DB
                                               .firestore(Collections.classes)
                                               .doc(user.classe)
-                                              .collection(Collections.presence)
+                                              .collection(Collections.sessions)
                                               .doc(date)
-                                              .collection(Collections.presence)
+                                              .collection(Collections.sessions)
                                               .doc(user.telephone_id)
                                               .set({"heures": heures});
                                           Toasts.success(context,
@@ -151,9 +157,10 @@ class _HomePageState extends State<HomePage> {
                                   ),
                                 ));
                                 presenceVerifcationLoading.value = false;
-                              waitAfter(555, () {
-            presenceAnimation.value = !presenceAnimation.value;
-          });
+                                waitAfter(555, () {
+                                  presenceAnimation.value =
+                                      !presenceAnimation.value;
+                                });
                               },
                               child: Container(
                                 height: 35,
@@ -258,7 +265,7 @@ class _HomePageState extends State<HomePage> {
     return DB
         .firestore(Collections.classes)
         .doc(user.classe)
-        .collection(Collections.presence)
+        .collection(Collections.verification)
         .doc("Verification")
         .snapshots()
         .listen((snapshot) {
@@ -266,7 +273,7 @@ class _HomePageState extends State<HomePage> {
         var q = await DB
             .firestore(Collections.classes)
             .doc(user.classe)
-            .collection(Collections.presence)
+            .collection(Collections.verification)
             .doc("Verification")
             .get();
 
@@ -274,9 +281,9 @@ class _HomePageState extends State<HomePage> {
         var qPresence = await DB
             .firestore(Collections.classes)
             .doc(user.classe)
-            .collection(Collections.presence)
+            .collection(Collections.sessions)
             .doc(date)
-            .collection(Collections.presence)
+            .collection(Collections.sessions)
             .doc(user.telephone_id)
             .get();
         if (qPresence.exists) {

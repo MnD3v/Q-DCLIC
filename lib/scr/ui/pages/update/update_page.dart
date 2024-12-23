@@ -1,6 +1,6 @@
-
 import 'package:immobilier_apk/scr/config/app/export.dart';
 import 'package:immobilier_apk/scr/ui/pages/home/home_page.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class UpdatePage extends StatelessWidget {
   const UpdatePage({super.key});
@@ -35,7 +35,7 @@ class UpdatePage extends StatelessWidget {
             6.h,
             Text.rich(
               TextSpan(children: [
-                const TextSpan(text: "Taille de télechargement: "),
+                const TextSpan(text: "Taille de télechargement: ", style: TextStyle(color: Colors.white)),
                 TextSpan(
                     text: "5,7 Mo ",
                     style: TextStyle(
@@ -48,7 +48,10 @@ class UpdatePage extends StatelessWidget {
               height: 45,
               width: Get.width / 2,
               onTap: () async {
-            
+                var q =
+                    await DB.firestore(Collections.keys).doc("update").get();
+                var update = Update.fromMap(q.data()!);
+                launchUrl(Uri.parse(update.link ?? "https://google.com"));
               },
               text: 'Telecharger',
             ),
@@ -61,10 +64,11 @@ class UpdatePage extends StatelessWidget {
                     onTap: () async {
                       var user = FirebaseAuth.instance.currentUser;
 
-                      Get.off(HomePage(),
-                          transition: Transition.rightToLeftWithFade,
-                          duration: 333.milliseconds,
-                        );
+                      Get.off(
+                        HomePage(),
+                        transition: Transition.rightToLeftWithFade,
+                        duration: 333.milliseconds,
+                      );
                     },
                     child: EText('Plus tard',
                         weight: FontWeight.normal, color: AppColors.color500),
