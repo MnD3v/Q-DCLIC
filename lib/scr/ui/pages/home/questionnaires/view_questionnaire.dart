@@ -54,7 +54,7 @@ class _ViewQuestionnaireState extends State<ViewQuestionnaire> {
           backgroundColor: AppColors.background,
           surfaceTintColor: AppColors.background,
           title: EText(
-            "Questionnaire",
+            widget.questionnaire.title,
             size: 24,
             weight: FontWeight.bold,
           ),

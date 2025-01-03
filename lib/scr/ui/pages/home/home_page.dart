@@ -382,6 +382,7 @@ StreamSubscription streamQuestionnairesAndUpdate() {
       for (var element in snapshot.docs) {
         questionnaires.add(await Questionnaire.fromMap(
           element.data(),
+          classe: user.classe!
         ));
       }
       // Mise à jour de `newQuestionnaires` avec le nombre de nouveaux questionnaires

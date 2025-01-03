@@ -99,7 +99,7 @@ class AllQuizes extends StatelessWidget {
         .get();
     questionnaires.clear();
     for (var element in q.docs) {
-      questionnaires.add( await Questionnaire.fromMap(element.data()));
+      questionnaires.add( await Questionnaire.fromMap(element.data(), classe: user.classe!));
     }
   }
 }

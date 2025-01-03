@@ -45,7 +45,7 @@ class ViewResponses extends StatelessWidget {
                   return ECircularProgressIndicator();
                 }
 
-                Questionnaire.fromMap(snapshot.data!.data()!).then((value) {
+                Questionnaire.fromMap(snapshot.data!.data()!, classe: user.classe!).then((value) {
                   questionnaire = value;
                 });
                 return Padding(

@@ -22,8 +22,8 @@ class AppTheme {
 
   static DialogTheme get dialogTheme {
     return DialogTheme(
-        backgroundColor: AppColors.background,
-        surfaceTintColor: AppColors.background,
+        backgroundColor: AppColors.background900,
+        surfaceTintColor: AppColors.background900,
         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(21)));
   }
 

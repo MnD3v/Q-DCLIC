@@ -114,6 +114,126 @@ class ArdoiseQuestionCard extends StatelessWidget {
                           ],
                         )
                       : ETextField(
+                          onTap: () {
+                            Custom.showDialog(
+                                dialog: Dialog(
+                              child: Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: EColumn(children: [
+                                  9.h,
+                                  ETextRich(
+                                    textSpans: [
+                                      ETextSpan(
+                                          text: question.question,
+                                          color: const Color.fromARGB(
+                                              255, 255, 255, 255),
+                                          weight: FontWeight.bold),
+                                    ],
+                                    size: 22,
+                                  ),
+                                  12.h,
+                                  ETextField(
+                                      maxLines: 6,
+                                      minLines: 3,
+                                      radius: 12,
+                                      placeholder: "Saisissez votre reponse",
+                                      onChanged: (value) {
+                                        qctResponse.value = value;
+                                      },
+                                      phoneScallerFactor: phoneScallerFactor),
+                                      9.h,
+                                  Obx(
+                                    () => Align(
+                                      alignment: Alignment.centerRight,
+                                      child: AnimatedSwitcher(
+                                        duration: 666.milliseconds,
+                                        key: UniqueKey(),
+                                        child: sendLoading.value
+                                            ? Padding(
+                                                padding:
+                                                    const EdgeInsets.all(12.0),
+                                                child: SizedBox(
+                                                  width: 20,
+                                                  height: 20,
+                                                  child:
+                                                      CircularProgressIndicator(
+                                                    color: Colors.greenAccent,
+                                                    strokeWidth: 1.8,
+                                                  ),
+                                                ),
+                                              )
+                                            : dejaRepondu.value
+                                                ? 0.h
+                                                : IconButton(
+                                                    color: Colors.greenAccent,
+                                                    onPressed: () async {
+                                                      if (question.type ==
+                                                          QuestionType.qct) {
+                                                        if (qctResponse.value
+                                                            .replaceAll(" ", "")
+                                                            .replaceAll(
+                                                                "\n", "")
+                                                            .isEmpty) {
+                                                          Toasts.error(context,
+                                                              description:
+                                                                  'Veuillez saisir la réponse à la question');
+                                                          return;
+                                                        }
+                                                      }
+                                                      var telephone =
+                                                          Utilisateur
+                                                              .currentUser
+                                                              .value!
+                                                              .telephone_id;
+                                                      var user = Utilisateur
+                                                          .currentUser.value!;
+
+                                                      sendLoading.value = true;
+
+                                                      waitAfter(3000, () async {
+                                                        dejaRepondu.value =
+                                                            true;
+
+                                                        var response = (question
+                                                                    .type ==
+                                                                QuestionType.qcu
+                                                            ? qcuResponse.value
+                                                            : question.type ==
+                                                                    QuestionType
+                                                                        .qcm
+                                                                ? qcmResponse
+                                                                    .value
+                                                                : qctResponse
+                                                                    .value);
+                                                        question.maked.putIfAbsent(
+                                                            telephone,
+                                                            () => Maked(
+                                                                nom: user.nom,
+                                                                date: DateTime
+                                                                        .now()
+                                                                    .toString(),
+                                                                prenom:
+                                                                    user.prenom,
+                                                                response: [
+                                                                  response
+                                                                ],
+                                                                pointsGagne:
+                                                                    0));
+                                                        question.save(
+                                                            brouillon: false);
+                                                        sendLoading.value =
+                                                            false;
+                                                        Get.back();
+                                                      });
+                                                    },
+                                                    icon: Icon(Icons.check)),
+                                      ),
+                                    ),
+                                  )
+                                ]),
+                              ),
+                            ));
+                          },
                           maxLines: 6,
                           minLines: 3,
                           radius: 12,
@@ -280,70 +400,6 @@ class ArdoiseQuestionCard extends StatelessWidget {
                         );
                 }).toList()),
         ),
-        Obx(
-          () => Align(
-            alignment: Alignment.centerRight,
-            child: AnimatedSwitcher(
-              duration: 666.milliseconds,
-              key: UniqueKey(),
-              child: sendLoading.value
-                  ? Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: SizedBox(
-                        width: 20,
-                        height: 20,
-                        child: CircularProgressIndicator(
-                          color: Colors.greenAccent,
-                          strokeWidth: 1.8,
-                        ),
-                      ),
-                    )
-                  : dejaRepondu.value
-                      ? 0.h
-                      : IconButton(
-                          color: Colors.greenAccent,
-                          onPressed: () async {
-                            if (question.type == QuestionType.qct) {
-                              if (qctResponse.value
-                                  .replaceAll(" ", "")
-                                  .replaceAll("\n", "")
-                                  .isEmpty) {
-                                Toasts.error(context,
-                                    description:
-                                        'Veuillez saisir la réponse à la question');
-                                return;
-                              }
-                            }
-                            var telephone =
-                                Utilisateur.currentUser.value!.telephone_id;
-                            var user = Utilisateur.currentUser.value!;
-
-                            sendLoading.value = true;
-
-                            waitAfter(3000, () async {
-                              dejaRepondu.value = true;
-
-                              var response = (question.type == QuestionType.qcu
-                                  ? qcuResponse.value
-                                  : question.type == QuestionType.qcm
-                                      ? qcmResponse.value
-                                      : qctResponse.value);
-                              question.maked.putIfAbsent(
-                                  telephone,
-                                  () => Maked(
-                                      nom: user.nom,
-                                      date: DateTime.now().toString(),
-                                      prenom: user.prenom,
-                                      response: [response],
-                                      pointsGagne: 0));
-                              question.save(brouillon: false);
-                              sendLoading.value = false;
-                            });
-                          },
-                          icon: Icon(Icons.check)),
-            ),
-          ),
-        )
       ]),
     );
   }

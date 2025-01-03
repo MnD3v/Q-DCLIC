@@ -41,18 +41,17 @@ class QuestionCard extends StatelessWidget {
     }
 
     return LayoutBuilder(builder: (context, constraints) {
- 
       final width = constraints.maxWidth;
       return Container(
         width: width,
         decoration: BoxDecoration(
-            color: const Color.fromARGB(255, 2, 17, 58),
+            color: AppColors.background900,
             borderRadius: BorderRadius.circular(12),
             border: Border(
                 top: BorderSide(
-              width: 6,
-              color: colorMap[element.question.length%50]??Colors.pinkAccent
-            ))),
+                    width: 4,
+                    color: colorMap[element.question.length % 50] ??
+                        Colors.pinkAccent))),
         margin: EdgeInsets.symmetric(vertical: 6),
         child: EColumn(children: [
           Container(
@@ -124,7 +123,56 @@ class QuestionCard extends StatelessWidget {
                           ),
                         )
                       : ETextField(
-                        border: false,
+                        initialValue: qctResponse.value,
+                          onTap: () {
+                            String reponse = "";
+                            Custom.showDialog(
+                                dialog: Dialog(
+                              child: Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: EColumn(children: [
+                                  ETextRich(
+                                    textSpans: [
+                                      ETextSpan(
+                                          text: "${index + 1}. ",
+                                          color: Colors.amber,
+                                          weight: FontWeight.bold),
+                                      ETextSpan(
+                                          text: element.question,
+                                          color: Colors.white60),
+                                    ],
+                                    size: 22,
+                                  ),
+                                  9.h,
+                                  ETextField(
+                        initialValue: qctResponse.value,
+
+                                      maxLines: 6,
+                                      minLines: 3,
+                                      radius: 18,
+                                      placeholder: "Saisissez votre reponse",
+                                      onChanged: (value) {
+                                       reponse = value;
+                                      },
+                                      phoneScallerFactor: phoneScallerFactor),
+                                      9.h,
+                                  Align(
+                                    alignment: Alignment.centerRight,
+                                    child: IconButton(
+                                      onPressed: () {
+                                         initalResponses[index] = "$reponse--none";
+                                          qctResponse.value = reponse;
+                                          Get.back();
+                                                                    
+                                      },
+                                      icon: Icon(Icons.check, color: Colors.pinkAccent,),
+                                    ),
+                                  )
+                                ]),
+                              ),
+                            ));
+                          },
+                          border: false,
                           maxLines: 6,
                           minLines: 3,
                           radius: 18,

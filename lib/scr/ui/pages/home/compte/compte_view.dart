@@ -2,6 +2,7 @@ import 'package:immobilier_apk/scr/config/app/export.dart';
 import 'package:immobilier_apk/scr/ui/pages/home/compte/evolution.dart';
 import 'package:immobilier_apk/scr/ui/pages/home/compte/view_infos.dart';
 import 'package:immobilier_apk/scr/ui/pages/signIn/connexion.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 
@@ -10,6 +11,7 @@ class Compte extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var user = Utilisateur.currentUser.value!;
     // var controller = Get.find<OtherController>();
     return LayoutBuilder(builder: (context, constraints) {
       final width = constraints.maxWidth > 700.0 ? 700.0 : constraints.maxWidth;
@@ -33,60 +35,77 @@ class Compte extends StatelessWidget {
                   padding: const EdgeInsets.symmetric(horizontal: 12.0),
                   child: EColumn(children: [
                     12.h,
-                    GestureDetector(
-                      onTap: (){
-                        Get.to(ViewInfos());
-                      },
-                      child: Container(
-                        height: 70,
-                        width: Get.width,
-                        padding: const EdgeInsets.all(9),
-                        decoration: BoxDecoration(
-                            border: Border.all(color: Colors.white24),
-                            borderRadius: BorderRadius.circular(12)),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Row(
-                              children: [
-                                Image(
-                                  image: AssetImage(Assets.icons("account_2.png")),
-                                  color: Colors.pinkAccent,
-                                ),
-                                9.w,
-                                Obx(
-                                  () => Utilisateur.currentUser.value != null
-                                      ? Column(
-                                          crossAxisAlignment: CrossAxisAlignment.start,
-                                          mainAxisSize: MainAxisSize.min,
-                                          children: [
-                                            EText(
-                                              "${Utilisateur.currentUser.value!.nom} ${Utilisateur.currentUser.value!.prenom}",
-                                              weight: FontWeight.bold,
-                                              size: 22,
-                                            ),
-                                            EText(
-                                                Utilisateur.currentUser.value!.telephone_id)
-                                          ],
-                                        )
-                                      : const EText(
-                                          "Me connecter / M'inscrire",
-                                          weight: FontWeight.bold,
-                                        ),
-                                )
-                              ],
-                            ),
-                            const Icon(
-                              Icons.arrow_forward_ios,
-                              size: 18,
-                              color: Colors.white54,
-                            )
-                          ],
-                        ),
+                    Container(
+                      height: 70,
+                      width: Get.width,
+                      padding: const EdgeInsets.all(9),
+                      decoration: BoxDecoration(
+                          border: Border.all(color: Colors.white24),
+                          borderRadius: BorderRadius.circular(12)),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Row(
+                            children: [
+                              Image(
+                                image: AssetImage(Assets.icons("account_2.png")),
+                                color: Colors.pinkAccent,
+                              ),
+                              9.w,
+                              Obx(
+                                () => Utilisateur.currentUser.value != null
+                                    ? Column(
+                                        crossAxisAlignment: CrossAxisAlignment.start,
+                                        mainAxisSize: MainAxisSize.min,
+                                        children: [
+                                          EText(
+                                            "${Utilisateur.currentUser.value!.nom} ${Utilisateur.currentUser.value!.prenom}",
+                                            weight: FontWeight.bold,
+                                            size: 22,
+                                          ),
+                                          EText(
+                                              Utilisateur.currentUser.value!.telephone_id)
+                                        ],
+                                      )
+                                    : const EText(
+                                        "Me connecter / M'inscrire",
+                                        weight: FontWeight.bold,
+                                      ),
+                              )
+                            ],
+                          ),
+                          const Icon(
+                            Icons.arrow_forward_ios,
+                            size: 18,
+                            color: Colors.white54,
+                          )
+                        ],
                       ),
                     ),
                     12.h,
-                  
+                     Center(
+                       child: Padding(
+                            padding: const EdgeInsets.all( 12.0),
+                            child: Container(
+                              padding: EdgeInsets.all(12),
+                              decoration: BoxDecoration(border: Border.all(color: Colors.white30), borderRadius: BorderRadius.circular(12)),
+                                height: min(Get.width * .6, 500),
+                                child: QrImageView(
+                                  data: user.telephone_id,
+                                  backgroundColor: Colors.transparent,
+                                  eyeStyle: QrEyeStyle(
+                                      eyeShape: QrEyeShape.square,
+                                      color: AppColors.color500),
+                                  dataModuleStyle: QrDataModuleStyle(
+                                    dataModuleShape: QrDataModuleShape.circle,
+                                    color: Colors.white,
+                                  ),
+                                  padding: EdgeInsets.all(6),
+                                )),
+                          ),
+                     ),
+                                         
+                      
                     
                     const BigTitleText(
                       "Quiz",

@@ -169,7 +169,7 @@ class Evolution extends StatelessWidget {
     var tempQuestionnaires = <Questionnaire>[];
 
     for (var element in q.docs) {
-      tempQuestionnaires.add(await Questionnaire.fromMap(element.data()));
+      tempQuestionnaires.add(await Questionnaire.fromMap(element.data(), classe: user.classe!),);
     }
     questionnaires.value = tempQuestionnaires;
     print((1 ~/ questionnaires.value!.length));

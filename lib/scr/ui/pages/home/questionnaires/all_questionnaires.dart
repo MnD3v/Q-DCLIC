@@ -29,15 +29,15 @@ class ViewAllQuestionnaires extends StatelessWidget {
           if (DB.waiting(snapshot)) {
             return ECircularProgressIndicator();
           }
-
-          var telephone = Utilisateur.currentUser.value!.telephone_id;
+          var user = Utilisateur.currentUser.value!;
+          var telephone = user.telephone_id;
 
           var tempQuestionnaire = <Questionnaire>[];
 
           waitAfter(0, () async {
             for (var element in snapshot.data!.docs) {
-              tempQuestionnaire
-                  .add(await Questionnaire.fromMap(element.data()));
+              tempQuestionnaire.add(await Questionnaire.fromMap(element.data(),
+                  classe: user.classe!));
             }
             print(tempQuestionnaire);
             questionnaires.value = tempQuestionnaire;
@@ -51,13 +51,14 @@ class ViewAllQuestionnaires extends StatelessWidget {
                 () => questionnaires.value.isNul
                     ? ECircularProgressIndicator()
                     : questionnaires.value!.isEmpty
-                        ?Empty(
-                              constraints: constraints,
-                            )
+                        ? Empty(
+                            constraints: constraints,
+                          )
                         : AnimatedSwitcher(
                             duration: 666.milliseconds,
                             child: DynamicHeightGridView(
-                                key: Key((questionnaires.value?.length).toString()),
+                                key: Key(
+                                    (questionnaires.value?.length).toString()),
                                 physics: BouncingScrollPhysics(),
                                 itemCount: questionnaires.value!.length,
                                 crossAxisCount: crossAxisCount.toInt() <= 0
@@ -66,11 +67,14 @@ class ViewAllQuestionnaires extends StatelessWidget {
                                 crossAxisSpacing: 10,
                                 mainAxisSpacing: 10,
                                 builder: (ctx, index) {
-                                  var questionnaire = questionnaires.value![index];
+                                  var questionnaire =
+                                      questionnaires.value![index];
                                   var dejaRepondu = questionnaire.maked
                                       .containsKey(telephone)
                                       .obs;
-                                  return QuestionnaireCard(dejaRepondu: dejaRepondu, questionnaire: questionnaire);
+                                  return QuestionnaireCard(
+                                      dejaRepondu: dejaRepondu,
+                                      questionnaire: questionnaire);
                                 }),
                           ),
               );
@@ -99,46 +103,36 @@ class QuestionnaireCard extends StatelessWidget {
           questionnaire: questionnaire,
         ));
       },
-      child: LayoutBuilder(
-          builder: (context, constraints) {
+      child: LayoutBuilder(builder: (context, constraints) {
         final width = constraints.maxWidth;
-        return Obx(()=>
-           Container(
-            margin: EdgeInsets.symmetric(
-                vertical: 6, horizontal: 9),
+        return Obx(
+          () => Container(
+            margin: EdgeInsets.symmetric(vertical: 6, horizontal: 9),
             decoration: BoxDecoration(
-                color: dejaRepondu.value
-                    ? Colors.transparent
-                    : Color(0xffFCEDC2),
-                borderRadius:
-                    BorderRadius.circular(24),
-                border: Border.all(
-                    color: Colors.white24)),
+                color:
+                    dejaRepondu.value ? Colors.transparent : Color(0xffFCEDC2),
+                borderRadius: BorderRadius.circular(24),
+                border: Border.all(color: Colors.white24)),
             child: Container(
               padding: EdgeInsets.all(24),
               decoration: BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage(
-                        Assets.image("noise.png")),
+                    image: AssetImage(Assets.image("noise.png")),
                     fit: BoxFit.cover),
               ),
               child: Row(
-                mainAxisAlignment:
-                    MainAxisAlignment.spaceBetween,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   SizedBox(
                     width: width - 95,
                     child: Column(
-                      crossAxisAlignment:
-                          CrossAxisAlignment.start,
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         EText(
                           questionnaire.title,
                           color: dejaRepondu.value
                               ? Colors.white
-                              : const Color
-                                  .fromARGB(
-                                  255, 61, 61, 61),
+                              : const Color.fromARGB(255, 61, 61, 61),
                           size: 22,
                         ),
                         6.h,
@@ -149,76 +143,46 @@ class QuestionnaireCard extends StatelessWidget {
                               .reversed
                               .join("-"),
                           color: dejaRepondu.value
-                              ? const Color
-                                  .fromARGB(255,
-                                  255, 190, 116)
-                              : const Color
-                                  .fromARGB(
-                                  255, 61, 61, 61),
+                              ? const Color.fromARGB(255, 255, 190, 116)
+                              : const Color.fromARGB(255, 61, 61, 61),
                           size: 18,
                           weight: FontWeight.bold,
                         ),
                         6.h,
                         Obx(
                           () => SimpleButton(
-                            width: dejaRepondu.value
-                                ? 90
-                                : 122,
+                            width: dejaRepondu.value ? 90 : 122,
                             color: dejaRepondu.value
                                 ? Colors.white12
                                 : Color(0xffFFBB00),
                             height: 35,
                             onTap: () {
-                              Get.to(
-                                  ViewQuestionnaire(
-                                dejaRepondu:
-                                    dejaRepondu,
-                                questionnaire:
-                                    questionnaire,
+                              Get.to(ViewQuestionnaire(
+                                dejaRepondu: dejaRepondu,
+                                questionnaire: questionnaire,
                               ));
                             },
                             child: Row(
-                              mainAxisSize:
-                                  MainAxisSize.min,
+                              mainAxisSize: MainAxisSize.min,
                               children: [
                                 Obx(
                                   () => Padding(
-                                    padding:
-                                        const EdgeInsets
-                                            .only(
-                                            left:
-                                                9.0,
-                                            top: 3),
+                                    padding: const EdgeInsets.only(
+                                        left: 9.0, top: 3),
                                     child: EText(
-                                      dejaRepondu
-                                              .value
-                                          ? "Voir"
-                                          : "Demarer",
-                                      color: dejaRepondu
-                                              .value
-                                          ? Colors
-                                              .white
-                                          : const Color
-                                              .fromARGB(
-                                              255,
-                                              53,
-                                              53,
-                                              53),
+                                      dejaRepondu.value ? "Voir" : "Demarer",
+                                      color: dejaRepondu.value
+                                          ? Colors.white
+                                          : const Color.fromARGB(
+                                              255, 53, 53, 53),
                                     ),
                                   ),
                                 ),
                                 Icon(
-                                  Icons
-                                      .arrow_right_rounded,
-                                  color: dejaRepondu
-                                          .value
+                                  Icons.arrow_right_rounded,
+                                  color: dejaRepondu.value
                                       ? Colors.white
-                                      : Color
-                                          .fromARGB(
-                                              255,
-                                              53,
-                                              53,
-                                              53),
+                                      : Color.fromARGB(255, 53, 53, 53),
                                   size: 30,
                                 )
                               ],
@@ -230,9 +194,7 @@ class QuestionnaireCard extends StatelessWidget {
                   ),
                   Icon(
                     Icons.arrow_forward_ios_rounded,
-                    color: dejaRepondu.value
-                        ? Colors.white
-                        : Colors.black,
+                    color: dejaRepondu.value ? Colors.white : Colors.black,
                   )
                 ],
               ),
