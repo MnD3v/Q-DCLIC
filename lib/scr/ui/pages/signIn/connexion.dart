@@ -22,7 +22,7 @@ class Connexion extends StatelessWidget {
 
   var country = "TG";
 
-  var endInscription = false;
+  var endInscription;
   endIscriptionVerification() async {
     var q = await DB.firestore(Collections.keys).doc("end_inscription").get();
     endInscription = q.data()!["end_inscription"];
@@ -36,9 +36,9 @@ class Connexion extends StatelessWidget {
       final width = constraints.maxWidth > 700.0 ? 700.0 : constraints.maxWidth;
 
       return FutureBuilder(
-          future: endIscriptionVerification(),
+          future: endInscription != null ? null : endIscriptionVerification(),
           builder: (context, snapshot) {
-            if(DB.waiting(snapshot)){
+            if (DB.waiting(snapshot)) {
               return ECircularProgressIndicator();
             }
             return EScaffold(
