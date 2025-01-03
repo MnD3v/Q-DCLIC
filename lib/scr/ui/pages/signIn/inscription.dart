@@ -142,6 +142,36 @@ class Inscription extends StatelessWidget {
                               ),
                             ),
                             6.h,
+                                  DropdownButtonFormField(
+                              dropdownColor: AppColors.background,
+                              value: null,
+                              items: [
+                                "Communication et Marketing Digital",
+                                "Developpement Web et Mobile",
+                              
+                              ]
+                                  .map((element) => DropdownMenuItem(
+                                        child: EText(element),
+                                        value: element,
+                                      ))
+                                  .toList(),
+                              onChanged: (value) {
+                                utilisateur.formation = value;
+                              },
+                              decoration: InputDecoration(
+                                  label: EText("Formation"),
+                                  focusedBorder: UnderlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.white12)),
+                                  enabledBorder: UnderlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.white12)),
+                                  border: UnderlineInputBorder(
+                                      borderSide:
+                                          BorderSide(color: Colors.white12))),
+                            ),
+                        
+                            6.h,
                             DropdownButtonFormField(
                               dropdownColor: AppColors.background,
                               value: null,
@@ -188,7 +218,7 @@ class Inscription extends StatelessWidget {
                                           numero: utilisateur.telephone_id) ||
                                       utilisateur.password.length < 6 ||
                                       utilisateur.password != repeatPass ||
-                                      utilisateur.classe.isNul) {
+                                      utilisateur.classe.isNul || utilisateur.formation.isNul) {
                                     inscriptionProblemesDialog();
                                   } else {
                                     try {
@@ -201,7 +231,6 @@ class Inscription extends StatelessWidget {
                                               "${utilisateur.telephone_id}@gmail.com",
                                           password: utilisateur.password,
                                         );
-                                        utilisateur.country = country;
                                         await Utilisateur.setUser(utilisateur);
 
                                         isLoading.value = false;
@@ -304,7 +333,12 @@ class Inscription extends StatelessWidget {
                 : 0.h,
             utilisateur.classe == null
                 ? const WarningElement(
-                    label: 'Veuillez selectionnez la classe',
+                    label: 'Veuillez selectionner la classe',
+                  )
+                : 0.h,
+                   utilisateur.formation == null
+                ? const WarningElement(
+                    label: 'Veuillez selectionner votre formation',
                   )
                 : 0.h,
             6.h,

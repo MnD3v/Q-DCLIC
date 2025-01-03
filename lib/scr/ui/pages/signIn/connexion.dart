@@ -130,15 +130,7 @@ class Connexion extends StatelessWidget {
                                     if (q.exists) {
                                       var utilisateur =
                                           Utilisateur.fromMap(q.data()!);
-                                      if (utilisateur.formateur == true) {
-                                        isLoading.value = false;
-                                        
-                                        Custom.showDialog(
-                                            dialog: WarningWidget(
-                                                message:
-                                                    "Impossible de se connecter avec le compte formateur"));
-                                        return;
-                                      }
+                                 
                                       try {
                                         await FirebaseAuth.instance
                                             .signInWithEmailAndPassword(

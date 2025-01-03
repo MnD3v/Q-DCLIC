@@ -1,4 +1,3 @@
-
 import 'package:immobilier_apk/scr/config/app/export.dart';
 
 class Empty extends StatelessWidget {
@@ -9,15 +8,14 @@ class Empty extends StatelessWidget {
   Widget build(BuildContext context) {
     return Center(
         child: EColumn(
-          crossAxisAlignment: CrossAxisAlignment.center,
-
+      crossAxisAlignment: CrossAxisAlignment.center,
       children: [
         Image(
           image: AssetImage(Assets.image("empty.png")),
-          width: constraints.maxWidth * .6,
+          width: 120,
+          fit: BoxFit.contain,
         ),
         12.h,
-     
       ],
     ));
   }
