@@ -94,7 +94,7 @@ class Compte extends StatelessWidget {
                                   data: user.telephone_id,
                                   backgroundColor: Colors.transparent,
                                   eyeStyle: QrEyeStyle(
-                                      eyeShape: QrEyeShape.square,
+                                      eyeShape: QrEyeShape.circle,
                                       color: AppColors.color500),
                                   dataModuleStyle: QrDataModuleStyle(
                                     dataModuleShape: QrDataModuleShape.circle,

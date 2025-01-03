@@ -176,14 +176,14 @@ class Inscription extends StatelessWidget {
                               dropdownColor: AppColors.background,
                               value: null,
                               items: [
-                                "Dapaong Communication",
-                                "Dapaong Developpement",
-                                "Kara Communication",
-                                "Kara Developpement",
-                                "Aneho Communication",
-                                "Aneho Developpement",
-                                "Lome Communication",
-                                "Lome Developpement",
+                                "Dapaong Communication et Marketing Digital",
+                                "Dapaong Developpement Web et Mobile",
+                                "Kara Communication et Marketing Digital",
+                                "Kara Developpement Web et Mobile",
+                                "Aneho Communication et Marketing Digital",
+                                "Aneho Developpement Web et Mobile",
+                                "Lome Communication et Marketing Digital",
+                                "Lome Developpement Web et Mobile",
                               ]
                                   .map((element) => DropdownMenuItem(
                                         child: EText(element),
